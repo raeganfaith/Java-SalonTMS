@@ -1,28 +1,34 @@
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.Color;
-import javax.swing.border.LineBorder;
-import javax.swing.JTextField;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JCheckBox;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
+import java.sql.Connection;
 
 public class LoginFrame extends JFrame {
 	
@@ -167,8 +173,42 @@ public class LoginFrame extends JFrame {
 		ShowPass.setBounds(353, 329, 131, 21);
 		contentPane.add(ShowPass);
 		
-		JButton btnSignin = new JButton("SIGN IN");
-		btnSignin.addMouseListener(new MouseAdapter() {
+		//Sign in Button function with database
+		JButton btnSignin = new JButton("SIGN IN");	
+		btnSignin.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String connectionsUrl = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";
+				
+				try (Connection connection = DriverManager.getConnection(connectionsUrl);) {
+					//System.out.println("Connected Successfully!");
+					String sqlQuery = "SELECT * FROM Accounts WHERE Acc_User=? and Acc_Pass=?";
+					PreparedStatement pst = connection.prepareStatement(sqlQuery);
+					pst.setString(1, txtUser.getText());
+					pst.setString(2, txtPass.getText());
+					ResultSet rs = pst.executeQuery();
+					
+					if (rs.next()) {
+						JOptionPane.showMessageDialog(null, "Username and Password Matched!");
+						DashboardFrame cv = new DashboardFrame();
+				    	cv.setVisible(true);
+						LoginFrame.this.dispose();
+						
+					} else {
+						JOptionPane.showMessageDialog(null, "Username and Password did not matched!");
+						txtUser.setText("");
+						txtPass.setText("");
+					}
+					
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+				}
+		}	
+			
+	});
+		
+		//start
+	/**	btnSignin.addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -187,6 +227,7 @@ public class LoginFrame extends JFrame {
 				btnSignin.setForeground(Color.GRAY);
 				btnSignin.setBackground(new Color(252, 193, 213));
 			}});
+		//end **/
 		btnSignin.setForeground(new Color(114, 115, 115));
 		btnSignin.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnSignin.setBorderPainted(false);
