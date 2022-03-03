@@ -173,7 +173,7 @@ public class LoginFrame extends JFrame {
 		ShowPass.setBounds(353, 329, 131, 21);
 		contentPane.add(ShowPass);
 		
-		//Sign in Button function with database
+		//Sign in Button function with database 
 		JButton btnSignin = new JButton("SIGN IN");	
 		btnSignin.addActionListener(new ActionListener() {
 			@Override
