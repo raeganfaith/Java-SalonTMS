@@ -29,6 +29,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import java.sql.Connection;
+import javax.swing.JComboBox;
 
 public class LoginFrame extends JFrame {
 	
@@ -43,6 +44,7 @@ public class LoginFrame extends JFrame {
 	private JLabel lblPass;
 	private JLabel lblclose;
 	private JPasswordField txtPass;
+	private JTextField txtLoginAs;
 
 	/**
 	 * Launch the application.
@@ -75,7 +77,7 @@ public class LoginFrame extends JFrame {
 		JPanel UserPanel = new JPanel();
 		UserPanel.setBorder(new LineBorder(new Color(252, 193, 213))); // border color
 		UserPanel.setBackground(new Color(250, 234, 240)); 
-		UserPanel.setBounds(220, 237, 270, 38);
+		UserPanel.setBounds(220, 231, 284, 38);
 		contentPane.add(UserPanel);
 		UserPanel.setLayout(null);
 		
@@ -107,7 +109,7 @@ public class LoginFrame extends JFrame {
 		JPanel PassPanel = new JPanel();
 		PassPanel.setBorder(new LineBorder(new Color(252, 193, 213)));
 		PassPanel.setBackground(new Color(250, 234, 240));
-		PassPanel.setBounds(220, 285, 270, 38);
+		PassPanel.setBounds(220, 279, 284, 38);
 		contentPane.add(PassPanel);
 		PassPanel.setLayout(null);
 		
@@ -140,19 +142,19 @@ public class LoginFrame extends JFrame {
 		PassPanel.add(txtPass);
 		
 		lbLogo = new JLabel("");
-		lbLogo.setBounds(190, 17, 294, 210);
+		lbLogo.setBounds(190, 24, 294, 197);
 		contentPane.add(lbLogo);
 		setUndecorated(true);
 		lbLogo.setIcon(new ImageIcon(img_logo));
 		
 		lblAcc = new JLabel("");
-		lblAcc.setBounds(190, 238, 28, 37);
+		lblAcc.setBounds(190, 232, 28, 37);
 		contentPane.add(lblAcc);
 		setLocationRelativeTo(null);
 		lblAcc.setIcon(new ImageIcon(img_acc));
 		
 		lblPass = new JLabel("");
-		lblPass.setBounds(190, 286, 28, 37);
+		lblPass.setBounds(190, 280, 28, 37);
 		contentPane.add(lblPass);
 		lblPass.setIcon(new ImageIcon(img_pass));
 		
@@ -170,8 +172,20 @@ public class LoginFrame extends JFrame {
 		ShowPass.setForeground(new Color(114, 115, 115));
 		ShowPass.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		ShowPass.setOpaque(false);
-		ShowPass.setBounds(359, 329, 131, 21);
+		ShowPass.setBounds(373, 325, 131, 21);
 		contentPane.add(ShowPass);
+		
+		JComboBox<String> cbbx_Position = new JComboBox<String>();
+		cbbx_Position.setForeground(new Color(114, 115, 115));
+		cbbx_Position.setFont(new Font("Century Gothic", Font.PLAIN, 10));
+		//String ADMIN = "Admin";
+		cbbx_Position.addItem("Admin");
+		cbbx_Position.addItem("User");
+		cbbx_Position.setBorder(new LineBorder(new Color(252, 193, 213))); // border color
+		cbbx_Position.setBackground(new Color(250, 234, 240)); 
+		cbbx_Position.setBounds(282, 325, 73, 21);
+		contentPane.add(cbbx_Position);
+		
 		
 		//Hover effects
 		JButton btnSignin = new JButton("SIGN IN");	
@@ -188,37 +202,67 @@ public class LoginFrame extends JFrame {
 			}
 		});
 		//Sign in Button function with database 
-		btnSignin.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String connectionsUrl = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";
-				
-				try (Connection connection = DriverManager.getConnection(connectionsUrl);) {
-					//System.out.println("Connected Successfully!");
-					String sqlQuery = "SELECT * FROM Accounts WHERE Acc_User=? and Acc_Pass=?";
-					PreparedStatement pst = connection.prepareStatement(sqlQuery);
-					pst.setString(1, txtUser.getText());
-					pst.setString(2, txtPass.getText());
-					ResultSet rs = pst.executeQuery();
-					
-					if (rs.next()) {
-						JOptionPane.showMessageDialog(null, "Username and Password Matched!");
-						DashboardFrame cv = new DashboardFrame();
-				    	cv.setVisible(true);
-						LoginFrame.this.dispose();
+				btnSignin.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String connectionsUrl = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";
 						
-					} else {
-						JOptionPane.showMessageDialog(null, "Username and Password did not matched!");
-						txtUser.setText("");
-						txtPass.setText("");
-					}
+						try (Connection connection = DriverManager.getConnection(connectionsUrl);) {
+							//For position variables
+							Object Adm_Position = cbbx_Position.getSelectedItem();
+									((String) Adm_Position).contentEquals("Admin");
+							Object User_Position = cbbx_Position.getSelectedItem();
+									((String) User_Position).contentEquals("User");
+							//declaring variables for fucntions
+							String users =  txtUser.getText();
+							String passw =  txtPass.getText();
+							
+							String sqlQuery = "SELECT * FROM Accounts WHERE Acc_User=? and Acc_Pass=?";
+							PreparedStatement pst = connection.prepareStatement(sqlQuery);
+							pst.setString(1, txtUser.getText());
+							pst.setString(2, txtPass.getText());
+							ResultSet rs = pst.executeQuery();
+							
+							String Acc_User = "";
+							String Acc_Pass = "";
+							String Acc_Position = "";
+							
+							while(rs.next()) {
+								Acc_User = rs.getString("Acc_User");
+								Acc_Pass = rs.getString("Acc_Pass");
+								Acc_Position = rs.getString("Acc_Position");
+							}
+							
+							String sqlQuery2 = "SELECT * FROM Accounts WHERE Acc_Position=?";
+							PreparedStatement pst1 = connection.prepareStatement(sqlQuery2);
+							pst1.setString(1, Acc_Position);
+							ResultSet rs1 = pst.executeQuery();
+							
+							//thickness.getSelectedItem().contentEquals("deep dish")
+							if (Acc_User.equals(users) && Acc_Pass.equals(passw)) {
+								if(Acc_Position.equals(Adm_Position) && Acc_User.equals(users) && Acc_Pass.equals(passw)) {
+									JOptionPane.showMessageDialog(null, "Username and Password Matched!");
+									DashboardFrame cv = new DashboardFrame();
+							    	cv.setVisible(true);
+									LoginFrame.this.dispose();
+								}else if(Acc_Position.equals(User_Position)&& Acc_User.equals(users) && Acc_Pass.equals(passw)) {
+									JOptionPane.showMessageDialog(null, "Username and Password Matched!");
+									DashboardFrame cv = new DashboardFrame();
+							    	cv.setVisible(true);
+									LoginFrame.this.dispose();
+								} else  {
+									JOptionPane.showMessageDialog(null, "Credentials and the position selected doesn't matched!");
+								} 
+								
+							} else {
+								JOptionPane.showMessageDialog(null, "Username and Password did not matched!");
+							}						
+						} catch (SQLException ex) {
+							ex.printStackTrace();
+						}
+				}	
 					
-				} catch (SQLException ex) {
-					ex.printStackTrace();
-				}
-		}	
-			
-	});
+			});
 		
 		//start
 	/**	btnSignin.addMouseListener(new MouseAdapter() {
@@ -244,7 +288,7 @@ public class LoginFrame extends JFrame {
 		btnSignin.setForeground(new Color(114, 115, 115));
 		btnSignin.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnSignin.setBorderPainted(false);
-		btnSignin.setBounds(220, 356, 270, 38);
+		btnSignin.setBounds(220, 352, 284, 38);
 		btnSignin.setBackground(new Color(252, 193, 213));
 		contentPane.add(btnSignin);
 		
@@ -270,6 +314,17 @@ public class LoginFrame extends JFrame {
 		lblclose.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		lblclose.setBounds(615, 0, 85, 37);
 		contentPane.add(lblclose);
+		
+		
+		txtLoginAs = new JTextField();
+		txtLoginAs.setText("Login as:");
+		txtLoginAs.setOpaque(false);
+		txtLoginAs.setForeground(new Color(114, 115, 115));
+		txtLoginAs.setFont(new Font("Century Gothic", Font.PLAIN, 14));
+		txtLoginAs.setColumns(10);
+		txtLoginAs.setBorder(null);
+		txtLoginAs.setBounds(220, 325, 73, 21);
+		contentPane.add(txtLoginAs);
 		
 		
 		
