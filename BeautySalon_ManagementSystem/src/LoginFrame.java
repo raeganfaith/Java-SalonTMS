@@ -75,7 +75,7 @@ public class LoginFrame extends JFrame {
 		JPanel UserPanel = new JPanel();
 		UserPanel.setBorder(new LineBorder(new Color(252, 193, 213))); // border color
 		UserPanel.setBackground(new Color(250, 234, 240)); 
-		UserPanel.setBounds(214, 237, 270, 38);
+		UserPanel.setBounds(220, 237, 270, 38);
 		contentPane.add(UserPanel);
 		UserPanel.setLayout(null);
 		
@@ -107,7 +107,7 @@ public class LoginFrame extends JFrame {
 		JPanel PassPanel = new JPanel();
 		PassPanel.setBorder(new LineBorder(new Color(252, 193, 213)));
 		PassPanel.setBackground(new Color(250, 234, 240));
-		PassPanel.setBounds(214, 285, 270, 38);
+		PassPanel.setBounds(220, 285, 270, 38);
 		contentPane.add(PassPanel);
 		PassPanel.setLayout(null);
 		
@@ -146,13 +146,13 @@ public class LoginFrame extends JFrame {
 		lbLogo.setIcon(new ImageIcon(img_logo));
 		
 		lblAcc = new JLabel("");
-		lblAcc.setBounds(184, 238, 28, 37);
+		lblAcc.setBounds(190, 238, 28, 37);
 		contentPane.add(lblAcc);
 		setLocationRelativeTo(null);
 		lblAcc.setIcon(new ImageIcon(img_acc));
 		
 		lblPass = new JLabel("");
-		lblPass.setBounds(184, 286, 28, 37);
+		lblPass.setBounds(190, 286, 28, 37);
 		contentPane.add(lblPass);
 		lblPass.setIcon(new ImageIcon(img_pass));
 		
@@ -170,11 +170,24 @@ public class LoginFrame extends JFrame {
 		ShowPass.setForeground(new Color(114, 115, 115));
 		ShowPass.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		ShowPass.setOpaque(false);
-		ShowPass.setBounds(353, 329, 131, 21);
+		ShowPass.setBounds(359, 329, 131, 21);
 		contentPane.add(ShowPass);
 		
-		//Sign in Button function with database 
+		//Hover effects
 		JButton btnSignin = new JButton("SIGN IN");	
+		btnSignin.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnSignin.setForeground(Color.BLACK);
+				btnSignin.setBackground(new Color(253, 139, 180));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnSignin.setForeground(Color.GRAY);
+				btnSignin.setBackground(new Color(252, 193, 213));
+			}
+		});
+		//Sign in Button function with database 
 		btnSignin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -231,7 +244,7 @@ public class LoginFrame extends JFrame {
 		btnSignin.setForeground(new Color(114, 115, 115));
 		btnSignin.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnSignin.setBorderPainted(false);
-		btnSignin.setBounds(214, 356, 270, 38);
+		btnSignin.setBounds(220, 356, 270, 38);
 		btnSignin.setBackground(new Color(252, 193, 213));
 		contentPane.add(btnSignin);
 		
