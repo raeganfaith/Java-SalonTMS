@@ -16,6 +16,10 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class BookingFrame extends JFrame {
 	
@@ -25,6 +29,7 @@ public class BookingFrame extends JFrame {
 	private JTextField txt_name;
 	private JTextField txt_phone;
 	private JTextField txt_address;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -75,13 +80,6 @@ public class BookingFrame extends JFrame {
 		lblBookingTransaction.setFont(new Font("Century Gothic", Font.BOLD, 20));
 		lblBookingTransaction.setBounds(224, 124, 248, 44);
 		contentPane.add(lblBookingTransaction);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBorder(null);
-		panel_1.setBackground(new Color(250, 234, 240));
-		panel_1.setBounds(322, 167, 368, 314);
-		contentPane.add(panel_1);
 		
 		txt_cust = new JTextField();
 		txt_cust.setColumns(10);
@@ -162,8 +160,16 @@ public class BookingFrame extends JFrame {
 		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		lblAddress.setBounds(10, 254, 100, 33);
 		contentPane.add(lblAddress);
-		
+			
 		JButton btnCreate = new JButton("CREATE");
+		/**
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				theView.row[0] = txt_name.getText();
+				theView.row[1] = txt_address.getText();
+			}
+		});
+		**/
 		btnCreate.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -295,6 +301,15 @@ public class BookingFrame extends JFrame {
 		lblclose.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		lblclose.setBounds(615, 0, 85, 37);
 		contentPane.add(lblclose);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(322, 168, 357, 333);
+		scrollPane.setBackground(new Color(250, 234, 240));
+		
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		table.setBackground(new Color(255, 255, 255));
+		scrollPane.setColumnHeaderView(table);
 	}
-
 }
