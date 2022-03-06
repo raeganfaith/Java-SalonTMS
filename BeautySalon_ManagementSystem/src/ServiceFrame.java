@@ -17,7 +17,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ServiceFrame extends JFrame {
 	
@@ -47,6 +54,7 @@ public class ServiceFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public ServiceFrame() {
+		Connection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 550); //Frame size
 		contentPane = new JPanel();
@@ -124,7 +132,7 @@ public class ServiceFrame extends JFrame {
 		txt_service.setBounds(150, 307, 162, 33);
 		contentPane.add(txt_service);
 		
-		JComboBox cbx_type = new JComboBox();
+		JComboBox<String> cbx_type = new JComboBox();
 		cbx_type.setForeground(new Color(114, 115, 115));
 		cbx_type.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		cbx_type.addItem("Part-time");
@@ -133,7 +141,39 @@ public class ServiceFrame extends JFrame {
 		cbx_type.setBounds(150, 264, 162, 33);
 		contentPane.add(cbx_type);
 		
+		//Add button function with database
 		JButton btnCreate = new JButton("CREATE");
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//variable declaration
+				String stylist = txt_stylist.getText();	
+				String type = (String) cbx_type.getSelectedItem();
+				String service = txt_service.getText();	
+				
+				try {
+					pst = con.prepareStatement("insert into Services(Service_Stylist, Service_Type, Services_Name)values(?,?,?)");
+					pst.setString(1, stylist);
+					pst.setString(2, type);
+					pst.setString(3, service);
+					//pst.executeUpdate();
+					
+					int l = pst.executeUpdate();
+					
+					if(l==1) {
+						JOptionPane.showMessageDialog(null, "Successfully added!");
+						txt_stylist.setText("");
+						cbx_type.setSelectedItem(null);
+						txt_service.setText("");	
+						
+					}else {
+						JOptionPane.showMessageDialog(null, "Error!");
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnCreate.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -270,5 +310,18 @@ public class ServiceFrame extends JFrame {
 		contentPane.add(scrollPane);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
+	}
+
+	Connection con;
+	PreparedStatement pst;
+	public void Connection() {
+		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		try {
+			con = DriverManager.getConnection(connection);
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+		
 	}
 }

@@ -31,7 +31,7 @@ import javax.swing.border.LineBorder;
 import java.sql.Connection;
 import javax.swing.JComboBox;
 
-public class LoginFrame extends JFrame {
+public class LoginFrame extends ServiceFrame {
 	
 	
 	private Image img_logo = new ImageIcon(LoginFrame.class.getResource("res/LOGO.png")).getImage().getScaledInstance(300, 177, Image.SCALE_SMOOTH);
@@ -215,6 +215,7 @@ public class LoginFrame extends JFrame {
 								db_User = rs.getString("Acc_User");
 								db_Pass = rs.getString("Acc_Pass");
 								db_Position = rs.getString("Acc_Position");
+								//System.out.println(rs);
 							}
 							
 							String sqlQuery2 = "SELECT * FROM Accounts WHERE Acc_Position=?";
