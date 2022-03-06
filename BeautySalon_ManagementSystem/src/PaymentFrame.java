@@ -24,6 +24,7 @@ public class PaymentFrame extends JFrame {
 	private JTextField txt_cust;
 	private JTextField txt_name;
 	private JTextField txt_total;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -79,34 +80,34 @@ public class PaymentFrame extends JFrame {
 		lblCustomerId.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCustomerId.setForeground(new Color(114, 115, 115));
 		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblCustomerId.setBounds(10, 179, 151, 33);
+		lblCustomerId.setBounds(10, 186, 151, 26);
 		contentPane.add(lblCustomerId);
 		
 		JLabel lblName = new JLabel("NAME:");
 		lblName.setHorizontalAlignment(SwingConstants.CENTER);
 		lblName.setForeground(new Color(114, 115, 115));
 		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblName.setBounds(10, 221, 87, 33);
+		lblName.setBounds(10, 222, 87, 24);
 		contentPane.add(lblName);
 		
 		JLabel lblStatus = new JLabel("STATUS:");
 		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatus.setForeground(new Color(114, 115, 115));
 		lblStatus.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblStatus.setBounds(10, 267, 87, 33);
+		lblStatus.setBounds(10, 256, 87, 25);
 		contentPane.add(lblStatus);
 		
 		JLabel lblPrices = new JLabel("DISCOUNT:");
 		lblPrices.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPrices.setForeground(new Color(114, 115, 115));
 		lblPrices.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblPrices.setBounds(10, 310, 119, 33);
+		lblPrices.setBounds(10, 327, 119, 26);
 		contentPane.add(lblPrices);
 		
 		txt_cust = new JTextField();
 		txt_cust.setBackground(new Color(250, 234, 240));
 		txt_cust.setBorder(null);
-		txt_cust.setBounds(150, 179, 162, 33);
+		txt_cust.setBounds(150, 186, 162, 26);
 		contentPane.add(txt_cust);
 		txt_cust.setColumns(10);
 		
@@ -114,12 +115,12 @@ public class PaymentFrame extends JFrame {
 		txt_name.setBackground(new Color(250, 234, 240));
 		txt_name.setBorder(null);
 		txt_name.setColumns(10);
-		txt_name.setBounds(150, 222, 162, 33);
+		txt_name.setBounds(150, 223, 162, 23);
 		contentPane.add(txt_name);
 		
 		JComboBox cbx_stat = new JComboBox();
 		cbx_stat.setBackground(new Color(250, 234, 240));
-		cbx_stat.setBounds(150, 267, 162, 33);
+		cbx_stat.setBounds(150, 256, 162, 25);
 		contentPane.add(cbx_stat);
 		
 		JButton btnCreate = new JButton("CREATE");
@@ -138,7 +139,7 @@ public class PaymentFrame extends JFrame {
 		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(20, 393, 292, 38);
+		btnCreate.setBounds(20, 406, 292, 38);
 		contentPane.add(btnCreate);
 		
 		JButton btnUpdate = new JButton("UPDATE");
@@ -157,7 +158,7 @@ public class PaymentFrame extends JFrame {
 		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(20, 441, 292, 38);
+		btnUpdate.setBounds(20, 454, 292, 38);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
@@ -176,7 +177,7 @@ public class PaymentFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(20, 489, 99, 38);
+		btnDelete.setBounds(20, 502, 99, 38);
 		contentPane.add(btnDelete);
 		
 		
@@ -191,19 +192,19 @@ public class PaymentFrame extends JFrame {
 		lblTotalPrice.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTotalPrice.setForeground(new Color(114, 115, 115));
 		lblTotalPrice.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblTotalPrice.setBounds(10, 353, 87, 33);
+		lblTotalPrice.setBounds(10, 370, 87, 26);
 		contentPane.add(lblTotalPrice);
 		
 		txt_total = new JTextField();
 		txt_total.setColumns(10);
 		txt_total.setBorder(null);
 		txt_total.setBackground(new Color(250, 234, 240));
-		txt_total.setBounds(150, 353, 162, 33);
+		txt_total.setBounds(150, 370, 162, 26);
 		contentPane.add(txt_total);
 		
 		JComboBox cbx_disc = new JComboBox();
 		cbx_disc.setBackground(new Color(250, 234, 240));
-		cbx_disc.setBounds(150, 310, 162, 33);
+		cbx_disc.setBounds(150, 327, 162, 26);
 		contentPane.add(cbx_disc);
 		
 		JLabel lblclose = new JLabel("CLOSE");
@@ -280,8 +281,22 @@ public class PaymentFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(213, 489, 99, 38);
+		btnClear.setBounds(213, 502, 99, 38);
 		contentPane.add(btnClear);
+		
+		JLabel lblAmount = new JLabel("AMOUNT:");
+		lblAmount.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAmount.setForeground(new Color(114, 115, 115));
+		lblAmount.setFont(new Font("Century Gothic", Font.PLAIN, 18));
+		lblAmount.setBounds(10, 291, 119, 26);
+		contentPane.add(lblAmount);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBorder(null);
+		textField.setBackground(new Color(250, 234, 240));
+		textField.setBounds(150, 291, 162, 23);
+		contentPane.add(textField);
 		
 	}
 }

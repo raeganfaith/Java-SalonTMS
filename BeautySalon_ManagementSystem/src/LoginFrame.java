@@ -222,8 +222,9 @@ public class LoginFrame extends JFrame {
 							pst1.setString(1, db_Position);
 							ResultSet rs1 = pst.executeQuery();
 							
-							//thickness.getSelectedItem().contentEquals("deep dish")
+							
 							if (db_User.equals(users) && db_Pass.equals(passw)) 
+								//To automatically determine if the account logged in is user or admin
 								if(db_Position.equals("Admin")) {
 									JOptionPane.showMessageDialog(null, "You Successfully logged in as Admin!");
 									DashboardFrame cv = new DashboardFrame();
@@ -234,7 +235,8 @@ public class LoginFrame extends JFrame {
 									DashboardUser cv = new DashboardUser();
 							    	cv.setVisible(true);
 									LoginFrame.this.dispose();
-								} 
+								}
+							//this will show if the credentials doesn't match
 							 else {
 								JOptionPane.showMessageDialog(null, "Username and Password did not matched!");
 							}						
