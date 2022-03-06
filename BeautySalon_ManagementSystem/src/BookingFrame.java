@@ -16,6 +16,11 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -51,6 +56,7 @@ public class BookingFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public BookingFrame() {
+		Connection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 550); //Frame size
 		contentPane = new JPanel();
@@ -95,12 +101,16 @@ public class BookingFrame extends JFrame {
 		txt_name.setBounds(150, 208, 162, 23);
 		contentPane.add(txt_name);
 		
-		JComboBox cbx_service = new JComboBox();
+		JComboBox<String> cbx_service = new JComboBox();
+		cbx_service.addItem("SAMPLE1");
+		cbx_service.addItem("SAMPLE2");
 		cbx_service.setBackground(new Color(250, 234, 240));
 		cbx_service.setBounds(150, 308, 162, 23);
 		contentPane.add(cbx_service);
 		
-		JComboBox cbx_hairstylist = new JComboBox();
+		JComboBox<String> cbx_hairstylist = new JComboBox();
+		cbx_hairstylist.addItem("SAMPLE3");
+		cbx_hairstylist.addItem("SAMPLE4");
 		cbx_hairstylist.setBackground(new Color(250, 234, 240));
 		cbx_hairstylist.setBounds(150, 341, 162, 23);
 		contentPane.add(cbx_hairstylist);
@@ -154,8 +164,69 @@ public class BookingFrame extends JFrame {
 		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 17));
 		lblAddress.setBounds(10, 242, 100, 25);
 		contentPane.add(lblAddress);
-			
+		/** 
+		name
+		address
+		contact number
+		service
+		hairstylist
+
+		 * */
+		//Add button function linked with database
 		JButton btnCreate = new JButton("CREATE");
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String names = txt_name.getText();	
+				String address = txt_address.getText();
+				String contact = txt_phone.getText();	
+				String service = (String) cbx_service.getSelectedItem();
+				String hairstylist = (String) cbx_hairstylist.getSelectedItem();
+				
+				try {
+					pst = con.prepareStatement("insert into Booking(Booking_name, Booking_address, Booking_contact, Booking_service, Booking_hairstylist)values(?,?,?,?,?)");
+					pst.setString(1, names);
+					pst.setString(2, address);
+					pst.setString(3, contact);
+					pst.setString(4, service);
+					pst.setString(5, hairstylist);
+					pst.executeUpdate();
+					
+					int k = pst.executeUpdate();
+					
+					if(k==1) {
+						JOptionPane.showMessageDialog(null, "Successfully added!");
+					}else {
+						JOptionPane.showMessageDialog(null, "Error!");
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		/**
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String connectionsUrl = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";
+				try(Connection connection = DriverManager.getConnection(connectionsUrl);) {
+					String names = txt_name.getText();	
+					String address = txt_name.getText();
+					String contact = txt_name.getText();	
+					String service = txt_name.getSelectedText();
+					String hairstylist = txt_name.getSelectedText();
+					
+					String sqlQuery = "SELECT * FROM Booking WHERE Acc_User=? and Acc_Pass=?";
+					PreparedStatement pst = connection.prepareStatement(sqlQuery);
+					//pst.setString(1, txtUser.getText());
+					//pst.setString(2, txtPass.getText());
+					ResultSet rs = pst.executeQuery();
+
+					
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+			}
+		}
+		});
+		**/
 		/**
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -323,5 +394,18 @@ public class BookingFrame extends JFrame {
 		btnPreview.setBackground(new Color(252, 193, 213));
 		btnPreview.setBounds(580, 468, 99, 33);
 		contentPane.add(btnPreview);
+	}
+	
+	Connection con;
+	PreparedStatement pst;
+	public void Connection() {
+		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		try {
+			con = DriverManager.getConnection(connection);
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+		
 	}
 }
