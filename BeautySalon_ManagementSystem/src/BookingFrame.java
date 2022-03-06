@@ -85,80 +85,74 @@ public class BookingFrame extends JFrame {
 		txt_cust.setColumns(10);
 		txt_cust.setBorder(null);
 		txt_cust.setBackground(new Color(250, 234, 240));
-		txt_cust.setBounds(150, 168, 162, 33);
+		txt_cust.setBounds(150, 178, 162, 23);
 		contentPane.add(txt_cust);
 		
 		txt_name = new JTextField();
 		txt_name.setColumns(10);
 		txt_name.setBorder(null);
 		txt_name.setBackground(new Color(250, 234, 240));
-		txt_name.setBounds(150, 211, 162, 33);
+		txt_name.setBounds(150, 208, 162, 23);
 		contentPane.add(txt_name);
 		
 		JComboBox cbx_service = new JComboBox();
 		cbx_service.setBackground(new Color(250, 234, 240));
-		cbx_service.setBounds(150, 340, 162, 33);
+		cbx_service.setBounds(150, 308, 162, 23);
 		contentPane.add(cbx_service);
 		
 		JComboBox cbx_hairstylist = new JComboBox();
 		cbx_hairstylist.setBackground(new Color(250, 234, 240));
-		cbx_hairstylist.setBounds(150, 383, 162, 33);
+		cbx_hairstylist.setBounds(150, 341, 162, 23);
 		contentPane.add(cbx_hairstylist);
 		
 		txt_phone = new JTextField();
 		txt_phone.setColumns(10);
 		txt_phone.setBorder(null);
 		txt_phone.setBackground(new Color(250, 234, 240));
-		txt_phone.setBounds(150, 297, 162, 33);
+		txt_phone.setBounds(150, 275, 162, 23);
 		contentPane.add(txt_phone);
 		
 		JLabel lblContactNo = new JLabel("CONTACT NO:");
-		lblContactNo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblContactNo.setForeground(new Color(114, 115, 115));
-		lblContactNo.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblContactNo.setBounds(10, 297, 138, 33);
+		lblContactNo.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblContactNo.setBounds(10, 275, 138, 20);
 		contentPane.add(lblContactNo);
 		
 		JLabel lblHairSt = new JLabel("HAIR STYLIST:");
-		lblHairSt.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHairSt.setForeground(new Color(114, 115, 115));
-		lblHairSt.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblHairSt.setBounds(10, 383, 119, 33);
+		lblHairSt.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblHairSt.setBounds(10, 341, 119, 26);
 		contentPane.add(lblHairSt);
 		
 		JLabel lblService = new JLabel("SERVICE:");
-		lblService.setHorizontalAlignment(SwingConstants.CENTER);
 		lblService.setForeground(new Color(114, 115, 115));
-		lblService.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblService.setBounds(10, 340, 87, 33);
+		lblService.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblService.setBounds(10, 308, 87, 22);
 		contentPane.add(lblService);
 		
 		JLabel lblName = new JLabel("NAME:");
-		lblName.setHorizontalAlignment(SwingConstants.CENTER);
 		lblName.setForeground(new Color(114, 115, 115));
-		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblName.setBounds(10, 210, 87, 33);
+		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblName.setBounds(10, 207, 87, 25);
 		contentPane.add(lblName);
 		
 		JLabel lblCustomerId = new JLabel("CUSTOMER ID:");
-		lblCustomerId.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCustomerId.setForeground(new Color(114, 115, 115));
-		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblCustomerId.setBounds(10, 168, 143, 33);
+		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblCustomerId.setBounds(10, 178, 143, 23);
 		contentPane.add(lblCustomerId);
 		
 		txt_address = new JTextField();
 		txt_address.setColumns(10);
 		txt_address.setBorder(null);
 		txt_address.setBackground(new Color(250, 234, 240));
-		txt_address.setBounds(150, 254, 162, 33);
+		txt_address.setBounds(150, 242, 162, 23);
 		contentPane.add(txt_address);
 		
 		JLabel lblAddress = new JLabel("ADDRESS:");
-		lblAddress.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAddress.setForeground(new Color(114, 115, 115));
-		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblAddress.setBounds(10, 254, 100, 33);
+		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblAddress.setBounds(10, 242, 100, 25);
 		contentPane.add(lblAddress);
 			
 		JButton btnCreate = new JButton("CREATE");
@@ -182,10 +176,10 @@ public class BookingFrame extends JFrame {
 				btnCreate.setBackground(new Color(252, 193, 213));
 			}});
 		btnCreate.setForeground(new Color(114, 115, 115));
-		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 16));
+		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(20, 426, 292, 33);
+		btnCreate.setBounds(20, 387, 292, 33);
 		contentPane.add(btnCreate);
 		
 		JButton btnUpdate = new JButton("UPDATE");
@@ -201,10 +195,10 @@ public class BookingFrame extends JFrame {
 				btnUpdate.setBackground(new Color(252, 193, 213));
 			}});
 		btnUpdate.setForeground(new Color(114, 115, 115));
-		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 16));
+		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(20, 468, 292, 33);
+		btnUpdate.setBounds(20, 429, 292, 33);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
@@ -220,10 +214,10 @@ public class BookingFrame extends JFrame {
 				btnDelete.setBackground(new Color(252, 193, 213));
 			}});
 		btnDelete.setForeground(new Color(114, 115, 115));
-		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 16));
+		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(20, 507, 99, 33);
+		btnDelete.setBounds(20, 468, 99, 33);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -250,10 +244,10 @@ public class BookingFrame extends JFrame {
 				cbx_hairstylist.setSelectedIndex(0);
 			}});
 		btnClear.setForeground(new Color(114, 115, 115));
-		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 16));
+		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(213, 507, 99, 33);
+		btnClear.setBounds(213, 468, 99, 33);
 		contentPane.add(btnClear);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -303,13 +297,31 @@ public class BookingFrame extends JFrame {
 		contentPane.add(lblclose);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(322, 168, 357, 333);
+		scrollPane.setBorder(null);
+		scrollPane.setBounds(333, 168, 346, 294);
 		scrollPane.setBackground(new Color(250, 234, 240));
 		
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		table.setBackground(new Color(255, 255, 255));
+		table.setFont(new Font("Century Gothic", Font.PLAIN, 10));
+		table.setBackground(new Color(250, 234, 240));
 		scrollPane.setColumnHeaderView(table);
+		
+		JButton btnSave = new JButton("SAVE");
+		btnSave.setForeground(new Color(114, 115, 115));
+		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnSave.setBorderPainted(false);
+		btnSave.setBackground(new Color(252, 193, 213));
+		btnSave.setBounds(333, 468, 99, 33);
+		contentPane.add(btnSave);
+		
+		JButton btnPreview = new JButton("PREVIEW");
+		btnPreview.setForeground(new Color(114, 115, 115));
+		btnPreview.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnPreview.setBorderPainted(false);
+		btnPreview.setBackground(new Color(252, 193, 213));
+		btnPreview.setBounds(580, 468, 99, 33);
+		contentPane.add(btnPreview);
 	}
 }

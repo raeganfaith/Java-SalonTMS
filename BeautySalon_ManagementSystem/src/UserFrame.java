@@ -17,6 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JScrollPane;
 
 public class UserFrame extends JFrame {
 	
@@ -129,13 +130,6 @@ public class UserFrame extends JFrame {
 		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		lblCustomerId.setBounds(10, 158, 91, 33);
 		contentPane.add(lblCustomerId);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBorder(null);
-		panel_1.setBackground(new Color(250, 234, 240));
-		panel_1.setBounds(322, 157, 368, 314);
-		contentPane.add(panel_1);
 		
 		txt_username = new JTextField();
 		txt_username.setColumns(10);
@@ -297,6 +291,11 @@ public class UserFrame extends JFrame {
 		lblclose.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		lblclose.setBounds(615, 0, 85, 37);
 		contentPane.add(lblclose);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(new Color(250, 234, 240));
+		scrollPane.setBounds(322, 158, 357, 333);
+		contentPane.add(scrollPane);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 	}

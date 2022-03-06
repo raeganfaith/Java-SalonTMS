@@ -222,7 +222,6 @@ public class LoginFrame extends JFrame {
 							pst1.setString(1, db_Position);
 							ResultSet rs1 = pst.executeQuery();
 							
-							
 							if (db_User.equals(users) && db_Pass.equals(passw)) 
 								//To automatically determine if the account logged in is user or admin
 								if(db_Position.equals("Admin")) {
@@ -246,28 +245,7 @@ public class LoginFrame extends JFrame {
 				}	
 					
 			});
-		
-		//start
-	/**	btnSignin.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//to change frame 
-				DashboardFrame cv = new DashboardFrame();
-		    	cv.setVisible(true);
-				LoginFrame.this.dispose();
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnSignin.setForeground(Color.BLACK);
-				btnSignin.setBackground(new Color(253, 139, 180));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnSignin.setForeground(Color.GRAY);
-				btnSignin.setBackground(new Color(252, 193, 213));
-			}});
-		//end **/
+
 		btnSignin.setForeground(new Color(114, 115, 115));
 		btnSignin.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnSignin.setBorderPainted(false);

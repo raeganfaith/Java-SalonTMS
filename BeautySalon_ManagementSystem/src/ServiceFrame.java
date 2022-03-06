@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JScrollPane;
 
 public class ServiceFrame extends JFrame {
 	
@@ -78,61 +79,58 @@ public class ServiceFrame extends JFrame {
 		txt_serviceid.setColumns(10);
 		txt_serviceid.setBorder(null);
 		txt_serviceid.setBackground(new Color(250, 234, 240));
-		txt_serviceid.setBounds(150, 168, 162, 33);
+		txt_serviceid.setBounds(150, 178, 162, 33);
 		contentPane.add(txt_serviceid);
 		
 		JLabel lblCustomerId = new JLabel("SERVICE ID:");
 		lblCustomerId.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCustomerId.setForeground(new Color(114, 115, 115));
 		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblCustomerId.setBounds(10, 168, 122, 33);
+		lblCustomerId.setBounds(10, 178, 122, 33);
 		contentPane.add(lblCustomerId);
 		
-		JLabel lblName = new JLabel("STYLIST:");
+		JLabel lblName = new JLabel("STYLIST NAME:");
 		lblName.setHorizontalAlignment(SwingConstants.CENTER);
 		lblName.setForeground(new Color(114, 115, 115));
 		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblName.setBounds(10, 210, 81, 33);
+		lblName.setBounds(10, 220, 140, 33);
 		contentPane.add(lblName);
 		
 		txt_stylist = new JTextField();
 		txt_stylist.setColumns(10);
 		txt_stylist.setBorder(null);
 		txt_stylist.setBackground(new Color(250, 234, 240));
-		txt_stylist.setBounds(150, 211, 162, 33);
+		txt_stylist.setBounds(150, 221, 162, 33);
 		contentPane.add(txt_stylist);
 		
 		JLabel lblAddress = new JLabel("TYPE:");
 		lblAddress.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAddress.setForeground(new Color(114, 115, 115));
 		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblAddress.setBounds(10, 254, 70, 33);
+		lblAddress.setBounds(10, 264, 70, 33);
 		contentPane.add(lblAddress);
 		
 		JLabel lblContactNo = new JLabel("SERVICE:");
 		lblContactNo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblContactNo.setForeground(new Color(114, 115, 115));
 		lblContactNo.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblContactNo.setBounds(10, 297, 99, 33);
+		lblContactNo.setBounds(10, 307, 99, 33);
 		contentPane.add(lblContactNo);
 		
 		txt_service = new JTextField();
 		txt_service.setColumns(10);
 		txt_service.setBorder(null);
 		txt_service.setBackground(new Color(250, 234, 240));
-		txt_service.setBounds(150, 297, 162, 33);
+		txt_service.setBounds(150, 307, 162, 33);
 		contentPane.add(txt_service);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBorder(null);
-		panel_1.setBackground(new Color(250, 234, 240));
-		panel_1.setBounds(322, 167, 368, 314);
-		contentPane.add(panel_1);
-		
 		JComboBox cbx_type = new JComboBox();
+		cbx_type.setForeground(new Color(114, 115, 115));
+		cbx_type.setFont(new Font("Century Gothic", Font.PLAIN, 18));
+		cbx_type.addItem("Part-time");
+		cbx_type.addItem("Full-time");
 		cbx_type.setBackground(new Color(250, 234, 240));
-		cbx_type.setBounds(150, 254, 162, 33);
+		cbx_type.setBounds(150, 264, 162, 33);
 		contentPane.add(cbx_type);
 		
 		JButton btnCreate = new JButton("CREATE");
@@ -151,7 +149,7 @@ public class ServiceFrame extends JFrame {
 		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(20, 347, 292, 38);
+		btnCreate.setBounds(20, 357, 292, 38);
 		contentPane.add(btnCreate);
 		
 		JButton btnUpdate = new JButton("UPDATE");
@@ -170,7 +168,7 @@ public class ServiceFrame extends JFrame {
 		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(20, 395, 292, 38);
+		btnUpdate.setBounds(20, 405, 292, 38);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
@@ -189,7 +187,7 @@ public class ServiceFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(20, 443, 99, 38);
+		btnDelete.setBounds(20, 453, 99, 38);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -216,7 +214,7 @@ public class ServiceFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(213, 443, 99, 38);
+		btnClear.setBounds(213, 453, 99, 38);
 		contentPane.add(btnClear);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -265,6 +263,11 @@ public class ServiceFrame extends JFrame {
 		lblclose.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		lblclose.setBounds(615, 0, 85, 37);
 		contentPane.add(lblclose);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(new Color(250, 234, 240));
+		scrollPane.setBounds(322, 178, 357, 312);
+		contentPane.add(scrollPane);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 	}

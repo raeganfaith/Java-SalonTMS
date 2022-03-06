@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JScrollPane;
 
 public class PaymentFrame extends JFrame {
 	
@@ -77,31 +78,27 @@ public class PaymentFrame extends JFrame {
 		contentPane.add(lblPaymentTransaction);
 		
 		JLabel lblCustomerId = new JLabel("CUSTOMER ID:");
-		lblCustomerId.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCustomerId.setForeground(new Color(114, 115, 115));
-		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblCustomerId.setBounds(10, 186, 151, 26);
+		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblCustomerId.setBounds(20, 186, 121, 26);
 		contentPane.add(lblCustomerId);
 		
 		JLabel lblName = new JLabel("NAME:");
-		lblName.setHorizontalAlignment(SwingConstants.CENTER);
 		lblName.setForeground(new Color(114, 115, 115));
-		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblName.setBounds(10, 222, 87, 24);
+		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblName.setBounds(20, 222, 121, 24);
 		contentPane.add(lblName);
 		
 		JLabel lblStatus = new JLabel("STATUS:");
-		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatus.setForeground(new Color(114, 115, 115));
-		lblStatus.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblStatus.setBounds(10, 256, 87, 25);
+		lblStatus.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblStatus.setBounds(20, 256, 121, 25);
 		contentPane.add(lblStatus);
 		
 		JLabel lblPrices = new JLabel("DISCOUNT:");
-		lblPrices.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPrices.setForeground(new Color(114, 115, 115));
-		lblPrices.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblPrices.setBounds(10, 327, 119, 26);
+		lblPrices.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblPrices.setBounds(20, 327, 121, 26);
 		contentPane.add(lblPrices);
 		
 		txt_cust = new JTextField();
@@ -123,76 +120,10 @@ public class PaymentFrame extends JFrame {
 		cbx_stat.setBounds(150, 256, 162, 25);
 		contentPane.add(cbx_stat);
 		
-		JButton btnCreate = new JButton("CREATE");
-		btnCreate.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnCreate.setForeground(Color.BLACK);
-				btnCreate.setBackground(new Color(253, 139, 180));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnCreate.setForeground(Color.GRAY);
-				btnCreate.setBackground(new Color(252, 193, 213));
-			}});
-		btnCreate.setForeground(new Color(114, 115, 115));
-		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 16));
-		btnCreate.setBorderPainted(false);
-		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(20, 406, 292, 38);
-		contentPane.add(btnCreate);
-		
-		JButton btnUpdate = new JButton("UPDATE");
-		btnUpdate.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnUpdate.setForeground(Color.BLACK);
-				btnUpdate.setBackground(new Color(253, 139, 180));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnUpdate.setForeground(Color.GRAY);
-				btnUpdate.setBackground(new Color(252, 193, 213));
-			}});
-		btnUpdate.setForeground(new Color(114, 115, 115));
-		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 16));
-		btnUpdate.setBorderPainted(false);
-		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(20, 454, 292, 38);
-		contentPane.add(btnUpdate);
-		
-		JButton btnDelete = new JButton("DELETE");
-		btnDelete.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnDelete.setForeground(Color.BLACK);
-				btnDelete.setBackground(new Color(253, 139, 180));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnDelete.setForeground(Color.GRAY);
-				btnDelete.setBackground(new Color(252, 193, 213));
-			}});
-		btnDelete.setForeground(new Color(114, 115, 115));
-		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 16));
-		btnDelete.setBorderPainted(false);
-		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(20, 502, 99, 38);
-		contentPane.add(btnDelete);
-		
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBorder(null);
-		panel_1.setBackground(new Color(250, 234, 240));
-		panel_1.setBounds(322, 179, 368, 314);
-		contentPane.add(panel_1);
-		
 		JLabel lblTotalPrice = new JLabel("TOTAL:");
-		lblTotalPrice.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTotalPrice.setForeground(new Color(114, 115, 115));
-		lblTotalPrice.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblTotalPrice.setBounds(10, 370, 87, 26);
+		lblTotalPrice.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblTotalPrice.setBounds(20, 370, 121, 26);
 		contentPane.add(lblTotalPrice);
 		
 		txt_total = new JTextField();
@@ -255,40 +186,10 @@ public class PaymentFrame extends JFrame {
 		lblBack.setBounds(0, 0, 85, 37);
 		contentPane.add(lblBack);
 		
-		JButton btnClear = new JButton("CLEAR");
-		btnClear.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnClear.setForeground(Color.BLACK);
-				btnClear.setBackground(new Color(253, 139, 180));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnClear.setForeground(Color.GRAY);
-				btnClear.setBackground(new Color(252, 193, 213));
-			}	
-			//clear function
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showConfirmDialog(null, "Are you sure you want to clear your data?", "Warning", JOptionPane.WARNING_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
-				txt_cust.setText("");
-				txt_name.setText("");
-				txt_total.setText("");
-				cbx_stat.setSelectedIndex(0);
-				cbx_disc.setSelectedIndex(0);
-			}});
-		btnClear.setForeground(new Color(114, 115, 115));
-		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 16));
-		btnClear.setBorderPainted(false);
-		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(213, 502, 99, 38);
-		contentPane.add(btnClear);
-		
 		JLabel lblAmount = new JLabel("AMOUNT:");
-		lblAmount.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAmount.setForeground(new Color(114, 115, 115));
-		lblAmount.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblAmount.setBounds(10, 291, 119, 26);
+		lblAmount.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		lblAmount.setBounds(20, 291, 121, 26);
 		contentPane.add(lblAmount);
 		
 		textField = new JTextField();
@@ -297,6 +198,59 @@ public class PaymentFrame extends JFrame {
 		textField.setBackground(new Color(250, 234, 240));
 		textField.setBounds(150, 291, 162, 23);
 		contentPane.add(textField);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(new Color(250, 234, 240));
+		scrollPane.setBounds(331, 186, 345, 307);
+		contentPane.add(scrollPane);
+		
+		JButton btnCreate = new JButton("CREATE");
+		btnCreate.setForeground(new Color(114, 115, 115));
+		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnCreate.setBorderPainted(false);
+		btnCreate.setBackground(new Color(252, 193, 213));
+		btnCreate.setBounds(20, 416, 292, 33);
+		contentPane.add(btnCreate);
+		
+		JButton btnUpdate = new JButton("UPDATE");
+		btnUpdate.setForeground(new Color(114, 115, 115));
+		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnUpdate.setBorderPainted(false);
+		btnUpdate.setBackground(new Color(252, 193, 213));
+		btnUpdate.setBounds(20, 459, 292, 33);
+		contentPane.add(btnUpdate);
+		
+		JButton btnDelete = new JButton("DELETE");
+		btnDelete.setForeground(new Color(114, 115, 115));
+		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnDelete.setBorderPainted(false);
+		btnDelete.setBackground(new Color(252, 193, 213));
+		btnDelete.setBounds(20, 502, 99, 33);
+		contentPane.add(btnDelete);
+		
+		JButton btnClear = new JButton("CLEAR");
+		btnClear.setForeground(new Color(114, 115, 115));
+		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnClear.setBorderPainted(false);
+		btnClear.setBackground(new Color(252, 193, 213));
+		btnClear.setBounds(213, 502, 99, 33);
+		contentPane.add(btnClear);
+		
+		JButton btnSave = new JButton("SAVE");
+		btnSave.setForeground(new Color(114, 115, 115));
+		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnSave.setBorderPainted(false);
+		btnSave.setBackground(new Color(252, 193, 213));
+		btnSave.setBounds(329, 502, 99, 33);
+		contentPane.add(btnSave);
+		
+		JButton btnPreview = new JButton("PREVIEW");
+		btnPreview.setForeground(new Color(114, 115, 115));
+		btnPreview.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnPreview.setBorderPainted(false);
+		btnPreview.setBackground(new Color(252, 193, 213));
+		btnPreview.setBounds(576, 502, 99, 33);
+		contentPane.add(btnPreview);
 		
 	}
 }

@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JScrollPane;
 
 public class ReservationFrame extends JFrame {
 	
@@ -195,13 +196,6 @@ public class ReservationFrame extends JFrame {
 		btnDelete.setBounds(20, 501, 99, 33);
 		contentPane.add(btnDelete);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBorder(null);
-		panel_1.setBackground(new Color(250, 234, 240));
-		panel_1.setBounds(322, 165, 368, 369);
-		contentPane.add(panel_1);
-		
 		txt_address = new JTextField();
 		txt_address.setColumns(10);
 		txt_address.setBorder(null);
@@ -298,5 +292,10 @@ public class ReservationFrame extends JFrame {
 		btnClear.setBackground(new Color(252, 193, 213));
 		btnClear.setBounds(213, 501, 99, 33);
 		contentPane.add(btnClear);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(new Color(250, 234, 240));
+		scrollPane.setBounds(322, 165, 357, 333);
+		contentPane.add(scrollPane);
 	}
 }
