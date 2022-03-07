@@ -1,3 +1,4 @@
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -41,11 +42,9 @@ public class BookingFrame extends JFrame {
 	private JTextField txt_address;
 	private JTable table;
 	public JComboBox<String> cbx_services; 
-	public JComboBox<String> cbx_hairstylist;
+	public JComboBox<String> cbx_stylist;
 	
 	Connection con;
-	Connection conn;
-	Connection connection;
 	PreparedStatement pst;
 	ResultSet rs;
 	
@@ -62,10 +61,9 @@ public class BookingFrame extends JFrame {
 	{
 		try
 		{
-			Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;");
+			//Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;");
 			String query = "SELECT * FROM Services ";
-//			String query = "select EID, Name, Surname, Age from EmployeeInfo";
-			PreparedStatement ps = connection.prepareStatement(query);
+			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			
 			
@@ -90,21 +88,16 @@ public class BookingFrame extends JFrame {
 	{
 		try
 		{
-			Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;");
 			String query = "SELECT * FROM Services ";
-//			String query = "select EID, Name, Surname, Age from EmployeeInfo";
-			PreparedStatement ps = connection.prepareStatement(query);
+			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			
 			
 			while(rs.next())
 			{
-				//String db_serve = "Services_Name";
-				//cbx_services.addItem(rs.getString("Services_Name"));
-				cbx_hairstylist.addItem(rs.getString("Service_Stylist"));		
+				cbx_stylist.addItem(rs.getString("Service_Stylist"));		
 			}
 			
-			//table.setModel(.resultSetToTableModel(rs));
 			rs.close();
 			ps.close();
 			
@@ -136,7 +129,8 @@ public class BookingFrame extends JFrame {
 	 */
 	public BookingFrame() {
 		Connection(); //method for the database
-		
+		fillComboBoxService(); //method for populating the cbx_service with the table in db_Service
+		fillComboBoxStylist(); //method for populating the cbx_stylist with the table in db_Service
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 550); //Frame size
 		contentPane = new JPanel();
@@ -181,11 +175,10 @@ public class BookingFrame extends JFrame {
 		txt_name.setBounds(150, 208, 162, 23);
 		contentPane.add(txt_name);
 
-		cbx_hairstylist = new JComboBox();
-		cbx_hairstylist.setBackground(new Color(250, 234, 240));
-		cbx_hairstylist.setBounds(150, 341, 162, 23);
-		contentPane.add(cbx_hairstylist);
-		fillComboBoxStylist();
+		cbx_stylist = new JComboBox();
+		cbx_stylist.setBackground(new Color(250, 234, 240));
+		cbx_stylist.setBounds(150, 341, 162, 23);
+		contentPane.add(cbx_stylist);
 		
 		cbx_services = new JComboBox();
 		cbx_services.addItemListener(new ItemListener() {
@@ -193,27 +186,20 @@ public class BookingFrame extends JFrame {
 				String s = cbx_services.getSelectedItem().toString();
 	            String sql = "Select * from Services where Services_Name='" + s + "'";
 	            try {
-	            	Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;");
-	                PreparedStatement pst = conn.prepareStatement(sql);
+	                PreparedStatement pst = con.prepareStatement(sql);
 	                ResultSet rs = pst.executeQuery();
-	                cbx_hairstylist.removeAllItems();
+	                cbx_stylist.removeAllItems();
 	                while (rs.next()) {
-	                	cbx_hairstylist.addItem(rs.getString("Service_Stylist"));
+	                	cbx_stylist.addItem(rs.getString("Service_Stylist"));
 	                }
 	            } catch (SQLException e1) {
 	                e1.printStackTrace();
 	            }
 			}
 		});
-		
-		//cbx_services.addItem("SAMPLE1");
-		//cbx_service.addItem("SAMPLE2");
 		cbx_services.setBackground(new Color(250, 234, 240));
 		cbx_services.setBounds(150, 308, 162, 23);
 		contentPane.add(cbx_services);
-		fillComboBoxService();
-		
-
 		
 		txt_phone = new JTextField();
 		txt_phone.setColumns(10);
@@ -228,7 +214,7 @@ public class BookingFrame extends JFrame {
 		lblContactNo.setBounds(10, 275, 138, 20);
 		contentPane.add(lblContactNo);
 		
-		JLabel lblHairSt = new JLabel("HAIR STYLIST:");
+		JLabel lblHairSt = new JLabel("STYLIST:");
 		lblHairSt.setForeground(new Color(114, 115, 115));
 		lblHairSt.setFont(new Font("Century Gothic", Font.PLAIN, 17));
 		lblHairSt.setBounds(10, 341, 119, 26);
@@ -264,15 +250,7 @@ public class BookingFrame extends JFrame {
 		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 17));
 		lblAddress.setBounds(10, 242, 100, 25);
 		contentPane.add(lblAddress);
-		/** 
-		name
-		address
-		contact number
-		service
-		hairstylist
 
-		 * */
-		//Add button function linked with database
 		JButton btnCreate = new JButton("CREATE");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -280,7 +258,7 @@ public class BookingFrame extends JFrame {
 				String address = txt_address.getText();
 				String contact = txt_phone.getText();	
 				String service = (String) cbx_services.getSelectedItem();
-				String hairstylist = (String) cbx_hairstylist.getSelectedItem();
+				String hairstylist = (String) cbx_stylist.getSelectedItem();
 				
 				try {
 					pst = con.prepareStatement("insert into Booking(Booking_name, Booking_address, Booking_contact, Services_Name, Service_Stylist)values(?,?,?,?,?)");
@@ -289,7 +267,6 @@ public class BookingFrame extends JFrame {
 					pst.setString(3, contact);
 					pst.setString(4, service);
 					pst.setString(5, hairstylist);
-					//pst.executeUpdate();
 					
 					int k = pst.executeUpdate();
 					
@@ -372,7 +349,6 @@ public class BookingFrame extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				btnClear.setForeground(Color.GRAY);
 				btnClear.setBackground(new Color(252, 193, 213));
-				//clear function
 			}			
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -382,7 +358,7 @@ public class BookingFrame extends JFrame {
 				txt_address.setText("");
 				txt_phone.setText("");
 				cbx_services.setSelectedIndex(0);
-				cbx_hairstylist.setSelectedIndex(0);
+				cbx_stylist.setSelectedIndex(0);
 			}});
 		btnClear.setForeground(new Color(114, 115, 115));
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
@@ -465,11 +441,6 @@ public class BookingFrame extends JFrame {
 		btnPreview.setBounds(580, 468, 99, 33);
 		contentPane.add(btnPreview);
 	}
-	//Database connection
-	//Connection con;
-	//This is the connection for add button in booking
-
-
 }
 
 
