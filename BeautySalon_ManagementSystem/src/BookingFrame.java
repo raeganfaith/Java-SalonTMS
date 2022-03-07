@@ -1,5 +1,5 @@
-
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Image;
@@ -31,6 +31,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.border.LineBorder;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class BookingFrame extends JFrame {
 	
@@ -40,14 +45,17 @@ public class BookingFrame extends JFrame {
 	private JTextField txt_name;
 	private JTextField txt_phone;
 	private JTextField txt_address;
-	private JTable table;
 	public JComboBox<String> cbx_services; 
-	public JComboBox<String> cbx_stylist;
+	public JComboBox<String> cbx_hairstylist;
+	private JTable table;
+	private JScrollPane scrollPane;
 	
 	Connection con;
 	PreparedStatement pst;
 	ResultSet rs;
+	private JTextField textField;
 	
+	//Database Connection
 	public void Connection() {
 		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
 		try {
@@ -56,32 +64,28 @@ public class BookingFrame extends JFrame {
 			ex.printStackTrace();
 		}	
 	}
-
+	//to fetch data from the database to the JComboBox
 	public void fillComboBoxService()
 	{
 		try
 		{
-			//Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;");
 			String query = "SELECT * FROM Services ";
 			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
-			
-			
+				
 			while(rs.next())
 			{
-				//String db_serve = "Services_Name";
 				cbx_services.addItem(rs.getString("Services_Name"));
-				//cbx_hairstylist.addItem(rs.getString("Service_Stylist"));		
 			}
 			
-			//table.setModel(.resultSetToTableModel(rs));
 			rs.close();
 			ps.close();
 			
 		}
-		catch (Exception e1) 
+		catch (NullPointerException | SQLException e1) 
 		{
 			e1.printStackTrace();
+			System.out.println("NullPointerException thrown!");
 		}
 	}
 	public void fillComboBoxStylist()
@@ -95,9 +99,9 @@ public class BookingFrame extends JFrame {
 			
 			while(rs.next())
 			{
-				cbx_stylist.addItem(rs.getString("Service_Stylist"));		
+				cbx_hairstylist.addItem(rs.getString("Service_Stylist"));		
 			}
-			
+
 			rs.close();
 			ps.close();
 			
@@ -107,6 +111,51 @@ public class BookingFrame extends JFrame {
 			e1.printStackTrace();
 		}
 	}
+	
+	//a method to show and fetch data from the database to the Jtable
+	public void ShowData() {
+		DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("Booking ID");
+		model.addColumn("Name");
+		model.addColumn("Address");
+		model.addColumn("Contact No.");
+		model.addColumn("Service");
+		model.addColumn("Stylist");
+		try {
+			String query = "select * from Booking";
+			PreparedStatement ps = con.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				model.addRow(new Object [] {
+					rs.getString("Booking_No"),	
+					rs.getString("Booking_name"),	
+					rs.getString("Booking_address"),	
+					rs.getString("Booking_contact"),
+					rs.getString("Services_Name"),	
+					rs.getString("Service_Stylist"),
+				});
+					
+				}
+			rs.close();
+			ps.close();
+			con.close();
+			
+			table.setModel(model);
+			table.setAutoResizeMode(0);
+			table.getColumnModel().getColumn(0).setPreferredWidth(55);
+			table.getColumnModel().getColumn(1).setPreferredWidth(80);
+			table.getColumnModel().getColumn(2).setPreferredWidth(90);
+			table.getColumnModel().getColumn(3).setPreferredWidth(60);
+			table.getColumnModel().getColumn(4).setPreferredWidth(60);
+			table.getColumnModel().getColumn(5).setPreferredWidth(60);
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}}
+	
 	
 	/**
 	 * Launch the application.
@@ -123,14 +172,22 @@ public class BookingFrame extends JFrame {
 			}
 		});
 	}
+	
 
 	/**
 	 * Create the frame.
 	 */
 	public BookingFrame() {
+		//To automatically shows the data to the Jtable
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				ShowData();
+			}
+		});
+		
 		Connection(); //method for the database
-		fillComboBoxService(); //method for populating the cbx_service with the table in db_Service
-		fillComboBoxStylist(); //method for populating the cbx_stylist with the table in db_Service
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 550); //Frame size
 		contentPane = new JPanel();
@@ -162,95 +219,111 @@ public class BookingFrame extends JFrame {
 		contentPane.add(lblBookingTransaction);
 		
 		txt_cust = new JTextField();
+		txt_cust.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		txt_cust.setForeground(new Color(114, 115, 115));
 		txt_cust.setColumns(10);
 		txt_cust.setBorder(null);
 		txt_cust.setBackground(new Color(250, 234, 240));
-		txt_cust.setBounds(150, 178, 162, 23);
+		txt_cust.setBounds(130, 171, 123, 23);
 		contentPane.add(txt_cust);
 		
 		txt_name = new JTextField();
+		txt_name.setForeground(new Color(114, 115, 115));
 		txt_name.setColumns(10);
 		txt_name.setBorder(null);
 		txt_name.setBackground(new Color(250, 234, 240));
-		txt_name.setBounds(150, 208, 162, 23);
+		txt_name.setBounds(130, 204, 123, 23);
 		contentPane.add(txt_name);
 
-		cbx_stylist = new JComboBox();
-		cbx_stylist.setBackground(new Color(250, 234, 240));
-		cbx_stylist.setBounds(150, 341, 162, 23);
-		contentPane.add(cbx_stylist);
+		cbx_hairstylist = new JComboBox();
+		cbx_hairstylist.setForeground(new Color(114, 115, 115));
+		cbx_hairstylist.setBackground(new Color(250, 234, 240));
+		cbx_hairstylist.setBounds(130, 339, 123, 23);
+		contentPane.add(cbx_hairstylist);
+		fillComboBoxStylist();
 		
-		cbx_services = new JComboBox();
+		cbx_services = new JComboBox<String>();
+		cbx_services.setForeground(new Color(114, 115, 115));
 		cbx_services.addItemListener(new ItemListener() {
+			//To populate the items in the cbx_hairstylist according to the selected item in other bx_services.
 			public void itemStateChanged(ItemEvent e) {
-				String s = cbx_services.getSelectedItem().toString();
+
+				String s = (String) cbx_services.getSelectedItem();
 	            String sql = "Select * from Services where Services_Name='" + s + "'";
 	            try {
 	                PreparedStatement pst = con.prepareStatement(sql);
 	                ResultSet rs = pst.executeQuery();
-	                cbx_stylist.removeAllItems();
+	                cbx_hairstylist.removeAllItems();
 	                while (rs.next()) {
-	                	cbx_stylist.addItem(rs.getString("Service_Stylist"));
+	                	cbx_hairstylist.addItem(rs.getString("Service_Stylist"));
 	                }
-	            } catch (SQLException e1) {
-	                e1.printStackTrace();
-	            }
+	            } catch (NullPointerException | SQLException e3) 
+				{
+					e3.printStackTrace();
+					System.out.println("NullPointerException thrown!");
+				}
 			}
 		});
 		cbx_services.setBackground(new Color(250, 234, 240));
-		cbx_services.setBounds(150, 308, 162, 23);
+		cbx_services.setBounds(130, 306, 123, 23);
 		contentPane.add(cbx_services);
+		fillComboBoxService();
+		
+
 		
 		txt_phone = new JTextField();
+		txt_phone.setForeground(new Color(114, 115, 115));
 		txt_phone.setColumns(10);
 		txt_phone.setBorder(null);
 		txt_phone.setBackground(new Color(250, 234, 240));
-		txt_phone.setBounds(150, 275, 162, 23);
+		txt_phone.setBounds(130, 273, 123, 23);
 		contentPane.add(txt_phone);
 		
 		JLabel lblContactNo = new JLabel("CONTACT NO:");
 		lblContactNo.setForeground(new Color(114, 115, 115));
-		lblContactNo.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		lblContactNo.setBounds(10, 275, 138, 20);
+		lblContactNo.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblContactNo.setBounds(20, 270, 138, 20);
 		contentPane.add(lblContactNo);
 		
 		JLabel lblHairSt = new JLabel("STYLIST:");
 		lblHairSt.setForeground(new Color(114, 115, 115));
-		lblHairSt.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		lblHairSt.setBounds(10, 341, 119, 26);
+		lblHairSt.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblHairSt.setBounds(20, 336, 119, 26);
 		contentPane.add(lblHairSt);
 		
 		JLabel lblService = new JLabel("SERVICE:");
 		lblService.setForeground(new Color(114, 115, 115));
-		lblService.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		lblService.setBounds(10, 308, 87, 22);
+		lblService.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblService.setBounds(20, 303, 87, 22);
 		contentPane.add(lblService);
 		
 		JLabel lblName = new JLabel("NAME:");
 		lblName.setForeground(new Color(114, 115, 115));
-		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		lblName.setBounds(10, 207, 87, 25);
+		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblName.setBounds(20, 200, 87, 25);
 		contentPane.add(lblName);
 		
-		JLabel lblCustomerId = new JLabel("CUSTOMER ID:");
+		JLabel lblCustomerId = new JLabel("BOOKING ID:");
 		lblCustomerId.setForeground(new Color(114, 115, 115));
-		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		lblCustomerId.setBounds(10, 178, 143, 23);
+		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblCustomerId.setBounds(20, 172, 143, 23);
 		contentPane.add(lblCustomerId);
 		
 		txt_address = new JTextField();
+		txt_address.setForeground(new Color(114, 115, 115));
 		txt_address.setColumns(10);
 		txt_address.setBorder(null);
 		txt_address.setBackground(new Color(250, 234, 240));
-		txt_address.setBounds(150, 242, 162, 23);
+		txt_address.setBounds(130, 238, 123, 23);
 		contentPane.add(txt_address);
 		
 		JLabel lblAddress = new JLabel("ADDRESS:");
 		lblAddress.setForeground(new Color(114, 115, 115));
-		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		lblAddress.setBounds(10, 242, 100, 25);
+		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblAddress.setBounds(20, 235, 100, 25);
 		contentPane.add(lblAddress);
-
+		
+		//Add button function linked with database
 		JButton btnCreate = new JButton("CREATE");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -258,7 +331,7 @@ public class BookingFrame extends JFrame {
 				String address = txt_address.getText();
 				String contact = txt_phone.getText();	
 				String service = (String) cbx_services.getSelectedItem();
-				String hairstylist = (String) cbx_stylist.getSelectedItem();
+				String hairstylist = (String) cbx_hairstylist.getSelectedItem();
 				
 				try {
 					pst = con.prepareStatement("insert into Booking(Booking_name, Booking_address, Booking_contact, Services_Name, Service_Stylist)values(?,?,?,?,?)");
@@ -267,17 +340,25 @@ public class BookingFrame extends JFrame {
 					pst.setString(3, contact);
 					pst.setString(4, service);
 					pst.setString(5, hairstylist);
+
+					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					
-					int k = pst.executeUpdate();
-					
-					if(k==1) {
+					if(input == JOptionPane.YES_OPTION) {
+						pst.executeUpdate();
 						JOptionPane.showMessageDialog(null, "Successfully added!");
-					}else {
+						txt_name.setText("");
+						txt_address.setText("");
+						txt_phone.setText("");
+						cbx_services.setSelectedIndex(-1);
+						cbx_hairstylist.setSelectedItem(-1);
+					} else {
 						JOptionPane.showMessageDialog(null, "Error!");
 					}
 
-				} catch (SQLException e1) {
-					e1.printStackTrace();
+				} catch (NullPointerException | SQLException e2) 
+				{
+					e2.printStackTrace();
+					System.out.println("NullPointerException thrown!");
 				}
 			}
 		});
@@ -294,13 +375,18 @@ public class BookingFrame extends JFrame {
 				btnCreate.setBackground(new Color(252, 193, 213));
 			}});
 		btnCreate.setForeground(new Color(114, 115, 115));
-		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(20, 387, 292, 33);
+		btnCreate.setBounds(20, 372, 233, 33);
 		contentPane.add(btnCreate);
 		
 		JButton btnUpdate = new JButton("UPDATE");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnUpdate.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -313,10 +399,10 @@ public class BookingFrame extends JFrame {
 				btnUpdate.setBackground(new Color(252, 193, 213));
 			}});
 		btnUpdate.setForeground(new Color(114, 115, 115));
-		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(20, 429, 292, 33);
+		btnUpdate.setBounds(20, 414, 233, 33);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
@@ -332,12 +418,13 @@ public class BookingFrame extends JFrame {
 				btnDelete.setBackground(new Color(252, 193, 213));
 			}});
 		btnDelete.setForeground(new Color(114, 115, 115));
-		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(20, 468, 99, 33);
+		btnDelete.setBounds(20, 453, 233, 33);
 		contentPane.add(btnDelete);
 		
+		//A funtion to clear the value in JTextField and JComboBox.
 		JButton btnClear = new JButton("CLEAR");
 		btnClear.addMouseListener(new MouseAdapter() {
 			@Override
@@ -349,6 +436,7 @@ public class BookingFrame extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				btnClear.setForeground(Color.GRAY);
 				btnClear.setBackground(new Color(252, 193, 213));
+				//clear function
 			}			
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -357,14 +445,14 @@ public class BookingFrame extends JFrame {
 				txt_name.setText("");
 				txt_address.setText("");
 				txt_phone.setText("");
-				cbx_services.setSelectedIndex(0);
-				cbx_stylist.setSelectedIndex(0);
+				cbx_services.setSelectedIndex(-1);
+				cbx_hairstylist.setSelectedIndex(-1);
 			}});
 		btnClear.setForeground(new Color(114, 115, 115));
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(213, 468, 99, 33);
+		btnClear.setBounds(20, 496, 233, 33);
 		contentPane.add(btnClear);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -413,34 +501,47 @@ public class BookingFrame extends JFrame {
 		lblclose.setBounds(615, 0, 85, 37);
 		contentPane.add(lblclose);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBorder(null);
-		scrollPane.setBounds(333, 168, 346, 294);
-		scrollPane.setBackground(new Color(250, 234, 240));
+		JButton btnSave = new JButton("SAVE");
+		btnSave.setForeground(new Color(114, 115, 115));
+		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 14));
+		btnSave.setBorderPainted(false);
+		btnSave.setBackground(new Color(252, 193, 213));
+		btnSave.setBounds(547, 474, 123, 33);
+		contentPane.add(btnSave);
 		
+		scrollPane = new JScrollPane();
+		scrollPane.setBackground(Color.LIGHT_GRAY);
+		scrollPane.setFont(new Font("Century Gothic", Font.PLAIN, 9));
+		scrollPane.setBounds(263, 171, 407, 293);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		table.setFont(new Font("Century Gothic", Font.PLAIN, 10));
+		table.setBorder(null);
 		table.setBackground(new Color(250, 234, 240));
-		scrollPane.setColumnHeaderView(table);
+		table.setFont(new Font("Century Gothic", Font.PLAIN, 9));
+		scrollPane.setViewportView(table);
 		
-		JButton btnSave = new JButton("SAVE");
-		btnSave.setForeground(new Color(114, 115, 115));
-		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		btnSave.setBorderPainted(false);
-		btnSave.setBackground(new Color(252, 193, 213));
-		btnSave.setBounds(333, 468, 99, 33);
-		contentPane.add(btnSave);
+		JLabel lblSearch = new JLabel("Total No. of Bookings:");
+		lblSearch.setForeground(new Color(114, 115, 115));
+		lblSearch.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblSearch.setBounds(263, 474, 159, 23);
+		contentPane.add(lblSearch);
 		
-		JButton btnPreview = new JButton("PREVIEW");
-		btnPreview.setForeground(new Color(114, 115, 115));
-		btnPreview.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		btnPreview.setBorderPainted(false);
-		btnPreview.setBackground(new Color(252, 193, 213));
-		btnPreview.setBounds(580, 468, 99, 33);
-		contentPane.add(btnPreview);
+		textField = new JTextField();
+		textField.setForeground(new Color(114, 115, 115));
+		textField.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		textField.setColumns(10);
+		textField.setBorder(null);
+		textField.setBackground(new Color(250, 234, 240));
+		textField.setBounds(420, 474, 85, 23);
+		contentPane.add(textField);
+		
+		//to customize the header/column
+		JTableHeader JTHeader = table.getTableHeader();
+		JTHeader.setFont(new Font("Century Gothic", Font.PLAIN, 9));
+		JTHeader.setBackground(new Color(252, 193, 213));
 	}
+	
 }
 
 

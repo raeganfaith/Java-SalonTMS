@@ -25,6 +25,8 @@ import java.sql.SQLException;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class ServiceFrame extends JFrame {
 	
@@ -87,49 +89,45 @@ public class ServiceFrame extends JFrame {
 		txt_serviceid.setColumns(10);
 		txt_serviceid.setBorder(null);
 		txt_serviceid.setBackground(new Color(250, 234, 240));
-		txt_serviceid.setBounds(150, 178, 162, 33);
+		txt_serviceid.setBounds(137, 178, 153, 23);
 		contentPane.add(txt_serviceid);
 		
 		JLabel lblCustomerId = new JLabel("SERVICE ID:");
-		lblCustomerId.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCustomerId.setForeground(new Color(114, 115, 115));
-		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblCustomerId.setBounds(10, 178, 122, 33);
+		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblCustomerId.setBounds(24, 177, 122, 23);
 		contentPane.add(lblCustomerId);
 		
 		JLabel lblName = new JLabel("STYLIST NAME:");
-		lblName.setHorizontalAlignment(SwingConstants.CENTER);
 		lblName.setForeground(new Color(114, 115, 115));
-		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblName.setBounds(10, 220, 140, 33);
+		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblName.setBounds(24, 212, 114, 23);
 		contentPane.add(lblName);
 		
 		txt_stylist = new JTextField();
 		txt_stylist.setColumns(10);
 		txt_stylist.setBorder(null);
 		txt_stylist.setBackground(new Color(250, 234, 240));
-		txt_stylist.setBounds(150, 221, 162, 33);
+		txt_stylist.setBounds(137, 211, 153, 23);
 		contentPane.add(txt_stylist);
 		
 		JLabel lblAddress = new JLabel("TYPE:");
-		lblAddress.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAddress.setForeground(new Color(114, 115, 115));
-		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblAddress.setBounds(10, 264, 70, 33);
+		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblAddress.setBounds(24, 245, 70, 23);
 		contentPane.add(lblAddress);
 		
 		JLabel lblContactNo = new JLabel("SERVICE:");
-		lblContactNo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblContactNo.setForeground(new Color(114, 115, 115));
-		lblContactNo.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblContactNo.setBounds(10, 307, 99, 33);
+		lblContactNo.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblContactNo.setBounds(24, 278, 99, 23);
 		contentPane.add(lblContactNo);
 		
 		txt_service = new JTextField();
 		txt_service.setColumns(10);
 		txt_service.setBorder(null);
 		txt_service.setBackground(new Color(250, 234, 240));
-		txt_service.setBounds(150, 307, 162, 33);
+		txt_service.setBounds(137, 278, 153, 23);
 		contentPane.add(txt_service);
 		
 		JComboBox<String> cbx_type = new JComboBox();
@@ -138,7 +136,7 @@ public class ServiceFrame extends JFrame {
 		cbx_type.addItem("Part-time");
 		cbx_type.addItem("Full-time");
 		cbx_type.setBackground(new Color(250, 234, 240));
-		cbx_type.setBounds(150, 264, 162, 33);
+		cbx_type.setBounds(137, 245, 153, 23);
 		contentPane.add(cbx_type);
 		
 		//Add button function with database
@@ -157,9 +155,11 @@ public class ServiceFrame extends JFrame {
 					pst.setString(3, service);
 					//pst.executeUpdate();
 					
-					int l = pst.executeUpdate();
+					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
+					//int l = pst.executeUpdate();
 					
-					if(l==1) {
+					if(input == JOptionPane.YES_OPTION) {
+						pst.executeUpdate();
 						JOptionPane.showMessageDialog(null, "Successfully added!");
 						txt_stylist.setText("");
 						cbx_type.setSelectedItem(null);
@@ -186,10 +186,10 @@ public class ServiceFrame extends JFrame {
 				btnCreate.setBackground(new Color(252, 193, 213));
 			}});
 		btnCreate.setForeground(new Color(114, 115, 115));
-		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 16));
+		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(20, 357, 292, 38);
+		btnCreate.setBounds(24, 324, 266, 33);
 		contentPane.add(btnCreate);
 		
 		JButton btnUpdate = new JButton("UPDATE");
@@ -205,10 +205,10 @@ public class ServiceFrame extends JFrame {
 				btnUpdate.setBackground(new Color(252, 193, 213));
 			}});
 		btnUpdate.setForeground(new Color(114, 115, 115));
-		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 16));
+		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(20, 405, 292, 38);
+		btnUpdate.setBounds(24, 367, 266, 33);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
@@ -224,10 +224,10 @@ public class ServiceFrame extends JFrame {
 				btnDelete.setBackground(new Color(252, 193, 213));
 			}});
 		btnDelete.setForeground(new Color(114, 115, 115));
-		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 16));
+		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(20, 453, 99, 38);
+		btnDelete.setBounds(24, 410, 266, 33);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -251,10 +251,10 @@ public class ServiceFrame extends JFrame {
 				cbx_type.setSelectedIndex(0);
 			}});
 		btnClear.setForeground(new Color(114, 115, 115));
-		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 16));
+		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(213, 453, 99, 38);
+		btnClear.setBounds(304, 492, 99, 30);
 		contentPane.add(btnClear);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -304,16 +304,42 @@ public class ServiceFrame extends JFrame {
 		lblclose.setBounds(615, 0, 85, 37);
 		contentPane.add(lblclose);
 		
+		JButton btnSave = new JButton("SAVE");
+		btnSave.setForeground(new Color(114, 115, 115));
+		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnSave.setBorderPainted(false);
+		btnSave.setBackground(new Color(252, 193, 213));
+		btnSave.setBounds(24, 453, 266, 32);
+		contentPane.add(btnSave);
+		
+		JButton btnPreview = new JButton("PREVIEW");
+		btnPreview.setForeground(new Color(114, 115, 115));
+		btnPreview.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		btnPreview.setBorderPainted(false);
+		btnPreview.setBackground(new Color(252, 193, 213));
+		btnPreview.setBounds(578, 491, 99, 33);
+		contentPane.add(btnPreview);
+		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBackground(new Color(250, 234, 240));
-		scrollPane.setBounds(322, 178, 357, 312);
+		scrollPane.setBounds(305, 178, 372, 303);
 		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Service ID", "Stylist", "Type", "Service"
+			}
+		));
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 	}
 
 	Connection con;
 	PreparedStatement pst;
+	private JTable table;
 	public void Connection() {
 		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
 		try {

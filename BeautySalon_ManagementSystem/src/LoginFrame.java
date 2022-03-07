@@ -44,6 +44,19 @@ public class LoginFrame extends ServiceFrame {
 	private JLabel lblPass;
 	private JLabel lblclose;
 	private JPasswordField txtPass;
+	
+	Connection con;
+	PreparedStatement pst;
+	ResultSet rs;
+	
+	public void Connection() {
+		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		try {
+			con = DriverManager.getConnection(connection);
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}	
+	}
 
 	/**
 	 * Launch the application.
@@ -215,7 +228,6 @@ public class LoginFrame extends ServiceFrame {
 								db_User = rs.getString("Acc_User");
 								db_Pass = rs.getString("Acc_Pass");
 								db_Position = rs.getString("Acc_Position");
-								//System.out.println(rs);
 							}
 							
 							String sqlQuery2 = "SELECT * FROM Accounts WHERE Acc_Position=?";
