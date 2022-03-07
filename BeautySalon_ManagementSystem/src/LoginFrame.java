@@ -223,7 +223,7 @@ public class LoginFrame extends ServiceFrame {
 							pst1.setString(1, db_Position);
 							ResultSet rs1 = pst.executeQuery();
 							
-							if (db_User.equals(users) && db_Pass.equals(passw)) 
+							if (db_User.equals(users) && db_Pass.equals(passw)) {
 								//To automatically determine if the account logged in is user or admin
 								if(db_Position.equals("Admin")) {
 									JOptionPane.showMessageDialog(null, "You Successfully logged in as Admin!");
@@ -237,7 +237,7 @@ public class LoginFrame extends ServiceFrame {
 									LoginFrame.this.dispose();
 								}
 							//this will show if the credentials doesn't match
-							 else {
+							} else {
 								JOptionPane.showMessageDialog(null, "Username and Password did not matched!");
 							}						
 						} catch (SQLException ex) {

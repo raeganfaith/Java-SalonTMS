@@ -28,6 +28,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class BookingFrame extends JFrame {
 	
@@ -39,28 +41,39 @@ public class BookingFrame extends JFrame {
 	private JTextField txt_address;
 	private JTable table;
 	public JComboBox<String> cbx_services; 
+	public JComboBox<String> cbx_hairstylist;
 	
 	Connection con;
+	Connection conn;
 	Connection connection;
 	PreparedStatement pst;
 	ResultSet rs;
+	
+	public void Connection() {
+		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		try {
+			con = DriverManager.getConnection(connection);
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}	
+	}
 
-	public void fillComboBox()
+	public void fillComboBoxService()
 	{
-		//String connectionsUrl = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";
 		try
 		{
 			Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;");
-			String query = "SELECT Services_Name FROM Services ";
+			String query = "SELECT * FROM Services ";
 //			String query = "select EID, Name, Surname, Age from EmployeeInfo";
 			PreparedStatement ps = connection.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
+			
 			
 			while(rs.next())
 			{
 				//String db_serve = "Services_Name";
 				cbx_services.addItem(rs.getString("Services_Name"));
-				
+				//cbx_hairstylist.addItem(rs.getString("Service_Stylist"));		
 			}
 			
 			//table.setModel(.resultSetToTableModel(rs));
@@ -73,7 +86,35 @@ public class BookingFrame extends JFrame {
 			e1.printStackTrace();
 		}
 	}
-
+	public void fillComboBoxStylist()
+	{
+		try
+		{
+			Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;");
+			String query = "SELECT * FROM Services ";
+//			String query = "select EID, Name, Surname, Age from EmployeeInfo";
+			PreparedStatement ps = connection.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			
+			
+			while(rs.next())
+			{
+				//String db_serve = "Services_Name";
+				//cbx_services.addItem(rs.getString("Services_Name"));
+				cbx_hairstylist.addItem(rs.getString("Service_Stylist"));		
+			}
+			
+			//table.setModel(.resultSetToTableModel(rs));
+			rs.close();
+			ps.close();
+			
+		}
+		catch (Exception e1) 
+		{
+			e1.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Launch the application.
 	 */
@@ -139,21 +180,40 @@ public class BookingFrame extends JFrame {
 		txt_name.setBackground(new Color(250, 234, 240));
 		txt_name.setBounds(150, 208, 162, 23);
 		contentPane.add(txt_name);
+
+		cbx_hairstylist = new JComboBox();
+		cbx_hairstylist.setBackground(new Color(250, 234, 240));
+		cbx_hairstylist.setBounds(150, 341, 162, 23);
+		contentPane.add(cbx_hairstylist);
+		fillComboBoxStylist();
 		
 		cbx_services = new JComboBox();
+		cbx_services.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				String s = cbx_services.getSelectedItem().toString();
+	            String sql = "Select * from Services where Services_Name='" + s + "'";
+	            try {
+	            	Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;");
+	                PreparedStatement pst = conn.prepareStatement(sql);
+	                ResultSet rs = pst.executeQuery();
+	                cbx_hairstylist.removeAllItems();
+	                while (rs.next()) {
+	                	cbx_hairstylist.addItem(rs.getString("Service_Stylist"));
+	                }
+	            } catch (SQLException e1) {
+	                e1.printStackTrace();
+	            }
+			}
+		});
+		
 		//cbx_services.addItem("SAMPLE1");
 		//cbx_service.addItem("SAMPLE2");
 		cbx_services.setBackground(new Color(250, 234, 240));
 		cbx_services.setBounds(150, 308, 162, 23);
 		contentPane.add(cbx_services);
-		fillComboBox();
+		fillComboBoxService();
 		
-		JComboBox<String> cbx_hairstylist = new JComboBox();
-		cbx_hairstylist.addItem("SAMPLE3");
-		cbx_hairstylist.addItem("SAMPLE4");
-		cbx_hairstylist.setBackground(new Color(250, 234, 240));
-		cbx_hairstylist.setBounds(150, 341, 162, 23);
-		contentPane.add(cbx_hairstylist);
+
 		
 		txt_phone = new JTextField();
 		txt_phone.setColumns(10);
@@ -223,7 +283,7 @@ public class BookingFrame extends JFrame {
 				String hairstylist = (String) cbx_hairstylist.getSelectedItem();
 				
 				try {
-					pst = con.prepareStatement("insert into Booking(Booking_name, Booking_address, Booking_contact, Booking_service, Booking_hairstylist)values(?,?,?,?,?)");
+					pst = con.prepareStatement("insert into Booking(Booking_name, Booking_address, Booking_contact, Services_Name, Service_Stylist)values(?,?,?,?,?)");
 					pst.setString(1, names);
 					pst.setString(2, address);
 					pst.setString(3, contact);
@@ -238,6 +298,7 @@ public class BookingFrame extends JFrame {
 					}else {
 						JOptionPane.showMessageDialog(null, "Error!");
 					}
+
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
@@ -406,15 +467,8 @@ public class BookingFrame extends JFrame {
 	}
 	//Database connection
 	//Connection con;
-	//PreparedStatement pst;
-	public void Connection() {
-		String connection = "jdbc:sqlserver://localhost:1433;databaseName=db_Booking;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
-		try {
-			con = DriverManager.getConnection(connection);
-		}catch(SQLException ex) {
-			ex.printStackTrace();
-		}	
-	}
+	//This is the connection for add button in booking
+
 
 }
 
