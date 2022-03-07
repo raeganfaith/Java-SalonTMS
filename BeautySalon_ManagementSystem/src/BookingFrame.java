@@ -51,6 +51,7 @@ public class BookingFrame extends JFrame {
 	private JScrollPane scrollPane;
 	
 	Connection con;
+	Connection connection;
 	PreparedStatement pst;
 	ResultSet rs;
 	private JTextField textField;
@@ -78,8 +79,8 @@ public class BookingFrame extends JFrame {
 				cbx_services.addItem(rs.getString("Services_Name"));
 			}
 			
-			rs.close();
-			ps.close();
+			//rs.close();
+			//ps.close();
 			
 		}
 		catch (NullPointerException | SQLException e1) 
@@ -102,8 +103,8 @@ public class BookingFrame extends JFrame {
 				cbx_hairstylist.addItem(rs.getString("Service_Stylist"));		
 			}
 
-			rs.close();
-			ps.close();
+			//rs.close();
+			//ps.close();
 			
 		}
 		catch (Exception e1) 
@@ -137,9 +138,9 @@ public class BookingFrame extends JFrame {
 				});
 					
 				}
-			rs.close();
-			ps.close();
-			con.close();
+			//rs.close();
+			//ps.close();
+			//con.close();
 			
 			table.setModel(model);
 			table.setAutoResizeMode(0);
@@ -384,7 +385,21 @@ public class BookingFrame extends JFrame {
 		JButton btnUpdate = new JButton("UPDATE");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				String ID = txt_cust.getText();
+				String names1 = txt_name.getText();	
+				String address1 = txt_address.getText();
+				String contact1 = txt_phone.getText();	
+				String service1 = (String) cbx_services.getSelectedItem();
+				String stylist1 = (String) cbx_hairstylist.getSelectedItem();
+				try {
+					pst = con.prepareStatement("UPDATE Booking SET Booking_name='"+names1+"', Booking_address='"+address1+"', Booking_contact='"+contact1+"', Services_Name='"+service1+"',Service_Stylist='"+stylist1+"' WHERE Booking_No='"+ID+"'");
+					pst.execute();
+					JOptionPane.showMessageDialog(null, "Successfully updated!");
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnUpdate.addMouseListener(new MouseAdapter() {
