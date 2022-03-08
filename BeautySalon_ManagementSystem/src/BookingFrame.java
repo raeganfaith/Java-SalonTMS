@@ -33,6 +33,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 import javax.swing.border.LineBorder;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -41,7 +42,7 @@ public class BookingFrame extends JFrame {
 	
 	private Image img_logo = new ImageIcon(LoginFrame.class.getResource("res/LOGO-2.png")).getImage().getScaledInstance(300, 90, Image.SCALE_SMOOTH);
 	private JPanel contentPane;
-	private JTextField txt_cust;
+	private JTextField txt_bookid;
 	private JTextField txt_name;
 	private JTextField txt_phone;
 	private JTextField txt_address;
@@ -64,6 +65,9 @@ public class BookingFrame extends JFrame {
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}	
+	}
+	public void showComboBox() {
+		
 	}
 	//to fetch data from the database to the JComboBox
 	public void fillComboBoxService()
@@ -138,9 +142,6 @@ public class BookingFrame extends JFrame {
 				});
 					
 				}
-			//rs.close();
-			//ps.close();
-			//con.close();
 			
 			table.setModel(model);
 			table.setAutoResizeMode(0);
@@ -219,14 +220,14 @@ public class BookingFrame extends JFrame {
 		lblBookingTransaction.setBounds(224, 124, 248, 44);
 		contentPane.add(lblBookingTransaction);
 		
-		txt_cust = new JTextField();
-		txt_cust.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		txt_cust.setForeground(new Color(114, 115, 115));
-		txt_cust.setColumns(10);
-		txt_cust.setBorder(null);
-		txt_cust.setBackground(new Color(250, 234, 240));
-		txt_cust.setBounds(130, 171, 123, 23);
-		contentPane.add(txt_cust);
+		txt_bookid = new JTextField();
+		txt_bookid.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		txt_bookid.setForeground(new Color(114, 115, 115));
+		txt_bookid.setColumns(10);
+		txt_bookid.setBorder(null);
+		txt_bookid.setBackground(new Color(250, 234, 240));
+		txt_bookid.setBounds(130, 171, 123, 23);
+		contentPane.add(txt_bookid);
 		
 		txt_name = new JTextField();
 		txt_name.setForeground(new Color(114, 115, 115));
@@ -269,9 +270,7 @@ public class BookingFrame extends JFrame {
 		cbx_services.setBounds(130, 306, 123, 23);
 		contentPane.add(cbx_services);
 		fillComboBoxService();
-		
-
-		
+				
 		txt_phone = new JTextField();
 		txt_phone.setForeground(new Color(114, 115, 115));
 		txt_phone.setColumns(10);
@@ -328,6 +327,7 @@ public class BookingFrame extends JFrame {
 		JButton btnCreate = new JButton("CREATE");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//String id = txt_bookid.getText();
 				String names = txt_name.getText();	
 				String address = txt_address.getText();
 				String contact = txt_phone.getText();	
@@ -336,6 +336,7 @@ public class BookingFrame extends JFrame {
 				
 				try {
 					pst = con.prepareStatement("insert into Booking(Booking_name, Booking_address, Booking_contact, Services_Name, Service_Stylist)values(?,?,?,?,?)");
+					//pst.setString(1, id);
 					pst.setString(1, names);
 					pst.setString(2, address);
 					pst.setString(3, contact);
@@ -382,19 +383,30 @@ public class BookingFrame extends JFrame {
 		btnCreate.setBounds(20, 372, 233, 33);
 		contentPane.add(btnCreate);
 		
+		//Update Jtable and database function
 		JButton btnUpdate = new JButton("UPDATE");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String ID = txt_cust.getText();
+				String ID = txt_bookid.getText();
 				String names1 = txt_name.getText();	
 				String address1 = txt_address.getText();
 				String contact1 = txt_phone.getText();	
 				String service1 = (String) cbx_services.getSelectedItem();
 				String stylist1 = (String) cbx_hairstylist.getSelectedItem();
+				
 				try {
+					
 					pst = con.prepareStatement("UPDATE Booking SET Booking_name='"+names1+"', Booking_address='"+address1+"', Booking_contact='"+contact1+"', Services_Name='"+service1+"',Service_Stylist='"+stylist1+"' WHERE Booking_No='"+ID+"'");
-					pst.execute();
-					JOptionPane.showMessageDialog(null, "Successfully updated!");
+					
+					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
+					if(input == JOptionPane.YES_OPTION) {
+						pst.execute();
+						JOptionPane.showMessageDialog(null, "Successfully updated!");
+					}else {
+						
+					}
+					
+					
 					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -421,6 +433,11 @@ public class BookingFrame extends JFrame {
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnDelete.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -456,7 +473,7 @@ public class BookingFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JOptionPane.showConfirmDialog(null, "Are you sure you want to clear your data?", "Warning", JOptionPane.WARNING_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
-				txt_cust.setText("");
+				txt_bookid.setText("");
 				txt_name.setText("");
 				txt_address.setText("");
 				txt_phone.setText("");
@@ -531,6 +548,18 @@ public class BookingFrame extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				DefaultTableModel model = (DefaultTableModel)table.getModel();
+				int SelectRowIndex = table.getSelectedRow();
+				txt_bookid.setText(model.getValueAt(SelectRowIndex, 0).toString());
+				txt_name.setText(model.getValueAt(SelectRowIndex, 1).toString());
+				txt_address.setText(model.getValueAt(SelectRowIndex, 2).toString());
+				txt_phone.setText(model.getValueAt(SelectRowIndex, 3).toString());
+				cbx_services.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());	
+				cbx_hairstylist.setSelectedItem(model.getValueAt(SelectRowIndex, 5).toString());	
+			}
+		});
 		table.setBorder(null);
 		table.setBackground(new Color(250, 234, 240));
 		table.setFont(new Font("Century Gothic", Font.PLAIN, 9));
