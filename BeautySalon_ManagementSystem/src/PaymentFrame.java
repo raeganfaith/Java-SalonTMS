@@ -7,28 +7,93 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.HeadlessException;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class PaymentFrame extends JFrame {
 	
 	private Image img_logo = new ImageIcon(LoginFrame.class.getResource("res/LOGO-2.png")).getImage().getScaledInstance(300, 90, Image.SCALE_SMOOTH);
 	private JPanel contentPane;
-	private JTextField txt_cust;
+	private JTextField txt_custid;
 	private JTextField txt_name;
 	private JTextField txt_amount;
 	private JTextField txt_total;
 	private JTable table;
+	public JComboBox<String> cbx_stat; 
+	public JComboBox<String> cbx_disc;
+	
+	//Database connection
+	Connection con;
+	PreparedStatement pst;
+	public void Connection() {
+		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		try {
+			con = DriverManager.getConnection(connection);
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
 
+	public void ShowData() {
+		DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("Customer ID");
+		model.addColumn("Name");
+		model.addColumn("Status");
+		model.addColumn("Amount");
+		model.addColumn("Discount");
+		model.addColumn("Total");
+		
+		try {
+			String query = "SELECT * FROM Payment LEFT JOIN Booking ON Payment.Cust_Name = Booking.Cust_Name;";
+			// JOIN Booking ON Payment.Cust_Name = Booking.Cust_Name; 
+			PreparedStatement ps = con.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				model.addRow(new Object [] {
+					rs.getString("Customer_ID"),	
+					rs.getString("Cust_Name"),	
+					rs.getString("Cust_Status"),
+					rs.getString("Cust_Amount"),
+					rs.getString("Cust_Discount"),
+					rs.getString("Cust_Total"),
+				});
+					
+				}
+			
+			table.setModel(model);
+			
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}}
+	
 	/**
 	 * Launch the application.
 	 */
@@ -49,6 +114,13 @@ public class PaymentFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public PaymentFrame() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				ShowData();
+			}
+		});
+		Connection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 550); //Frame size
 		contentPane = new JPanel();
@@ -163,12 +235,12 @@ public class PaymentFrame extends JFrame {
 		lblAmount.setBounds(20, 259, 121, 23);
 		contentPane.add(lblAmount);
 		
-		txt_cust = new JTextField();
-		txt_cust.setColumns(10);
-		txt_cust.setBorder(null);
-		txt_cust.setBackground(new Color(250, 234, 240));
-		txt_cust.setBounds(139, 160, 136, 23);
-		contentPane.add(txt_cust);
+		txt_custid = new JTextField();
+		txt_custid.setColumns(10);
+		txt_custid.setBorder(null);
+		txt_custid.setBackground(new Color(250, 234, 240));
+		txt_custid.setBounds(139, 160, 136, 23);
+		contentPane.add(txt_custid);
 		
 		txt_name = new JTextField();
 		txt_name.setColumns(10);
@@ -177,7 +249,9 @@ public class PaymentFrame extends JFrame {
 		txt_name.setBounds(139, 193, 136, 23);
 		contentPane.add(txt_name);
 		
-		JComboBox cbx_stat = new JComboBox();
+		cbx_stat = new JComboBox<String>();
+		cbx_stat.addItem("Paid");
+		cbx_stat.addItem("Unpaid");
 		cbx_stat.setForeground(new Color(114, 115, 115));
 		cbx_stat.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		cbx_stat.setBackground(new Color(250, 234, 240));
@@ -191,13 +265,6 @@ public class PaymentFrame extends JFrame {
 		txt_amount.setBounds(138, 259, 137, 23);
 		contentPane.add(txt_amount);
 		
-		JComboBox txt_disc = new JComboBox();
-		txt_disc.setForeground(new Color(114, 115, 115));
-		txt_disc.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		txt_disc.setBackground(new Color(250, 234, 240));
-		txt_disc.setBounds(138, 292, 137, 23);
-		contentPane.add(txt_disc);
-		
 		txt_total = new JTextField();
 		txt_total.setColumns(10);
 		txt_total.setBorder(null);
@@ -205,7 +272,112 @@ public class PaymentFrame extends JFrame {
 		txt_total.setBounds(139, 325, 136, 23);
 		contentPane.add(txt_total);
 		
+		cbx_disc = new JComboBox<String>();
+		cbx_disc.addItem("50% off");
+		cbx_disc.addItem("25% off");
+		cbx_disc.addItem("10% off");
+		cbx_disc.addItem("5% off");
+		//COMPUTATION
+		cbx_disc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//String input = txt_amount.getText();
+				 //causing error
+				//JTextField total = txt_total;
+			try {
+				int AmountNum = Integer.parseInt(txt_amount.getText());
+				if(cbx_disc.getSelectedItem().equals("50% off")) {
+					//int s= 100-50;
+					int computation = ((100-50)*AmountNum)/100;
+					txt_total.setText(String.valueOf(computation));
+				}else if(cbx_disc.getSelectedItem().equals("25% off")){
+					
+					int computation = ((100-25)*AmountNum)/100;
+					txt_total.setText(String.valueOf(computation));
+				}else if(cbx_disc.getSelectedItem().equals("10% off")){
+					
+					int computation = ((100-10)*AmountNum)/100;
+					txt_total.setText(String.valueOf(computation));
+				}else if(cbx_disc.getSelectedItem().equals("5% off")){
+					int computation = ((100-5)*AmountNum)/100;
+					txt_total.setText(String.valueOf(computation));
+				}else {
+					//System.out.println("Imput a valid number!");
+				}
+				  
+			}catch(NumberFormatException nfe) {
+				return;
+				
+				//System.out.println(" ");
+				//System.out.println("");
+
+			}
+				
+			}
+		});
+		
+		cbx_disc.setForeground(new Color(114, 115, 115));
+		cbx_disc.setFont(new Font("Century Gothic", Font.PLAIN, 18));
+		cbx_disc.setBackground(new Color(250, 234, 240));
+		cbx_disc.setBounds(138, 292, 137, 23);
+		contentPane.add(cbx_disc);
+		
+		
+		
 		JButton btnCreate = new JButton("CREATE");
+		btnCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String names = txt_name.getText();	
+				String status = (String) cbx_stat.getSelectedItem();
+				String amount = txt_amount.getText();
+				String disc = (String) cbx_disc.getSelectedItem();
+				String totals = txt_total.getText();	
+				
+				try {
+					pst = con.prepareStatement("insert into Payment(Cust_Name, Cust_Status, Cust_Amount, Cust_Discount,Cust_Total)values(?,?,?,?,?)");
+					pst.setString(1, names);
+					pst.setString(2, status);
+					pst.setString(3, amount);
+					pst.setString(4, disc);
+					pst.setString(5, totals);
+
+					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
+					
+					if(input == JOptionPane.YES_OPTION) {
+						pst.executeUpdate();
+						JOptionPane.showMessageDialog(null, "Successfully added!");
+						ShowData(); // to automatically update the table
+						txt_name.setText("");
+						cbx_stat.setSelectedIndex(-1);
+						txt_amount.setText("");
+						cbx_disc.setSelectedIndex(-1);
+						txt_total.setText(" ");
+						txt_total.setText("");
+						
+						
+					} else {
+						JOptionPane.showMessageDialog(null, "Error!");
+					}
+
+				} catch (NullPointerException| NumberFormatException | SQLException e2 ) 
+				{
+					return;
+					
+				}
+			}
+		});
+
+		btnCreate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnCreate.setForeground(Color.BLACK);
+				btnCreate.setBackground(new Color(253, 139, 180));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnCreate.setForeground(Color.GRAY);
+				btnCreate.setBackground(new Color(252, 193, 213));
+			}});
 		btnCreate.setForeground(new Color(114, 115, 115));
 		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnCreate.setBorderPainted(false);
@@ -214,6 +386,41 @@ public class PaymentFrame extends JFrame {
 		contentPane.add(btnCreate);
 		
 		JButton btnUpdate = new JButton("UPDATE");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String ID = txt_custid.getText();
+				String names1 = txt_name.getText();	
+				String status = (String) cbx_stat.getSelectedItem();
+				String amount = txt_amount.getText();
+				String disc = (String) cbx_disc.getSelectedItem();
+				String total = txt_total.getText();	
+				
+				try {
+					
+					pst = con.prepareStatement("UPDATE Payment SET Cust_Name='"+names1+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Customer_ID='"+ID+"'");
+					
+					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
+					if(input == JOptionPane.YES_OPTION) {
+						pst.execute();
+						JOptionPane.showMessageDialog(null, "Successfully updated!");
+						ShowData();
+						txt_custid.setText("");
+						txt_name.setText("");
+						cbx_stat.setSelectedIndex(-1);
+						txt_amount.setText("");
+						cbx_disc.setSelectedIndex(-1);
+						txt_total.setText(" ");
+						txt_total.setText("");
+					}else {
+						
+					}
+						
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnUpdate.setForeground(new Color(114, 115, 115));
 		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnUpdate.setBorderPainted(false);
@@ -222,6 +429,34 @@ public class PaymentFrame extends JFrame {
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel)table.getModel();
+		        int SelectRowIndex = table.getSelectedRow();
+		        String hold = model.getValueAt(SelectRowIndex, 0).toString();
+	        	String queryy = "DELETE FROM Payment WHERE Customer_ID='"+hold +"'";
+	        	 
+		        try{
+		            PreparedStatement pst = con.prepareStatement(queryy);
+		            int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?", "ALERT!", JOptionPane.YES_NO_OPTION); {
+						if (input == JOptionPane.YES_OPTION) {
+							pst.executeUpdate();
+				               JOptionPane.showMessageDialog(null, "Deleted successfully.");
+				               ShowData();
+						}
+					}
+		            txt_custid.setText("");
+		            txt_name.setText("");
+		            cbx_stat.setSelectedIndex(-1);
+		            txt_amount.setText("");
+		            cbx_disc.setSelectedIndex(-1);
+		            txt_total.setText("");
+		            
+		        }catch(HeadlessException | SQLException e11){
+		            JOptionPane.showMessageDialog(null,e11);
+		        }
+			}
+		});
 		btnDelete.setForeground(new Color(114, 115, 115));
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnDelete.setBorderPainted(false);
@@ -230,6 +465,29 @@ public class PaymentFrame extends JFrame {
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
+		btnClear.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnClear.setForeground(Color.BLACK);
+				btnClear.setBackground(new Color(253, 139, 180));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnClear.setForeground(Color.GRAY);
+				btnClear.setBackground(new Color(252, 193, 213));
+				//clear function
+			}			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JOptionPane.showConfirmDialog(null, "Are you sure you want to clear your data?", "Warning", JOptionPane.WARNING_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
+				txt_custid.setText("");
+	            txt_name.setText("");
+	            cbx_stat.setSelectedIndex(-1);
+	            txt_amount.setText("");
+	            cbx_disc.setSelectedIndex(-1);
+	            txt_total.setText("");
+	            //txt_total.setText(" ");
+			}});
 		btnClear.setForeground(new Color(114, 115, 115));
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
@@ -242,9 +500,30 @@ public class PaymentFrame extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DefaultTableModel model = (DefaultTableModel)table.getModel();
+				int SelectRowIndex = table.getSelectedRow();
+				txt_custid.setText(model.getValueAt(SelectRowIndex, 0).toString());
+				txt_name.setText(model.getValueAt(SelectRowIndex, 1).toString());
+				cbx_stat.setSelectedItem(model.getValueAt(SelectRowIndex, 2).toString());
+				txt_amount.setText(model.getValueAt(SelectRowIndex, 3).toString());
+				cbx_disc.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());
+				txt_total.setText(model.getValueAt(SelectRowIndex, 5).toString());	
+			}
+		});
+		table.setBackground(new Color(250, 234, 240));
+		table.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		scrollPane.setViewportView(table);
 		
+		//to customize the header/column
+		JTableHeader JTHeader = table.getTableHeader();
+		JTHeader.setFont(new Font("Century Gothic", Font.PLAIN, 9));
+		JTHeader.setBackground(new Color(252, 193, 213));
+		
 		JButton btnSave = new JButton("SAVE");
+		
 		btnSave.setForeground(new Color(114, 115, 115));
 		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnSave.setBorderPainted(false);

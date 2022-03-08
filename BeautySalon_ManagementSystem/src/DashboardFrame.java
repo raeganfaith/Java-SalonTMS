@@ -64,7 +64,7 @@ public class DashboardFrame extends JFrame {
 		    	DashboardFrame.this.dispose();
 			}
 		});
-		lblPayment.setBounds(136, 163, 105, 113);
+		lblPayment.setBounds(443, 163, 105, 113);
 		contentPane.add(lblPayment);
 		lblPayment.setIcon(new ImageIcon(img_pay));
 		
@@ -78,7 +78,7 @@ public class DashboardFrame extends JFrame {
 			}
 		});
 		
-		lblBooking.setBounds(292, 163, 105, 113);
+		lblBooking.setBounds(136, 163, 105, 113);
 		contentPane.add(lblBooking);
 		lblBooking.setIcon(new ImageIcon(img_book));
 		
@@ -92,7 +92,7 @@ public class DashboardFrame extends JFrame {
 			}
 		});
 		
-		lblReservation.setBounds(443, 163, 105, 113);
+		lblReservation.setBounds(287, 163, 105, 113);
 		contentPane.add(lblReservation);
 		lblReservation.setIcon(new ImageIcon(img_phone));
 		
@@ -161,7 +161,7 @@ public class DashboardFrame extends JFrame {
 		lblPay.setForeground(new Color(114, 115, 115)); // font color
 		lblPay.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		lblPay.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPay.setBounds(136, 267, 105, 33);
+		lblPay.setBounds(443, 267, 105, 33);
 		contentPane.add(lblPay);
 		
 		JLabel lblBook = new JLabel("BOOKING");
@@ -183,7 +183,7 @@ public class DashboardFrame extends JFrame {
 		lblBook.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBook.setForeground(new Color(114, 115, 115));
 		lblBook.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblBook.setBounds(292, 267, 105, 33);
+		lblBook.setBounds(136, 267, 105, 33);
 		contentPane.add(lblBook);
 		
 		JLabel lblReserve = new JLabel("RESERVATION");
@@ -205,7 +205,7 @@ public class DashboardFrame extends JFrame {
 		lblReserve.setHorizontalAlignment(SwingConstants.CENTER);
 		lblReserve.setForeground(new Color(114, 115, 115));
 		lblReserve.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblReserve.setBounds(443, 267, 129, 33);
+		lblReserve.setBounds(287, 267, 129, 33);
 		contentPane.add(lblReserve);
 		
 		JLabel lblUsers = new JLabel("USERS");

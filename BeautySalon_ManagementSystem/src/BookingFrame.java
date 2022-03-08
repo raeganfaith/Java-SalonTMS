@@ -106,7 +106,7 @@ public class BookingFrame extends JFrame {
 			
 			while(rs.next())
 			{
-				cbx_hairstylist.addItem(rs.getString("Service_Stylist"));		
+				cbx_hairstylist.addItem(rs.getString("Employee_Name"));		
 			}
 
 			//rs.close();
@@ -136,11 +136,11 @@ public class BookingFrame extends JFrame {
 			while(rs.next()) {
 				model.addRow(new Object [] {
 					rs.getString("Booking_No"),	
-					rs.getString("Booking_name"),	
-					rs.getString("Booking_address"),	
-					rs.getString("Booking_contact"),
+					rs.getString("Cust_Name"),	
+					rs.getString("Cust_Address"),	
+					rs.getString("Cust_Phone"),
 					rs.getString("Services_Name"),	
-					rs.getString("Service_Stylist"),
+					rs.getString("Employee_Name"),
 				});
 					
 				}
@@ -259,7 +259,7 @@ public class BookingFrame extends JFrame {
 	                ResultSet rs = pst.executeQuery();
 	                cbx_hairstylist.removeAllItems();
 	                while (rs.next()) {
-	                	cbx_hairstylist.addItem(rs.getString("Service_Stylist"));
+	                	cbx_hairstylist.addItem(rs.getString("Employee_Name"));
 	                }
 	            } catch (NullPointerException | SQLException e3) 
 				{
@@ -337,7 +337,7 @@ public class BookingFrame extends JFrame {
 				String hairstylist = (String) cbx_hairstylist.getSelectedItem();
 				
 				try {
-					pst = con.prepareStatement("insert into Booking(Booking_name, Booking_address, Booking_contact, Services_Name, Service_Stylist)values(?,?,?,?,?)");
+					pst = con.prepareStatement("insert into Booking(Cust_Name, Cust_Address, Cust_Phone, Services_Name, Employee_Name)values(?,?,?,?,?)");
 					pst.setString(1, names);
 					pst.setString(2, address);
 					pst.setString(3, contact);
@@ -389,7 +389,6 @@ public class BookingFrame extends JFrame {
 		JButton btnUpdate = new JButton("UPDATE");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				String ID = txt_bookid.getText();
 				String names1 = txt_name.getText();	
 				String address1 = txt_address.getText();
@@ -399,7 +398,7 @@ public class BookingFrame extends JFrame {
 				
 				try {
 					
-					pst = con.prepareStatement("UPDATE Booking SET Booking_name='"+names1+"', Booking_address='"+address1+"', Booking_contact='"+contact1+"', Services_Name='"+service1+"',Service_Stylist='"+stylist1+"' WHERE Booking_No='"+ID+"'");
+					pst = con.prepareStatement("UPDATE Booking SET Cust_Name='"+names1+"', Cust_Address='"+address1+"', Cust_Phone='"+contact1+"', Services_Name='"+service1+"',Employee_Name='"+stylist1+"' WHERE Booking_No='"+ID+"'");
 					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					if(input == JOptionPane.YES_OPTION) {

@@ -227,10 +227,10 @@ public class LoginFrame extends ServiceFrame {
 							while(rs.next()) {
 								db_User = rs.getString("Acc_User");
 								db_Pass = rs.getString("Acc_Pass");
-								db_Position = rs.getString("Acc_Position");
+								db_Position = rs.getString("Employee_Position");
 							}
 							
-							String sqlQuery2 = "SELECT * FROM Accounts WHERE Acc_Position=?";
+							String sqlQuery2 = "SELECT * FROM Accounts WHERE Employee_Position=?";
 							PreparedStatement pst1 = connection.prepareStatement(sqlQuery2);
 							pst1.setString(1, db_Position);
 							ResultSet rs1 = pst.executeQuery();
@@ -252,8 +252,9 @@ public class LoginFrame extends ServiceFrame {
 							} else {
 								JOptionPane.showMessageDialog(null, "Username and Password did not matched!");
 							}						
-						} catch (SQLException ex) {
-							ex.printStackTrace();
+						} catch (NullPointerException|SQLException ex) {
+							//ex.printStackTrace();
+							System.out.println("");
 						}
 				}	
 					

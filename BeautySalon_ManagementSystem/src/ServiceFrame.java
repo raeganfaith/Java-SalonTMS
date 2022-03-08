@@ -38,36 +38,48 @@ public class ServiceFrame extends JFrame {
 	private JTextField txt_serviceid;
 	private JTextField txt_stylist;
 	private JTextField txt_service;
+	private JTable table;
+	private JTextField textField;
+	
+	Connection con;
+	PreparedStatement pst;
+
+	public void Connection() {
+		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		try {
+			con = DriverManager.getConnection(connection);
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
 
 	public void ShowData() {
 		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("Service_ID");
+		model.addColumn("Service ID");
 		model.addColumn("Stylist Name");
 		model.addColumn("Type");
 		model.addColumn("Service");
 		
 		try {
 			String query = "SELECT * FROM Services";
-			PreparedStatement ps = con.prepareStatement(query);
-			ResultSet rs = ps.executeQuery();
+			PreparedStatement pst = con.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
 			
 			while(rs.next()) {
 				model.addRow(new Object [] {
-					rs.getString("Service_No"),	
-					rs.getString("Service_Stylist"),	
-					rs.getString("Service_Type"),
+					rs.getString("Service_ID"),	
+					rs.getString("Employee_Name"),	
+					rs.getString("Employee_Type"),
 					rs.getString("Services_Name"),
 				});
 					
 				}
 			
-			table.setModel(model);
+			table.setModel(model);		
 			
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (NullPointerException|SQLException ex) {
+			//ex.printStackTrace();
+			System.out.println("");
 		}}
 	/**
 	 * Launch the application.
@@ -188,7 +200,7 @@ public class ServiceFrame extends JFrame {
 				String service = txt_service.getText();	
 				
 				try {
-					pst = con.prepareStatement("insert into Services(Service_Stylist, Service_Type, Services_Name)values(?,?,?)");
+					pst = con.prepareStatement("INSERT INTO Services(Employee_Name, Employee_Type, Services_Name)values(?,?,?)");
 					pst.setString(1, stylist);
 					pst.setString(2, type);
 					pst.setString(3, service);
@@ -209,8 +221,9 @@ public class ServiceFrame extends JFrame {
 					}else {
 						JOptionPane.showMessageDialog(null, "Error!");
 					}
-				} catch (SQLException e1) {
-					e1.printStackTrace();
+				} catch (NullPointerException|SQLException ex) {
+					//ex.printStackTrace();
+					System.out.println("");
 				}
 				
 			}
@@ -242,7 +255,7 @@ public class ServiceFrame extends JFrame {
 				String service = txt_service.getText();	
 				
 				try {
-					pst = con.prepareStatement("UPDATE Services SET Service_Stylist='"+stylist+"', Service_Type='"+type+"', Services_Name='"+service+"' WHERE Service_No='"+ID+"'");
+					pst = con.prepareStatement("UPDATE Services SET Employee_Name='"+stylist+"', Employee_Type='"+type+"', Services_Name='"+service+"' WHERE Service_ID='"+ID+"'");
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					if(input == JOptionPane.YES_OPTION) {
 						pst.execute();
@@ -281,7 +294,7 @@ public class ServiceFrame extends JFrame {
 				DefaultTableModel model = (DefaultTableModel)table.getModel();
 		        int SelectRowIndex = table.getSelectedRow();
 		        String hold = model.getValueAt(SelectRowIndex, 0).toString();
-	        	String query = "DELETE FROM Services WHERE Service_No='"+hold +"'";
+	        	String query = "DELETE FROM Services WHERE Service_ID='"+hold +"'";
 	        	
 	        	 try {
 					PreparedStatement pst = con.prepareStatement(query);
@@ -446,18 +459,5 @@ public class ServiceFrame extends JFrame {
 		setUndecorated(true);
 	}
 
-	Connection con;
-	PreparedStatement pst;
-	private JTable table;
-	private JTextField textField;
-	public void Connection() {
-		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
-		try {
-			con = DriverManager.getConnection(connection);
-		}catch(SQLException ex) {
-			ex.printStackTrace();
-		}
-		
-		
-	}
+
 }
