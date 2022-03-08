@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.HeadlessException;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -336,7 +338,6 @@ public class BookingFrame extends JFrame {
 				
 				try {
 					pst = con.prepareStatement("insert into Booking(Booking_name, Booking_address, Booking_contact, Services_Name, Service_Stylist)values(?,?,?,?,?)");
-					//pst.setString(1, id);
 					pst.setString(1, names);
 					pst.setString(2, address);
 					pst.setString(3, contact);
@@ -348,6 +349,7 @@ public class BookingFrame extends JFrame {
 					if(input == JOptionPane.YES_OPTION) {
 						pst.executeUpdate();
 						JOptionPane.showMessageDialog(null, "Successfully added!");
+						ShowData(); // to automatically update the table
 						txt_name.setText("");
 						txt_address.setText("");
 						txt_phone.setText("");
@@ -387,6 +389,7 @@ public class BookingFrame extends JFrame {
 		JButton btnUpdate = new JButton("UPDATE");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				String ID = txt_bookid.getText();
 				String names1 = txt_name.getText();	
 				String address1 = txt_address.getText();
@@ -402,12 +405,11 @@ public class BookingFrame extends JFrame {
 					if(input == JOptionPane.YES_OPTION) {
 						pst.execute();
 						JOptionPane.showMessageDialog(null, "Successfully updated!");
+						ShowData();
 					}else {
 						
 					}
-					
-					
-					
+						
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -435,7 +437,29 @@ public class BookingFrame extends JFrame {
 		JButton btnDelete = new JButton("DELETE");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				 	DefaultTableModel model = (DefaultTableModel)table.getModel();
+			        int SelectRowIndex = table.getSelectedRow();
+			        String hold = model.getValueAt(SelectRowIndex, 0).toString();
+		        	String queryy = "DELETE FROM Booking WHERE Booking_No='"+hold +"'";
+		        	 
+			        try{
+			            PreparedStatement pst = con.prepareStatement(queryy);
+			            int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?", "ALERT!", JOptionPane.YES_NO_OPTION); {
+							if (input == JOptionPane.YES_OPTION) {
+								pst.executeUpdate();
+					               JOptionPane.showMessageDialog(null, "Deleted successfully.");
+					               ShowData();
+							}
+						}
+			            txt_bookid.setText("");
+			            txt_name.setText("");
+			            txt_address.setText("");
+			            txt_phone.setText("");
+			            cbx_services.setSelectedIndex(0);
+			            cbx_hairstylist.setSelectedIndex(0);
+			        }catch(HeadlessException | SQLException e11){
+			            JOptionPane.showMessageDialog(null,e11);
+			        }
 			}
 		});
 		btnDelete.addMouseListener(new MouseAdapter() {
@@ -548,6 +572,7 @@ public class BookingFrame extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
+		//Display selected row in textFields and JComboBox.
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				DefaultTableModel model = (DefaultTableModel)table.getModel();
