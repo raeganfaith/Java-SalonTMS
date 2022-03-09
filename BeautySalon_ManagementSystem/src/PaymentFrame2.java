@@ -33,7 +33,7 @@ import javax.swing.JTable;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class PaymentFrame extends JFrame {
+public class PaymentFrame2 extends JFrame {
 	
 	private Image img_logo = new ImageIcon(LoginFrame.class.getResource("res/LOGO-2.png")).getImage().getScaledInstance(300, 90, Image.SCALE_SMOOTH);
 	private JPanel contentPane;
@@ -67,8 +67,8 @@ public class PaymentFrame extends JFrame {
 		model.addColumn("Total");
 		
 		try {
-			String query = "SELECT * FROM Payment JOIN Booking ON Payment.Cust_Name = Booking.Cust_Name JOIN Reservation ON Payment.Cust_Name = Reservation.Cust_Name;";
-			// JOIN Booking ON Payment.Cust_Name = Booking.Cust_Name; 
+			String query = "SELECT * FROM Payment JOIN Reservation ON Payment.Cust_Name = Reservation.Cust_Name";
+			
 			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			
@@ -100,7 +100,7 @@ public class PaymentFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PaymentFrame frame = new PaymentFrame();
+					PaymentFrame2 frame = new PaymentFrame2();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -112,7 +112,7 @@ public class PaymentFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PaymentFrame() {
+	public PaymentFrame2() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
@@ -185,7 +185,7 @@ public class PaymentFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-					PaymentFrame.this.dispose();
+					PaymentFrame2.this.dispose();
 				}
 			}
 			@Override
@@ -210,7 +210,7 @@ public class PaymentFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				DashboardFrame cv = new DashboardFrame();
 		    	cv.setVisible(true);
-		    	PaymentFrame.this.dispose();
+		    	PaymentFrame2.this.dispose();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

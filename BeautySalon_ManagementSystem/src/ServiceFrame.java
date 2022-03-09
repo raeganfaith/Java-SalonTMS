@@ -28,6 +28,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -137,6 +139,8 @@ public class ServiceFrame extends JFrame {
 		contentPane.add(lblBookingTransaction);
 		
 		txt_serviceid = new JTextField();
+		txt_serviceid.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		txt_serviceid.setForeground(new Color(114, 115, 115));
 		txt_serviceid.setColumns(10);
 		txt_serviceid.setBorder(null);
 		txt_serviceid.setBackground(new Color(250, 234, 240));
@@ -156,6 +160,8 @@ public class ServiceFrame extends JFrame {
 		contentPane.add(lblName);
 		
 		txt_stylist = new JTextField();
+		txt_stylist.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		txt_stylist.setForeground(new Color(114, 115, 115));
 		txt_stylist.setColumns(10);
 		txt_stylist.setBorder(null);
 		txt_stylist.setBackground(new Color(250, 234, 240));
@@ -175,6 +181,8 @@ public class ServiceFrame extends JFrame {
 		contentPane.add(lblContactNo);
 		
 		txt_service = new JTextField();
+		txt_service.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		txt_service.setForeground(new Color(114, 115, 115));
 		txt_service.setColumns(10);
 		txt_service.setBorder(null);
 		txt_service.setBackground(new Color(250, 234, 240));
@@ -183,7 +191,7 @@ public class ServiceFrame extends JFrame {
 		
 		JComboBox<String> cbx_type = new JComboBox();
 		cbx_type.setForeground(new Color(114, 115, 115));
-		cbx_type.setFont(new Font("Century Gothic", Font.PLAIN, 18));
+		cbx_type.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_type.addItem("Part-time");
 		cbx_type.addItem("Full-time");
 		cbx_type.setBackground(new Color(250, 234, 240));
@@ -331,7 +339,7 @@ public class ServiceFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(24, 410, 266, 33);
+		btnDelete.setBounds(24, 410, 108, 33);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -358,7 +366,7 @@ public class ServiceFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(25, 453, 265, 30);
+		btnClear.setBounds(181, 410, 108, 33);
 		contentPane.add(btnClear);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -413,6 +421,8 @@ public class ServiceFrame extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
+		table.setBackground(new Color(250, 234, 240));
+		table.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -457,6 +467,11 @@ public class ServiceFrame extends JFrame {
 		contentPane.add(lblTotalAccounts);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
+		
+		//to customize the header/column
+		JTableHeader JTHeader = table.getTableHeader();
+		JTHeader.setFont(new Font("Century Gothic", Font.PLAIN, 9));
+		JTHeader.setBackground(new Color(252, 193, 213));
 	}
 
 

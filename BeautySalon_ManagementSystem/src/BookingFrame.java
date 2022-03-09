@@ -1,5 +1,3 @@
-import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Image;
@@ -239,7 +237,7 @@ public class BookingFrame extends JFrame {
 		txt_name.setBounds(130, 204, 123, 23);
 		contentPane.add(txt_name);
 
-		cbx_hairstylist = new JComboBox();
+		cbx_hairstylist = new JComboBox<String>();
 		cbx_hairstylist.setForeground(new Color(114, 115, 115));
 		cbx_hairstylist.setBackground(new Color(250, 234, 240));
 		cbx_hairstylist.setBounds(130, 339, 123, 23);
@@ -476,7 +474,7 @@ public class BookingFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(20, 453, 233, 33);
+		btnDelete.setBounds(20, 453, 100, 33);
 		contentPane.add(btnDelete);
 		
 		//A funtion to clear the value in JTextField and JComboBox.
@@ -507,7 +505,7 @@ public class BookingFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(20, 496, 233, 33);
+		btnClear.setBounds(153, 453, 100, 33);
 		contentPane.add(btnClear);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -556,7 +554,15 @@ public class BookingFrame extends JFrame {
 		lblclose.setBounds(615, 0, 85, 37);
 		contentPane.add(lblclose);
 		
-		JButton btnSave = new JButton("SAVE");
+		JButton btnSave = new JButton("NEXT");
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				PaymentFrame cv = new PaymentFrame();
+		    	cv.setVisible(true);
+		    	BookingFrame.this.dispose();
+			}
+		});
 		btnSave.setForeground(new Color(114, 115, 115));
 		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnSave.setBorderPainted(false);
@@ -609,7 +615,6 @@ public class BookingFrame extends JFrame {
 		JTHeader.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		JTHeader.setBackground(new Color(252, 193, 213));
 	}
-	
 }
 
 
