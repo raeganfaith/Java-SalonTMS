@@ -78,6 +78,8 @@ public class LoginFrame extends ServiceFrame {
 	 * Create the frame.
 	 */
 	public LoginFrame() {
+		
+		Connection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 450); //Frame size
 		contentPane = new JPanel();

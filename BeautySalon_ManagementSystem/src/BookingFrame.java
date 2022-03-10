@@ -558,7 +558,7 @@ public class BookingFrame extends JFrame {
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PaymentFrame cv = new PaymentFrame();
+				BookingPaymentFrame cv = new BookingPaymentFrame();
 		    	cv.setVisible(true);
 		    	BookingFrame.this.dispose();
 			}

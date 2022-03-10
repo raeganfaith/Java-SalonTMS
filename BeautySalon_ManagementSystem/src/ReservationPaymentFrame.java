@@ -33,7 +33,7 @@ import javax.swing.JTable;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class PaymentFrame2 extends JFrame {
+public class ReservationPaymentFrame extends JFrame {
 	
 	private Image img_logo = new ImageIcon(LoginFrame.class.getResource("res/LOGO-2.png")).getImage().getScaledInstance(300, 90, Image.SCALE_SMOOTH);
 	private JPanel contentPane;
@@ -100,7 +100,7 @@ public class PaymentFrame2 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PaymentFrame2 frame = new PaymentFrame2();
+					ReservationPaymentFrame frame = new ReservationPaymentFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -112,7 +112,7 @@ public class PaymentFrame2 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PaymentFrame2() {
+	public ReservationPaymentFrame() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
@@ -143,11 +143,11 @@ public class PaymentFrame2 extends JFrame {
 		panel.setBounds(0, 112, 700, 16);
 		contentPane.add(panel);
 		
-		JLabel lblPaymentTransaction = new JLabel("PAYMENT TRANSACTION");
+		JLabel lblPaymentTransaction = new JLabel("RESERVATION PAYMENT TRANSACTION");
 		lblPaymentTransaction.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPaymentTransaction.setForeground(new Color(114, 115, 115));
 		lblPaymentTransaction.setFont(new Font("Century Gothic", Font.BOLD, 20));
-		lblPaymentTransaction.setBounds(223, 128, 284, 31);
+		lblPaymentTransaction.setBounds(168, 128, 429, 31);
 		contentPane.add(lblPaymentTransaction);
 		
 		JLabel lblCustomerId = new JLabel("PAYMENT ID:");
@@ -185,7 +185,7 @@ public class PaymentFrame2 extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-					PaymentFrame2.this.dispose();
+					ReservationPaymentFrame.this.dispose();
 				}
 			}
 			@Override
@@ -210,7 +210,7 @@ public class PaymentFrame2 extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				DashboardFrame cv = new DashboardFrame();
 		    	cv.setVisible(true);
-		    	PaymentFrame2.this.dispose();
+		    	ReservationPaymentFrame.this.dispose();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
