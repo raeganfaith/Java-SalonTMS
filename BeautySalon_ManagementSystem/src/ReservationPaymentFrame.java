@@ -146,7 +146,7 @@ public class ReservationPaymentFrame extends JFrame {
 		JLabel lblPaymentTransaction = new JLabel("RESERVATION PAYMENT TRANSACTION");
 		lblPaymentTransaction.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPaymentTransaction.setForeground(new Color(114, 115, 115));
-		lblPaymentTransaction.setFont(new Font("Century Gothic", Font.BOLD, 20));
+		lblPaymentTransaction.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblPaymentTransaction.setBounds(168, 128, 429, 31);
 		contentPane.add(lblPaymentTransaction);
 		
@@ -208,7 +208,7 @@ public class ReservationPaymentFrame extends JFrame {
 		lblBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DashboardFrame cv = new DashboardFrame();
+				AdminDashboardFrame cv = new AdminDashboardFrame();
 		    	cv.setVisible(true);
 		    	ReservationPaymentFrame.this.dispose();
 			}

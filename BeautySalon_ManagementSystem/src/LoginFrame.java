@@ -241,12 +241,12 @@ public class LoginFrame extends ServiceFrame {
 								//To automatically determine if the account logged in is user or admin
 								if(db_Position.equals("Admin")) {
 									JOptionPane.showMessageDialog(null, "You Successfully logged in as Admin!");
-									DashboardFrame cv = new DashboardFrame();
+									AdminDashboardFrame cv = new AdminDashboardFrame();
 							    	cv.setVisible(true);
 									LoginFrame.this.dispose();
 								}else if(db_Position.equals("User")) {
 									JOptionPane.showMessageDialog(null, "You Successfully logged in as User!");
-									DashboardUser cv = new DashboardUser();
+									UserDashboardFrame cv = new UserDashboardFrame();
 							    	cv.setVisible(true);
 									LoginFrame.this.dispose();
 								}

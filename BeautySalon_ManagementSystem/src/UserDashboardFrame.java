@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
-public class DashboardFrame extends JFrame {
+public class UserDashboardFrame extends JFrame {
 																													//width and height
 	private Image img_logo = new ImageIcon(LoginFrame.class.getResource("res/LOGO-2.png")).getImage().getScaledInstance(300, 90, Image.SCALE_SMOOTH);
 	private Image img_pay = new ImageIcon(LoginFrame.class.getResource("res/COIN.png")).getImage().getScaledInstance(100, 90, Image.SCALE_SMOOTH);
@@ -32,7 +32,7 @@ public class DashboardFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DashboardFrame frame = new DashboardFrame();
+					UserDashboardFrame frame = new UserDashboardFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,9 +44,9 @@ public class DashboardFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DashboardFrame() {
+	public UserDashboardFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 450); //Frame size
+		setBounds(100, 100, 700, 390); //Frame size
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(251, 213, 225)); //background color of the panel
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -61,10 +61,10 @@ public class DashboardFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				PaymentFrame cv = new PaymentFrame();
 		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
+		    	UserDashboardFrame.this.dispose();
 			}
 		});
-		lblPayment.setBounds(443, 163, 105, 113);
+		lblPayment.setBounds(68, 188, 105, 113);
 		contentPane.add(lblPayment);
 		lblPayment.setIcon(new ImageIcon(img_pay));
 		
@@ -74,11 +74,11 @@ public class DashboardFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				BookingFrame cv = new BookingFrame();
 		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
+		    	UserDashboardFrame.this.dispose();
 			}
 		});
 		
-		lblBooking.setBounds(136, 163, 105, 113);
+		lblBooking.setBounds(224, 188, 105, 113);
 		contentPane.add(lblBooking);
 		lblBooking.setIcon(new ImageIcon(img_book));
 		
@@ -88,46 +88,13 @@ public class DashboardFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				ReservationFrame cv = new ReservationFrame();
 		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
+		    	UserDashboardFrame.this.dispose();
 			}
 		});
 		
-		lblReservation.setBounds(287, 163, 105, 113);
+		lblReservation.setBounds(371, 188, 105, 113);
 		contentPane.add(lblReservation);
 		lblReservation.setIcon(new ImageIcon(img_phone));
-		
-		JLabel lblUser = new JLabel("");
-		lblUser.addMouseListener(new MouseAdapter() {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			UserFrame cv = new UserFrame();
-	    	cv.setVisible(true);
-	    	DashboardFrame.this.dispose();
-		}
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			lblUser.setForeground(Color.BLACK);
-		}
-		@Override
-		public void mouseExited(MouseEvent e) {
-			lblUser.setForeground(Color.GRAY);
-		}});
-		lblUser.setBounds(136, 296, 105, 124);
-		contentPane.add(lblUser);
-		lblUser.setIcon(new ImageIcon(img_user));
-		
-		JLabel lblServices = new JLabel("");
-		lblServices.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ServiceFrame cv = new ServiceFrame();
-		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
-			}
-		});
-		lblServices.setBounds(292, 296, 105, 113);
-		contentPane.add(lblServices);
-		lblServices.setIcon(new ImageIcon(img_service));
 		
 		JLabel lblExit = new JLabel("");
 		lblExit.addMouseListener(new MouseAdapter() {
@@ -135,10 +102,10 @@ public class DashboardFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				LoginFrame cv = new LoginFrame();
 		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
+		    	UserDashboardFrame.this.dispose();
 			}
 		});
-		lblExit.setBounds(455, 296, 93, 113);
+		lblExit.setBounds(539, 181, 93, 113);
 		contentPane.add(lblExit);
 		lblExit.setIcon(new ImageIcon(img_exit));
 		
@@ -148,7 +115,7 @@ public class DashboardFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				PaymentFrame cv = new PaymentFrame();
 		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
+		    	UserDashboardFrame.this.dispose();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -161,7 +128,7 @@ public class DashboardFrame extends JFrame {
 		lblPay.setForeground(new Color(114, 115, 115)); // font color
 		lblPay.setFont(new Font("Century Gothic", Font.PLAIN, 18));
 		lblPay.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPay.setBounds(443, 267, 105, 33);
+		lblPay.setBounds(68, 292, 105, 33);
 		contentPane.add(lblPay);
 		
 		JLabel lblBook = new JLabel("BOOKING");
@@ -170,7 +137,7 @@ public class DashboardFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				BookingFrame cv = new BookingFrame();
 		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
+		    	UserDashboardFrame.this.dispose();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -183,7 +150,7 @@ public class DashboardFrame extends JFrame {
 		lblBook.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBook.setForeground(new Color(114, 115, 115));
 		lblBook.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblBook.setBounds(136, 267, 105, 33);
+		lblBook.setBounds(224, 292, 105, 33);
 		contentPane.add(lblBook);
 		
 		JLabel lblReserve = new JLabel("RESERVATION");
@@ -192,7 +159,7 @@ public class DashboardFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				ReservationFrame cv = new ReservationFrame();
 		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
+		    	UserDashboardFrame.this.dispose();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -205,53 +172,8 @@ public class DashboardFrame extends JFrame {
 		lblReserve.setHorizontalAlignment(SwingConstants.CENTER);
 		lblReserve.setForeground(new Color(114, 115, 115));
 		lblReserve.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblReserve.setBounds(287, 267, 129, 33);
+		lblReserve.setBounds(367, 292, 129, 33);
 		contentPane.add(lblReserve);
-		
-		JLabel lblUsers = new JLabel("USERS");
-		lblUsers.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				UserFrame cv = new UserFrame();
-		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				lblUsers.setForeground(Color.BLACK);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				lblUsers.setForeground(Color.GRAY);
-		}});
-		lblUsers.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUsers.setForeground(new Color(114, 115, 115));
-		lblUsers.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblUsers.setBounds(136, 407, 105, 33);
-		contentPane.add(lblUsers);
-		
-		JLabel lblService = new JLabel("SERVICES");
-		lblService.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ServiceFrame cv = new ServiceFrame();
-		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				lblService.setForeground(Color.BLACK);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				lblService.setForeground(Color.GRAY);
-		}});
-		
-		lblService.setHorizontalAlignment(SwingConstants.CENTER);
-		lblService.setForeground(new Color(114, 115, 115));
-		lblService.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblService.setBounds(292, 407, 105, 33);
-		contentPane.add(lblService);
 		
 		JLabel lbllogout = new JLabel("EXIT");
 		lbllogout.addMouseListener(new MouseAdapter() {
@@ -259,7 +181,7 @@ public class DashboardFrame extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				LoginFrame cv = new LoginFrame();
 		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
+		    	UserDashboardFrame.this.dispose();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -274,7 +196,7 @@ public class DashboardFrame extends JFrame {
 		lbllogout.setHorizontalAlignment(SwingConstants.CENTER);
 		lbllogout.setForeground(new Color(114, 115, 115));
 		lbllogout.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lbllogout.setBounds(443, 407, 105, 33);
+		lbllogout.setBounds(527, 292, 105, 33);
 		contentPane.add(lbllogout);
 		
 		JLabel lblclose = new JLabel("CLOSE");
@@ -283,7 +205,7 @@ public class DashboardFrame extends JFrame {
 		@Override
 			public void mouseClicked(MouseEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confirmation", JOptionPane.YES_NO_OPTION) == 0) {
-					DashboardFrame.this.dispose();
+					UserDashboardFrame.this.dispose();
 				}
 			}
 			@Override
@@ -306,20 +228,13 @@ public class DashboardFrame extends JFrame {
 		contentPane.add(lbllogo);
 		lbllogo.setIcon(new ImageIcon(img_logo));
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(null);
-		panel.setBorder(null);
-		panel.setBackground(new Color(250, 234, 240));
-		panel.setBounds(0, 112, 700, 16);
-		contentPane.add(panel);
-		
 		JLabel lblBack = new JLabel("BACK");
 		lblBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				LoginFrame cv = new LoginFrame();
 		    	cv.setVisible(true);
-		    	DashboardFrame.this.dispose();
+		    	UserDashboardFrame.this.dispose();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -337,11 +252,18 @@ public class DashboardFrame extends JFrame {
 		lblBack.setBounds(0, 0, 85, 37);
 		contentPane.add(lblBack);
 		
-		JLabel lblAdminDashboard = new JLabel("ADMIN DASHBOARD");
-		lblAdminDashboard.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAdminDashboard.setForeground(new Color(114, 115, 115));
-		lblAdminDashboard.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblAdminDashboard.setBounds(136, 127, 412, 33);
-		contentPane.add(lblAdminDashboard);
+		JLabel lblUserDashboard = new JLabel("USER DASHBOARD");
+		lblUserDashboard.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUserDashboard.setForeground(new Color(114, 115, 115));
+		lblUserDashboard.setFont(new Font("Century Gothic", Font.PLAIN, 18));
+		lblUserDashboard.setBounds(131, 131, 426, 47);
+		contentPane.add(lblUserDashboard);
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		panel.setBorder(null);
+		panel.setBackground(new Color(250, 234, 240));
+		panel.setBounds(0, 112, 700, 20);
+		contentPane.add(panel);
 	}
 }

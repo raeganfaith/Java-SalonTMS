@@ -216,7 +216,7 @@ public class BookingFrame extends JFrame {
 		JLabel lblBookingTransaction = new JLabel("BOOKING TRANSACTION");
 		lblBookingTransaction.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBookingTransaction.setForeground(new Color(114, 115, 115));
-		lblBookingTransaction.setFont(new Font("Century Gothic", Font.BOLD, 20));
+		lblBookingTransaction.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblBookingTransaction.setBounds(224, 124, 248, 44);
 		contentPane.add(lblBookingTransaction);
 		
@@ -512,7 +512,11 @@ public class BookingFrame extends JFrame {
 		lblBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DashboardFrame cv = new DashboardFrame();
+				//AdminDashboardFrame m;
+				//currentFrame.dispose();
+				//myPreviousFrame.setVisible(true);
+				
+				AdminDashboardFrame cv = new AdminDashboardFrame();
 		    	cv.setVisible(true);
 		    	BookingFrame.this.dispose();
 			}

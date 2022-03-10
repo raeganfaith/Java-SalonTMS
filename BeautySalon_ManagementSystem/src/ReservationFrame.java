@@ -309,7 +309,7 @@ public class ReservationFrame extends JFrame {
 		lblBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DashboardFrame cv = new DashboardFrame();
+				AdminDashboardFrame cv = new AdminDashboardFrame();
 		    	cv.setVisible(true);
 		    	ReservationFrame.this.dispose();
 			}
