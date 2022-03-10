@@ -235,6 +235,7 @@ public class ReservationPaymentFrame extends JFrame {
 		contentPane.add(lblAmount);
 		
 		txt_custid = new JTextField();
+		txt_custid.setEditable(false);
 		txt_custid.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		txt_custid.setForeground(new Color(114, 115, 115));
 		txt_custid.setColumns(10);

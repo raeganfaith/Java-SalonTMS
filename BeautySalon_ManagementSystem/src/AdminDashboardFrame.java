@@ -231,7 +231,7 @@ public class AdminDashboardFrame extends JFrame {
 		JLabel lblAdminDashboard = new JLabel("ADMIN DASHBOARD");
 		lblAdminDashboard.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAdminDashboard.setForeground(new Color(114, 115, 115));
-		lblAdminDashboard.setFont(new Font("Century Gothic", Font.PLAIN, 18));
+		lblAdminDashboard.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblAdminDashboard.setBounds(126, 131, 426, 45);
 		contentPane.add(lblAdminDashboard);
 		

@@ -139,6 +139,7 @@ public class ServiceFrame extends JFrame {
 		contentPane.add(lblBookingTransaction);
 		
 		txt_serviceid = new JTextField();
+		txt_serviceid.setEditable(false);
 		txt_serviceid.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		txt_serviceid.setForeground(new Color(114, 115, 115));
 		txt_serviceid.setColumns(10);

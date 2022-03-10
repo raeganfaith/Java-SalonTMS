@@ -255,7 +255,7 @@ public class UserDashboardFrame extends JFrame {
 		JLabel lblUserDashboard = new JLabel("USER DASHBOARD");
 		lblUserDashboard.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserDashboard.setForeground(new Color(114, 115, 115));
-		lblUserDashboard.setFont(new Font("Century Gothic", Font.PLAIN, 18));
+		lblUserDashboard.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 		lblUserDashboard.setBounds(131, 131, 426, 47);
 		contentPane.add(lblUserDashboard);
 		

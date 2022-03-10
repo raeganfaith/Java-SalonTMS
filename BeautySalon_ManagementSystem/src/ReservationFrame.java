@@ -365,6 +365,7 @@ public class ReservationFrame extends JFrame {
 		
 		
 		txt_cust = new JTextField();
+		txt_cust.setEditable(false);
 		txt_cust.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		txt_cust.setForeground(new Color(114, 115, 115));
 		txt_cust.setColumns(10);

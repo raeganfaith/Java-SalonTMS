@@ -221,6 +221,7 @@ public class BookingFrame extends JFrame {
 		contentPane.add(lblBookingTransaction);
 		
 		txt_bookid = new JTextField();
+		txt_bookid.setEditable(false);
 		txt_bookid.setFont(new Font("Century Gothic", Font.PLAIN, 17));
 		txt_bookid.setForeground(new Color(114, 115, 115));
 		txt_bookid.setColumns(10);
@@ -558,7 +559,7 @@ public class BookingFrame extends JFrame {
 		lblclose.setBounds(615, 0, 85, 37);
 		contentPane.add(lblclose);
 		
-		JButton btnSave = new JButton("NEXT");
+		JButton btnSave = new JButton("PAYMENT");
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
