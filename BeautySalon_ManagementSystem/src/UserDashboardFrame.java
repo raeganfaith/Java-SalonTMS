@@ -69,10 +69,11 @@ public class UserDashboardFrame extends JFrame {
 		lblPayment.setIcon(new ImageIcon(img_pay));
 		
 		JLabel lblBooking = new JLabel("");
+		
 		lblBooking.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				BookingFrame cv = new BookingFrame();
+				CustomerFrame cv = new CustomerFrame();
 		    	cv.setVisible(true);
 		    	UserDashboardFrame.this.dispose();
 			}
@@ -138,6 +139,8 @@ public class UserDashboardFrame extends JFrame {
 				BookingFrame cv = new BookingFrame();
 		    	cv.setVisible(true);
 		    	UserDashboardFrame.this.dispose();
+		    	
+		    	
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {

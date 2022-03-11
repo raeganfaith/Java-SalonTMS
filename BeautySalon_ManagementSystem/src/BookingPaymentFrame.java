@@ -47,9 +47,11 @@ public class BookingPaymentFrame extends JFrame {
 	
 	//Database connection
 	Connection con;
+	Connection connection;
 	PreparedStatement pst;
+	ResultSet rs;
 	public void Connection() {
-		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		String connection = "jdbc:sqlserver://localhost:1433;databaseName=SalonTPS;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
 		try {
 			con = DriverManager.getConnection(connection);
 		}catch(SQLException ex) {
@@ -59,7 +61,7 @@ public class BookingPaymentFrame extends JFrame {
 
 	public void ShowData() {
 		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("Customer ID");
+		model.addColumn("Payment ID");
 		model.addColumn("Name");
 		model.addColumn("Status");
 		model.addColumn("Amount");
@@ -74,7 +76,7 @@ public class BookingPaymentFrame extends JFrame {
 			
 			while(rs.next()) {
 				model.addRow(new Object [] {
-					rs.getString("Customer_ID"),	
+					rs.getString("Payment_ID"),	
 					rs.getString("Cust_Name"),	
 					rs.getString("Cust_Status"),
 					rs.getString("Cust_Amount"),
@@ -85,7 +87,7 @@ public class BookingPaymentFrame extends JFrame {
 				}
 			
 			table.setModel(model);
-			
+
 			
 			
 		} catch (SQLException e) {
@@ -121,7 +123,7 @@ public class BookingPaymentFrame extends JFrame {
 		});
 		Connection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 550); //Frame size
+		setBounds(100, 100, 800, 550); //Frame size
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(251, 213, 225)); //background color of the panel
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -130,7 +132,7 @@ public class BookingPaymentFrame extends JFrame {
 		
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLogo.setBounds(185, 10, 310, 92);
+		lblLogo.setBounds(185, 10, 398, 92);
 		contentPane.add(lblLogo);
 		setLocationRelativeTo(null); //to center the frame
 		setUndecorated(true);
@@ -140,14 +142,14 @@ public class BookingPaymentFrame extends JFrame {
 		panel.setLayout(null);
 		panel.setBorder(null);
 		panel.setBackground(new Color(250, 234, 240));
-		panel.setBounds(0, 112, 700, 16);
+		panel.setBounds(0, 112, 800, 16);
 		contentPane.add(panel);
 		
 		JLabel lblPaymentTransaction = new JLabel("BOOKING PAYMENT TRANSACTION");
 		lblPaymentTransaction.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPaymentTransaction.setForeground(new Color(114, 115, 115));
 		lblPaymentTransaction.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblPaymentTransaction.setBounds(139, 128, 468, 31);
+		lblPaymentTransaction.setBounds(168, 128, 473, 31);
 		contentPane.add(lblPaymentTransaction);
 		
 		JLabel lblCustomerId = new JLabel("PAYMENT ID:");
@@ -201,14 +203,14 @@ public class BookingPaymentFrame extends JFrame {
 		lblclose.setHorizontalAlignment(SwingConstants.CENTER);
 		lblclose.setForeground(new Color(114, 115, 115));
 		lblclose.setFont(new Font("Century Gothic", Font.BOLD, 15));
-		lblclose.setBounds(615, 0, 85, 37);
+		lblclose.setBounds(715, 0, 85, 37);
 		contentPane.add(lblclose);
 		
 		JLabel lblBack = new JLabel("BACK");
 		lblBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				AdminDashboardFrame cv = new AdminDashboardFrame();
+				UserDashboardFrame cv = new UserDashboardFrame();
 		    	cv.setVisible(true);
 		    	BookingPaymentFrame.this.dispose();
 			}
@@ -241,7 +243,7 @@ public class BookingPaymentFrame extends JFrame {
 		txt_custid.setColumns(10);
 		txt_custid.setBorder(null);
 		txt_custid.setBackground(new Color(250, 234, 240));
-		txt_custid.setBounds(139, 160, 136, 23);
+		txt_custid.setBounds(139, 160, 160, 23);
 		contentPane.add(txt_custid);
 		
 		txt_name = new JTextField();
@@ -250,16 +252,21 @@ public class BookingPaymentFrame extends JFrame {
 		txt_name.setColumns(10);
 		txt_name.setBorder(null);
 		txt_name.setBackground(new Color(250, 234, 240));
-		txt_name.setBounds(139, 193, 136, 23);
+		txt_name.setBounds(139, 193, 160, 23);
 		contentPane.add(txt_name);
 		
 		cbx_stat = new JComboBox<String>();
+		cbx_stat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		cbx_stat.addItem("Paid");
 		cbx_stat.addItem("Unpaid");
 		cbx_stat.setForeground(new Color(114, 115, 115));
 		cbx_stat.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_stat.setBackground(new Color(250, 234, 240));
-		cbx_stat.setBounds(139, 226, 136, 23);
+		cbx_stat.setBounds(139, 226, 160, 23);
 		contentPane.add(cbx_stat);
 		
 		txt_amount = new JTextField();
@@ -268,7 +275,7 @@ public class BookingPaymentFrame extends JFrame {
 		txt_amount.setColumns(10);
 		txt_amount.setBorder(null);
 		txt_amount.setBackground(new Color(250, 234, 240));
-		txt_amount.setBounds(138, 259, 137, 23);
+		txt_amount.setBounds(138, 259, 161, 23);
 		contentPane.add(txt_amount);
 		
 		txt_total = new JTextField();
@@ -277,7 +284,7 @@ public class BookingPaymentFrame extends JFrame {
 		txt_total.setColumns(10);
 		txt_total.setBorder(null);
 		txt_total.setBackground(new Color(250, 234, 240));
-		txt_total.setBounds(139, 325, 136, 23);
+		txt_total.setBounds(139, 325, 160, 23);
 		contentPane.add(txt_total);
 		
 		cbx_disc = new JComboBox<String>();
@@ -285,6 +292,7 @@ public class BookingPaymentFrame extends JFrame {
 		cbx_disc.addItem("25% off");
 		cbx_disc.addItem("10% off");
 		cbx_disc.addItem("5% off");
+		cbx_disc.addItem("NO DISCOUNT");
 		//COMPUTATION
 		cbx_disc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -305,7 +313,11 @@ public class BookingPaymentFrame extends JFrame {
 				}else if(cbx_disc.getSelectedItem().equals("5% off")){
 					int computation = ((100-5)*AmountNum)/100;
 					txt_total.setText(String.valueOf(computation));
-				}else {
+				}else if(cbx_disc.getSelectedItem().equals("NO DISCOUNT")) {
+					double computation = (AmountNum);
+					txt_total.setText(String.valueOf(computation));
+				} else {
+					
 				}
 				  
 			}catch(NumberFormatException nfe) {
@@ -317,13 +329,13 @@ public class BookingPaymentFrame extends JFrame {
 		cbx_disc.setForeground(new Color(114, 115, 115));
 		cbx_disc.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_disc.setBackground(new Color(250, 234, 240));
-		cbx_disc.setBounds(138, 292, 137, 23);
+		cbx_disc.setBounds(138, 292, 161, 23);
 		contentPane.add(cbx_disc);
 		
 		JButton btnCreate = new JButton("CREATE");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				String ID = null;
 				String names = txt_name.getText();	
 				String status = (String) cbx_stat.getSelectedItem();
 				String amount = txt_amount.getText();
@@ -331,12 +343,13 @@ public class BookingPaymentFrame extends JFrame {
 				String totals = txt_total.getText();	
 				
 				try {
-					pst = con.prepareStatement("insert into Payment(Cust_Name, Cust_Status, Cust_Amount, Cust_Discount,Cust_Total)values(?,?,?,?,?)");
+					pst = con.prepareStatement("insert into Payment(Customer_ID,Cust_Name, Cust_Status, Cust_Amount, Cust_Discount,Cust_Total)values(?,?,?,?,?,?)");
 					pst.setString(1, names);
-					pst.setString(2, status);
-					pst.setString(3, amount);
-					pst.setString(4, disc);
-					pst.setString(5, totals);
+					pst.setString(2, ID);
+					pst.setString(3, status);
+					pst.setString(4, amount);
+					pst.setString(5, disc);
+					pst.setString(6, totals);
 
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					
@@ -379,7 +392,7 @@ public class BookingPaymentFrame extends JFrame {
 		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(20, 365, 255, 33);
+		btnCreate.setBounds(20, 365, 279, 33);
 		contentPane.add(btnCreate);
 		
 		JButton btnUpdate = new JButton("UPDATE");
@@ -394,7 +407,7 @@ public class BookingPaymentFrame extends JFrame {
 				
 				try {
 					
-					pst = con.prepareStatement("UPDATE Payment SET Cust_Name='"+names1+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Customer_ID='"+ID+"'");
+					pst = con.prepareStatement("UPDATE Payment SET Cust_Name='"+names1+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Payment_ID='"+ID+"'");
 					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					if(input == JOptionPane.YES_OPTION) {
@@ -422,7 +435,7 @@ public class BookingPaymentFrame extends JFrame {
 		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(20, 408, 255, 33);
+		btnUpdate.setBounds(20, 408, 279, 33);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
@@ -458,7 +471,7 @@ public class BookingPaymentFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(20, 451, 107, 33);
+		btnDelete.setBounds(20, 451, 279, 33);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -488,11 +501,11 @@ public class BookingPaymentFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(168, 451, 107, 33);
+		btnClear.setBounds(20, 494, 279, 33);
 		contentPane.add(btnClear);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(292, 158, 384, 302);
+		scrollPane.setBounds(318, 158, 459, 302);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -524,7 +537,7 @@ public class BookingPaymentFrame extends JFrame {
 		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnSave.setBorderPainted(false);
 		btnSave.setBackground(new Color(252, 193, 213));
-		btnSave.setBounds(551, 470, 123, 33);
+		btnSave.setBounds(654, 470, 123, 33);
 		contentPane.add(btnSave);
 		
 	}

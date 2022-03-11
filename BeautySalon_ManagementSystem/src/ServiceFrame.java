@@ -47,7 +47,7 @@ public class ServiceFrame extends JFrame {
 	PreparedStatement pst;
 
 	public void Connection() {
-		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		String connection = "jdbc:sqlserver://localhost:1433;databaseName=SalonTPS;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
 		try {
 			con = DriverManager.getConnection(connection);
 		}catch(SQLException ex) {
@@ -63,7 +63,7 @@ public class ServiceFrame extends JFrame {
 		model.addColumn("Service");
 		
 		try {
-			String query = "SELECT * FROM Services";
+			String query = "SELECT * FROM Service";
 			PreparedStatement pst = con.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			
@@ -111,7 +111,7 @@ public class ServiceFrame extends JFrame {
 		});
 		Connection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 550); //Frame size
+		setBounds(100, 100, 800, 550); //Frame size
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(251, 213, 225)); //background color of the panel
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -120,7 +120,7 @@ public class ServiceFrame extends JFrame {
 		
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLogo.setBounds(194, 10, 310, 92);
+		lblLogo.setBounds(194, 10, 404, 92);
 		contentPane.add(lblLogo);
 		lblLogo.setIcon(new ImageIcon(img_logo));
 		
@@ -128,14 +128,14 @@ public class ServiceFrame extends JFrame {
 		panel.setLayout(null);
 		panel.setBorder(null);
 		panel.setBackground(new Color(250, 234, 240));
-		panel.setBounds(0, 110, 700, 16);
+		panel.setBounds(0, 110, 800, 16);
 		contentPane.add(panel);
 		
 		JLabel lblBookingTransaction = new JLabel("SERVICE MANAGEMENT");
 		lblBookingTransaction.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBookingTransaction.setForeground(new Color(114, 115, 115));
-		lblBookingTransaction.setFont(new Font("Century Gothic", Font.BOLD, 20));
-		lblBookingTransaction.setBounds(224, 136, 248, 21);
+		lblBookingTransaction.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+		lblBookingTransaction.setBounds(224, 136, 394, 21);
 		contentPane.add(lblBookingTransaction);
 		
 		txt_serviceid = new JTextField();
@@ -209,7 +209,7 @@ public class ServiceFrame extends JFrame {
 				String service = txt_service.getText();	
 				
 				try {
-					pst = con.prepareStatement("INSERT INTO Services(Employee_Name, Employee_Type, Services_Name)values(?,?,?)");
+					pst = con.prepareStatement("INSERT INTO Service(Employee_Name, Employee_Type, Services_Name)values(?,?,?)");
 					pst.setString(1, stylist);
 					pst.setString(2, type);
 					pst.setString(3, service);
@@ -264,7 +264,7 @@ public class ServiceFrame extends JFrame {
 				String service = txt_service.getText();	
 				
 				try {
-					pst = con.prepareStatement("UPDATE Services SET Employee_Name='"+stylist+"', Employee_Type='"+type+"', Services_Name='"+service+"' WHERE Service_ID='"+ID+"'");
+					pst = con.prepareStatement("UPDATE Service SET Employee_Name='"+stylist+"', Employee_Type='"+type+"', Services_Name='"+service+"' WHERE Service_ID='"+ID+"'");
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					if(input == JOptionPane.YES_OPTION) {
 						pst.execute();
@@ -303,7 +303,7 @@ public class ServiceFrame extends JFrame {
 				DefaultTableModel model = (DefaultTableModel)table.getModel();
 		        int SelectRowIndex = table.getSelectedRow();
 		        String hold = model.getValueAt(SelectRowIndex, 0).toString();
-	        	String query = "DELETE FROM Services WHERE Service_ID='"+hold +"'";
+	        	String query = "DELETE FROM Service WHERE Service_ID='"+hold +"'";
 	        	
 	        	 try {
 					PreparedStatement pst = con.prepareStatement(query);
@@ -340,7 +340,7 @@ public class ServiceFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(24, 410, 108, 33);
+		btnDelete.setBounds(24, 410, 266, 33);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -367,7 +367,7 @@ public class ServiceFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(181, 410, 108, 33);
+		btnClear.setBounds(24, 453, 266, 33);
 		contentPane.add(btnClear);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -414,11 +414,11 @@ public class ServiceFrame extends JFrame {
 		lblclose.setHorizontalAlignment(SwingConstants.CENTER);
 		lblclose.setForeground(new Color(114, 115, 115));
 		lblclose.setFont(new Font("Century Gothic", Font.BOLD, 15));
-		lblclose.setBounds(615, 0, 85, 37);
+		lblclose.setBounds(715, 0, 85, 37);
 		contentPane.add(lblclose);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(305, 178, 372, 305);
+		scrollPane.setBounds(305, 178, 472, 305);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -449,7 +449,7 @@ public class ServiceFrame extends JFrame {
 		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnSave.setBorderPainted(false);
 		btnSave.setBackground(new Color(252, 193, 213));
-		btnSave.setBounds(554, 493, 123, 33);
+		btnSave.setBounds(654, 489, 123, 33);
 		contentPane.add(btnSave);
 		
 		textField = new JTextField();

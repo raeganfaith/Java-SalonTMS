@@ -99,7 +99,7 @@ public class PaymentFrame extends JFrame {
 		lblReserve.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ReservationFrame cv = new ReservationFrame();
+				ReservationPaymentFrame cv = new ReservationPaymentFrame();
 		    	cv.setVisible(true);
 		    	PaymentFrame.this.dispose();
 			}
@@ -173,7 +173,7 @@ public class PaymentFrame extends JFrame {
 		lblBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				AdminDashboardFrame cv = new AdminDashboardFrame();
+				UserDashboardFrame cv = new UserDashboardFrame();
 		    	cv.setVisible(true);
 		    	PaymentFrame.this.dispose();
 			}

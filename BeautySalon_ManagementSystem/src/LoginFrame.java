@@ -50,7 +50,7 @@ public class LoginFrame extends ServiceFrame {
 	ResultSet rs;
 	
 	public void Connection() {
-		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		String connection = "jdbc:sqlserver://localhost:1433;databaseName=SalonTPS;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
 		try {
 			con = DriverManager.getConnection(connection);
 		}catch(SQLException ex) {
@@ -208,7 +208,7 @@ public class LoginFrame extends ServiceFrame {
 				btnSignin.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						String connectionsUrl = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";
+						String connectionsUrl = "jdbc:sqlserver://localhost:1433;databaseName=SalonTPS;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";
 						
 						try (Connection connection = DriverManager.getConnection(connectionsUrl);) {
 							//For position variables
@@ -216,7 +216,7 @@ public class LoginFrame extends ServiceFrame {
 							String users =  txtUser.getText();
 							String passw =  txtPass.getText();
 							
-							String sqlQuery = "SELECT * FROM Accounts WHERE Acc_User=? and Acc_Pass=?";
+							String sqlQuery = "SELECT * FROM Account WHERE Acc_User=? and Acc_Pass=?";
 							PreparedStatement pst = connection.prepareStatement(sqlQuery);
 							pst.setString(1, txtUser.getText());
 							pst.setString(2, txtPass.getText());
@@ -232,7 +232,7 @@ public class LoginFrame extends ServiceFrame {
 								db_Position = rs.getString("Employee_Position");
 							}
 							
-							String sqlQuery2 = "SELECT * FROM Accounts WHERE Employee_Position=?";
+							String sqlQuery2 = "SELECT * FROM Account WHERE Employee_Position=?";
 							PreparedStatement pst1 = connection.prepareStatement(sqlQuery2);
 							pst1.setString(1, db_Position);
 							ResultSet rs1 = pst.executeQuery();
