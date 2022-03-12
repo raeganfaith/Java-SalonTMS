@@ -44,6 +44,7 @@ public class BookingPaymentFrame extends JFrame {
 	private JTable table;
 	public JComboBox<String> cbx_stat; 
 	public JComboBox<String> cbx_disc;
+	private String  paymentid = "";
 	
 	//Database connection
 	Connection con;
@@ -94,7 +95,21 @@ public class BookingPaymentFrame extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}}
-	
+	public void PaymentIDValue(){
+		 String sql = "Select Payment_ID from Payment;";
+		 PreparedStatement pstt;
+		try {
+			pstt = con.prepareStatement(sql);
+			ResultSet rs = pstt.executeQuery();
+			while (rs.next()) {
+				paymentid = rs.getString("Payment_ID");
+           }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+	}
 	/**
 	 * Launch the application.
 	 */
@@ -110,7 +125,7 @@ public class BookingPaymentFrame extends JFrame {
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the frame.
 	 */
@@ -210,7 +225,7 @@ public class BookingPaymentFrame extends JFrame {
 		lblBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				UserDashboardFrame cv = new UserDashboardFrame();
+				BookingFrame cv = new BookingFrame();
 		    	cv.setVisible(true);
 		    	BookingPaymentFrame.this.dispose();
 			}
@@ -297,21 +312,19 @@ public class BookingPaymentFrame extends JFrame {
 		cbx_disc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			try {
-				int AmountNum = Integer.parseInt(txt_amount.getText());
+				Double AmountNum = Double.parseDouble(txt_amount.getText());
 				if(cbx_disc.getSelectedItem().equals("50% off")) {
 					//int s= 100-50;
-					int computation = ((100-50)*AmountNum)/100;
+					double computation = ((100-50)*AmountNum)/100;
 					txt_total.setText(String.valueOf(computation));
 				}else if(cbx_disc.getSelectedItem().equals("25% off")){
-					
-					int computation = ((100-25)*AmountNum)/100;
+					double computation = ((100-25)*AmountNum)/100;
 					txt_total.setText(String.valueOf(computation));
 				}else if(cbx_disc.getSelectedItem().equals("10% off")){
-					
-					int computation = ((100-10)*AmountNum)/100;
+					double computation = ((100-10)*AmountNum)/100;
 					txt_total.setText(String.valueOf(computation));
 				}else if(cbx_disc.getSelectedItem().equals("5% off")){
-					int computation = ((100-5)*AmountNum)/100;
+					double computation = ((100-5)*AmountNum)/100;
 					txt_total.setText(String.valueOf(computation));
 				}else if(cbx_disc.getSelectedItem().equals("NO DISCOUNT")) {
 					double computation = (AmountNum);
@@ -335,7 +348,8 @@ public class BookingPaymentFrame extends JFrame {
 		JButton btnCreate = new JButton("CREATE");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String ID = null;
+				
+				String ID = paymentid;
 				String names = txt_name.getText();	
 				String status = (String) cbx_stat.getSelectedItem();
 				String amount = txt_amount.getText();
@@ -343,13 +357,13 @@ public class BookingPaymentFrame extends JFrame {
 				String totals = txt_total.getText();	
 				
 				try {
-					pst = con.prepareStatement("insert into Payment(Customer_ID,Cust_Name, Cust_Status, Cust_Amount, Cust_Discount,Cust_Total)values(?,?,?,?,?,?)");
+					pst = con.prepareStatement("insert into Payment(Payment_ID,Cust_Name, Cust_Status, Cust_Amount, Cust_Discount,Cust_Total)values(?,?,?,?,?)");
+					pst.setString(0, ID);
 					pst.setString(1, names);
-					pst.setString(2, ID);
-					pst.setString(3, status);
-					pst.setString(4, amount);
-					pst.setString(5, disc);
-					pst.setString(6, totals);
+					pst.setString(2, status);
+					pst.setString(3, amount);
+					pst.setString(4, disc);
+					pst.setString(5, totals);
 
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					
@@ -512,14 +526,19 @@ public class BookingPaymentFrame extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				int SelectRowIndex = table.getSelectedRow();
-				txt_custid.setText(model.getValueAt(SelectRowIndex, 0).toString());
-				txt_name.setText(model.getValueAt(SelectRowIndex, 1).toString());
-				cbx_stat.setSelectedItem(model.getValueAt(SelectRowIndex, 2).toString());
-				txt_amount.setText(model.getValueAt(SelectRowIndex, 3).toString());
-				cbx_disc.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());
-				txt_total.setText(model.getValueAt(SelectRowIndex, 5).toString());	
+				try {
+					DefaultTableModel model = (DefaultTableModel)table.getModel();
+					int SelectRowIndex = table.getSelectedRow();
+					txt_custid.setText(model.getValueAt(SelectRowIndex, 0).toString());
+					txt_name.setText(model.getValueAt(SelectRowIndex, 1).toString());
+					cbx_stat.setSelectedItem(model.getValueAt(SelectRowIndex, 2).toString());
+					txt_amount.setText(model.getValueAt(SelectRowIndex, 3).toString());
+					cbx_disc.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());
+					txt_total.setText(model.getValueAt(SelectRowIndex, 5).toString());	
+				}catch(NullPointerException ex) {
+					
+				}
+				
 			}
 		});
 		table.setBackground(new Color(250, 234, 240));

@@ -44,6 +44,7 @@ public class ReservationPaymentFrame extends JFrame {
 	private JTable table;
 	public JComboBox<String> cbx_stat; 
 	public JComboBox<String> cbx_disc;
+	private String  paymentid = "";
 	
 	//Database connection
 	Connection con;
@@ -208,7 +209,7 @@ public class ReservationPaymentFrame extends JFrame {
 		lblBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				UserDashboardFrame cv = new UserDashboardFrame();
+				ReservationFrame cv = new ReservationFrame();
 		    	cv.setVisible(true);
 		    	ReservationPaymentFrame.this.dispose();
 			}
@@ -328,7 +329,7 @@ public class ReservationPaymentFrame extends JFrame {
 		JButton btnCreate = new JButton("CREATE");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				String ID = paymentid;
 				String names = txt_name.getText();	
 				String status = (String) cbx_stat.getSelectedItem();
 				String amount = txt_amount.getText();
@@ -336,7 +337,8 @@ public class ReservationPaymentFrame extends JFrame {
 				String totals = txt_total.getText();	
 				
 				try {
-					pst = con.prepareStatement("insert into Payment(Cust_Name, Cust_Status, Cust_Amount, Cust_Discount,Cust_Total)values(?,?,?,?,?)");
+					pst = con.prepareStatement("insert into Payment(Payment_ID,Cust_Name, Cust_Status, Cust_Amount, Cust_Discount,Cust_Total)values(?,?,?,?,?,?)");
+					pst.setString(0, ID);
 					pst.setString(1, names);
 					pst.setString(2, status);
 					pst.setString(3, amount);
@@ -399,7 +401,7 @@ public class ReservationPaymentFrame extends JFrame {
 				
 				try {
 					
-					pst = con.prepareStatement("UPDATE Payment SET Cust_Name='"+names1+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Customer_ID='"+ID+"'");
+					pst = con.prepareStatement("UPDATE Payment SET Cust_Name='"+names1+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Payment_ID='"+ID+"'");
 					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					if(input == JOptionPane.YES_OPTION) {
@@ -436,7 +438,7 @@ public class ReservationPaymentFrame extends JFrame {
 				DefaultTableModel model = (DefaultTableModel)table.getModel();
 		        int SelectRowIndex = table.getSelectedRow();
 		        String hold = model.getValueAt(SelectRowIndex, 0).toString();
-	        	String queryy = "DELETE FROM Payment WHERE Customer_ID='"+hold +"'";
+	        	String queryy = "DELETE FROM Payment WHERE Payment_ID='"+hold +"'";
 	        	 
 		        try{
 		            PreparedStatement pst = con.prepareStatement(queryy);
@@ -504,14 +506,19 @@ public class ReservationPaymentFrame extends JFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				int SelectRowIndex = table.getSelectedRow();
-				txt_custid.setText(model.getValueAt(SelectRowIndex, 0).toString());
-				txt_name.setText(model.getValueAt(SelectRowIndex, 1).toString());
-				cbx_stat.setSelectedItem(model.getValueAt(SelectRowIndex, 2).toString());
-				txt_amount.setText(model.getValueAt(SelectRowIndex, 3).toString());
-				cbx_disc.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());
-				txt_total.setText(model.getValueAt(SelectRowIndex, 5).toString());	
+				try {
+					DefaultTableModel model = (DefaultTableModel)table.getModel();
+					int SelectRowIndex = table.getSelectedRow();
+					txt_custid.setText(model.getValueAt(SelectRowIndex, 0).toString());
+					txt_name.setText(model.getValueAt(SelectRowIndex, 1).toString());
+					cbx_stat.setSelectedItem(model.getValueAt(SelectRowIndex, 2).toString());
+					txt_amount.setText(model.getValueAt(SelectRowIndex, 3).toString());
+					cbx_disc.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());
+					txt_total.setText(model.getValueAt(SelectRowIndex, 5).toString());			
+				}catch(NullPointerException ex) {
+					
+				}
+				
 			}
 		});
 		table.setBackground(new Color(250, 234, 240));

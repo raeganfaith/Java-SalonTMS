@@ -56,9 +56,10 @@ public class ReservationFrame extends JFrame {
 	public JComboBox<String> cbx_services; 
 	public JComboBox<String> cbx_hairstylist;
 	public JComboBox<String> cbx_time;
+	private String  txt_serviceid = ""; //create a string for the foreign keys
+	private String  paymentid = ""; //create a string for the foreign keys
 	
 	private JTable table;
-	
 	
 	Connection con;
 	Connection connection;
@@ -122,33 +123,68 @@ public class ReservationFrame extends JFrame {
 			System.out.println("NullPointerException thrown!");
 		}
 	}
-	
+	//A method to select and connect the tables of the fk
+	public void PaymentIDValue(){
+		 String sql = "Select Payment_ID from Payment;";
+		 PreparedStatement pstt;
+		 String names = txt_name.getText();	
+		 try {
+			pstt = con.prepareStatement("insert into Payment(Cust_Name)values(?)");
+			pstt.setString(1, names);
+			pstt.executeUpdate();
+			pstt = con.prepareStatement(sql);
+			ResultSet rs = pstt.executeQuery();
+			while (rs.next()) {
+				paymentid = rs.getString("Payment_ID");
+		          }
+		 } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	         
+	}
+	//A method to select and connect the tables of the fk 
+	public void ServiceIDValue(){
+		PreparedStatement pstt;
+		String s = (String) cbx_services.getSelectedItem();
+        String sql1 = "Select * from Service where Services_Name='" + s + "'";
+		try {
+			pstt = con.prepareStatement(sql1);
+			ResultSet rs = pstt.executeQuery();
+			while (rs.next()) {
+           	txt_serviceid = rs.getString("Service_ID");
+           }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+	}
 	//a method to show and fetch data from the database to the Jtable
-		public void ShowData() {
-			DefaultTableModel model = new DefaultTableModel();
-			model.addColumn("Reservation ID");
-			model.addColumn("Name");
-			model.addColumn("Address");
-			model.addColumn("Contact No.");
-			model.addColumn("Service");
-			model.addColumn("Stylist");
-			model.addColumn("Time");
-			model.addColumn("Date");
-			try {
-				String query = "SELECT * FROM Reservation";
-				PreparedStatement ps = con.prepareStatement(query);
-				ResultSet rs = ps.executeQuery();
+	public void ShowData() {
+		DefaultTableModel model = new DefaultTableModel();
+		model.addColumn("Reservation ID");
+		model.addColumn("Name");
+		model.addColumn("Address");
+		model.addColumn("Contact No.");
+		model.addColumn("Service");
+		model.addColumn("Stylist");
+		model.addColumn("Time");
+		model.addColumn("Date");
+		try {
+			String query = "SELECT * FROM Reservation";
+			PreparedStatement ps = con.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
 				
-				while(rs.next()) {
-					model.addRow(new Object [] {
-						rs.getString("Reservation_No"),	
-						rs.getString("Cust_Name"),	
-						rs.getString("Cust_Address"),	
-						rs.getString("Cust_Phone"),
-						rs.getString("Services_Name"),	
-						rs.getString("Employee_Name"),
-						rs.getString("Reserve_Time"),	
-						rs.getString("Reserve_Date"),
+			while(rs.next()) {
+				model.addRow(new Object [] {
+					rs.getString("Reservation_No"),	
+					rs.getString("Cust_Name"),	
+					rs.getString("Cust_Address"),	
+					rs.getString("Cust_Phone"),
+					rs.getString("Services_Name"),	
+					rs.getString("Employee_Name"),
+					rs.getString("Reserve_Time"),	
+					rs.getString("Reserve_Date"),
 					});
 						
 					}
@@ -416,14 +452,18 @@ public class ReservationFrame extends JFrame {
 				String date = sdf.format(dateChooser.getDate());
 				
 				try {
-					pst = con.prepareStatement("INSERT INTO Reservation(Cust_Name, Cust_Address, Cust_Phone, Services_Name, Employee_Name, Reserve_Time, Reserve_Date)values(?,?,?,?,?,?,?)");
-					pst.setString(1, names);
-					pst.setString(2, address);
-					pst.setString(3, contact);
-					pst.setString(4, service);
-					pst.setString(5, hairstylist);
-					pst.setString(6, time);
-					pst.setString(7, date);
+					PaymentIDValue();
+					ServiceIDValue();
+					pst = con.prepareStatement("INSERT INTO Reservation(Payment_ID,Cust_Name, Cust_Address, Cust_Phone, Service_ID, Services_Name, Employee_Name, Reserve_Time, Reserve_Date)values(?,?,?,?,?,?,?,?,?)");
+					pst.setString(1, paymentid);
+					pst.setString(2, names);
+					pst.setString(3, address);
+					pst.setString(4, contact);
+					pst.setString(5, txt_serviceid);
+					pst.setString(6, service);
+					pst.setString(7, hairstylist);
+					pst.setString(8, time);
+					pst.setString(9, date);
 
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					
@@ -481,8 +521,7 @@ public class ReservationFrame extends JFrame {
 				String time = (String) cbx_time.getSelectedItem();
 				String date = sdf.format(dateChooser.getDate());
 				
-				try {
-					
+				try {				
 					pst = con.prepareStatement("UPDATE Reservation SET Cust_Name='"+names1+"', Cust_Address='"+address1+"', Cust_Phone='"+contact1+"', Services_Name='"+service1+"',Employee_Name='"+stylist1+"',Reserve_Time='"+time+"',Reserve_Date='"+date+"' WHERE Reservation_No='"+ID+"'");
 					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
@@ -601,7 +640,7 @@ public class ReservationFrame extends JFrame {
 		JLabel lblTotalNoOf = new JLabel("Total No. of Reservations:");
 		lblTotalNoOf.setForeground(new Color(114, 115, 115));
 		lblTotalNoOf.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalNoOf.setBounds(313, 497, 189, 23);
+		lblTotalNoOf.setBounds(302, 502, 189, 23);
 		contentPane.add(lblTotalNoOf);
 		
 		textField = new JTextField();
@@ -610,16 +649,8 @@ public class ReservationFrame extends JFrame {
 		textField.setColumns(10);
 		textField.setBorder(null);
 		textField.setBackground(new Color(250, 234, 240));
-		textField.setBounds(501, 497, 54, 23);
+		textField.setBounds(490, 502, 54, 23);
 		contentPane.add(textField);
-		
-		JButton btnSave = new JButton("SAVE");
-		btnSave.setForeground(new Color(114, 115, 115));
-		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 14));
-		btnSave.setBorderPainted(false);
-		btnSave.setBackground(new Color(252, 193, 213));
-		btnSave.setBounds(669, 500, 108, 33);
-		contentPane.add(btnSave);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(303, 165, 474, 322);
@@ -666,6 +697,23 @@ public class ReservationFrame extends JFrame {
 		lblHairSt.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		lblHairSt.setBounds(24, 329, 119, 21);
 		contentPane.add(lblHairSt);
+		
+		JButton btnSave_1 = new JButton("PROCEED TO PAYMENT");
+		btnSave_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ReservationPaymentFrame cv = new ReservationPaymentFrame();
+		    	cv.setVisible(true);
+		    	ReservationFrame.this.dispose();
+			}
+		});
+		
+		btnSave_1.setForeground(new Color(114, 115, 115));
+		btnSave_1.setFont(new Font("Century Gothic", Font.PLAIN, 14));
+		btnSave_1.setBorderPainted(false);
+		btnSave_1.setBackground(new Color(252, 193, 213));
+		btnSave_1.setBounds(562, 500, 215, 33);
+		contentPane.add(btnSave_1);
 		
 		//to customize the header/column
 		JTableHeader JTHeader = table.getTableHeader();

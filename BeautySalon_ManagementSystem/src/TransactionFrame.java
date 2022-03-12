@@ -45,73 +45,53 @@ public class TransactionFrame extends JFrame {
 	Connection connection;
 	PreparedStatement pst;
 	ResultSet rs;
-	private JTable tableBooking;
-	private JTable tableReservation;
 	private JTable tableBookingPayments;
 	
 	//Database Connection
 	public void Connection() {
-		String connection = "jdbc:sqlserver://localhost:1433;databaseName=db_SalonTPS;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		String connection = "jdbc:sqlserver://localhost:1433;databaseName=SalonTPS;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
 		try {
 			con = DriverManager.getConnection(connection);
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}	
 	}
-
-	//a method to show and fetch data from the database to the Jtable
-		public void ShowDataBooking() {
-			DefaultTableModel model = new DefaultTableModel();
-			model.addColumn("Booking ID");
-			model.addColumn("Name");
-			model.addColumn("Address");
-			model.addColumn("Contact No.");
-			model.addColumn("Service");
-			model.addColumn("Stylist");
-			try {
-				String query = "select * from Booking";
-				PreparedStatement ps = con.prepareStatement(query);
-				ResultSet rs = ps.executeQuery();
-				
-				while(rs.next()) {
-					model.addRow(new Object [] {
-						rs.getString("Booking_No"),	
-						rs.getString("Cust_Name"),	
-						rs.getString("Cust_Address"),	
-						rs.getString("Cust_Phone"),
-						rs.getString("Services_Name"),	
-						rs.getString("Employee_Name"),
-					});
-						
-					}
-				
-				tableBooking.setModel(model);
-				
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}}
 		
 		//a method to show and fetch data from the database to the Jtable
 		public void ShowDataReservationPayment() {
 			DefaultTableModel model = new DefaultTableModel();
 			model.addColumn("R No.");
+			
 			model.addColumn("Name");
+			model.addColumn("Address");
+			model.addColumn("Phone");
+			model.addColumn("Time");
+			model.addColumn("Date");
+			model.addColumn("Service ID");
+			model.addColumn("Service");
+			model.addColumn("Stylist");
+			model.addColumn("Payment ID");
 			model.addColumn("Status");
 			model.addColumn("Amount");
 			model.addColumn("Discount");
 			model.addColumn("Total");
-			
 			try {
-				String query = "SELECT * FROM Payment JOIN Reservation ON Payment.Cust_Name = Reservation.Cust_Name";
+				String query = "SELECT * FROM Payment JOIN Reservation ON Payment.Cust_Name = Reservation.Cust_Name;";
 				PreparedStatement ps = con.prepareStatement(query);
 				ResultSet rs = ps.executeQuery();
 				
 				while(rs.next()) {
 					model.addRow(new Object [] {
-						rs.getString("Reservation_No"),	
-						rs.getString("Cust_Name"),	
+						rs.getString("Reservation_No"),							
+						rs.getString("Cust_Name"),		
+						rs.getString("Cust_Address"),
+						rs.getString("Cust_Phone"),
+						rs.getString("Reserve_Time"),	
+						rs.getString("Reserve_Date"),
+						rs.getString("Service_ID"),
+						rs.getString("Services_Name"), 
+						rs.getString("Employee_Name"),
+						rs.getString("Payment_ID"),
 						rs.getString("Cust_Status"),
 						rs.getString("Cust_Amount"),
 						rs.getString("Cust_Discount"),
@@ -162,41 +142,7 @@ public class TransactionFrame extends JFrame {
 				e.printStackTrace();
 			}}
 
-		public void ShowDataReservation() {
-			DefaultTableModel model = new DefaultTableModel();
-			model.addColumn("R No.");
-			model.addColumn("Name");
-			model.addColumn("Address");
-			model.addColumn("Contact No.");
-			model.addColumn("Service");
-			model.addColumn("Stylist");
-			model.addColumn("Time");
-			model.addColumn("Date");
-			try {
-				String query = "select * from Reservation";
-				PreparedStatement ps = con.prepareStatement(query);
-				ResultSet rs = ps.executeQuery();
-				
-				while(rs.next()) {
-					model.addRow(new Object [] {
-						rs.getString("Reservation_No"),	
-						rs.getString("Cust_Name"),	
-						rs.getString("Cust_Address"),	
-						rs.getString("Cust_Phone"),
-						rs.getString("Services_Name"),	
-						rs.getString("Employee_Name"),
-						rs.getString("Reserve_Time"),	
-						rs.getString("Reserve_Date"),
-					});
-						
-					}
-				
-				tableReservation.setModel(model);
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}}
+		
 		
 	/**
 	 * Launch the application.
@@ -223,10 +169,10 @@ public class TransactionFrame extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				ShowDataBooking();
+				//ShowDataBooking();
 				ShowDataReservationPayment();
-				ShowDataBookingPayment();
-				ShowDataReservation();
+				//ShowDataBookingPayment();
+				//ShowDataReservation();
 			}
 		});
 		Connection();
@@ -238,7 +184,7 @@ public class TransactionFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblUserManagement = new JLabel("TRANSACTIONS OVERVIEW");
+		JLabel lblUserManagement = new JLabel("TRANSACTIONS HISTORY");
 		lblUserManagement.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserManagement.setForeground(new Color(114, 115, 115));
 		lblUserManagement.setFont(new Font("Century Gothic", Font.PLAIN, 20));
@@ -316,7 +262,7 @@ public class TransactionFrame extends JFrame {
 		contentPane.add(btnCreate);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(482, 191, 297, 135);
+		scrollPane.setBounds(21, 168, 758, 150);
 		contentPane.add(scrollPane);
 		
 		tableReservationPayment = new JTable();
@@ -339,26 +285,8 @@ public class TransactionFrame extends JFrame {
 		textField.setBounds(154, 502, 85, 23);
 		contentPane.add(textField);
 		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(21, 352, 461, 135);
-		contentPane.add(scrollPane_2);
-		
-		tableBooking = new JTable();
-		tableBooking.setBackground(new Color(250, 234, 240));
-		tableBooking.setFont(new Font("Century Gothic", Font.PLAIN, 9));
-		scrollPane_2.setViewportView(tableBooking);
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(21, 191, 461, 134);
-		contentPane.add(scrollPane_1);
-		
-		tableReservation = new JTable();
-		tableReservation.setBackground(new Color(250, 234, 240));
-		tableReservation.setFont(new Font("Century Gothic", Font.PLAIN, 9));
-		scrollPane_1.setViewportView(tableReservation);
-		
 		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(482, 353, 297, 135);
+		scrollPane_3.setBounds(21, 342, 758, 150);
 		contentPane.add(scrollPane_3);
 		
 		tableBookingPayments = new JTable();
@@ -369,43 +297,24 @@ public class TransactionFrame extends JFrame {
 		JLabel lblTotalNoOf_1 = new JLabel("Reservation:");
 		lblTotalNoOf_1.setForeground(new Color(114, 115, 115));
 		lblTotalNoOf_1.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalNoOf_1.setBounds(21, 168, 132, 23);
+		lblTotalNoOf_1.setBounds(21, 145, 132, 23);
 		contentPane.add(lblTotalNoOf_1);
 		
 		JLabel lblTotalNoOf_1_1 = new JLabel("Booking:");
 		lblTotalNoOf_1_1.setForeground(new Color(114, 115, 115));
 		lblTotalNoOf_1_1.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalNoOf_1_1.setBounds(21, 328, 132, 23);
+		lblTotalNoOf_1_1.setBounds(21, 320, 132, 23);
 		contentPane.add(lblTotalNoOf_1_1);
-		
-		JLabel lblTotalNoOf_1_1_1 = new JLabel("Reservation Payments:");
-		lblTotalNoOf_1_1_1.setForeground(new Color(114, 115, 115));
-		lblTotalNoOf_1_1_1.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalNoOf_1_1_1.setBounds(482, 168, 225, 23);
-		contentPane.add(lblTotalNoOf_1_1_1);
-		
-		JLabel lblTotalNoOf_1_1_1_1 = new JLabel("Booking Payments:");
-		lblTotalNoOf_1_1_1_1.setForeground(new Color(114, 115, 115));
-		lblTotalNoOf_1_1_1_1.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalNoOf_1_1_1_1.setBounds(482, 328, 225, 23);
-		contentPane.add(lblTotalNoOf_1_1_1_1);
 		
 		//to customize the header/column
 		JTableHeader JTHeader = tableReservationPayment.getTableHeader();
 		JTHeader.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		JTHeader.setBackground(new Color(252, 193, 213));
-
-		JTableHeader JTHeader1 = tableReservation.getTableHeader();
-		JTHeader1.setFont(new Font("Century Gothic", Font.PLAIN, 9));
-		JTHeader1.setBackground(new Color(252, 193, 213));
+		
 		
 		JTableHeader JTHeader2 = tableBookingPayments.getTableHeader();
 		JTHeader2.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		JTHeader2.setBackground(new Color(252, 193, 213));
-		
-		JTableHeader JTHeader3 = tableBooking.getTableHeader();
-		JTHeader3.setFont(new Font("Century Gothic", Font.PLAIN, 9));
-		JTHeader3.setBackground(new Color(252, 193, 213));
-		
+
 	}
 }

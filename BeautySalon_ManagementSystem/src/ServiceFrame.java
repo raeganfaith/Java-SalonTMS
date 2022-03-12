@@ -42,7 +42,7 @@ public class ServiceFrame extends JFrame {
 	private JTextField txt_service;
 	private JTable table;
 	private JTextField textField;
-	
+	private static JComboBox<String> cbx_type;	
 	Connection con;
 	PreparedStatement pst;
 
@@ -55,6 +55,7 @@ public class ServiceFrame extends JFrame {
 		}
 	}
 
+	
 	public void ShowData() {
 		DefaultTableModel model = new DefaultTableModel();
 		model.addColumn("Service ID");
@@ -83,6 +84,8 @@ public class ServiceFrame extends JFrame {
 			//ex.printStackTrace();
 			System.out.println("");
 		}}
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -92,12 +95,42 @@ public class ServiceFrame extends JFrame {
 				try {
 					ServiceFrame frame = new ServiceFrame();
 					frame.setVisible(true);
+					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
+	
+	public class Person {
+		public String name; // private = restricted access
+		public String stylist;
+		public String type;
+		public String service;
+		  // Getter
+		  public String getName() {
+			 				
+		    return name;
+		  }
+
+		  // Setter
+		  public void setName() {
+			  this.stylist = txt_stylist.getText();	
+			  this.type = (String) cbx_type.getSelectedItem();
+			  this.service = txt_service.getText();
+		    try {
+				pst = con.prepareStatement("INSERT INTO Service(Employee_Name, Employee_Type, Services_Name)values(?,?,?)");
+				pst.setString(1, stylist);
+				pst.setString(2, type);
+				pst.setString(3, service);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+		}
 
 	/**
 	 * Create the frame.
@@ -476,4 +509,21 @@ public class ServiceFrame extends JFrame {
 	}
 
 
-}
+	//public JTextField getTxt_serviceid() {
+	//	return txt_serviceid;
+	//}
+	//public void setTfNoOfPeople(String tfNoOfPeople) {
+	///	this.tfNoOfPeople.setText(tfNoOfPeople);
+	//}
+
+	public void setTxt_serviceid(String txt_serviceid) {
+		this.txt_serviceid.setText(txt_serviceid);
+	}
+
+
+	//public void setTxt_serviceid(JTextField sserviceID) {
+	//	this.txt_serviceid = sserviceID;
+	}
+
+
+

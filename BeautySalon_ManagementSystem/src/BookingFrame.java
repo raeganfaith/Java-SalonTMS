@@ -50,10 +50,15 @@ public class BookingFrame extends JFrame {
 	public JComboBox<String> cbx_hairstylist;
 	private JTable table;
 	private JScrollPane scrollPane;
+	private String  txt_serviceid = ""; //create a string for the foreign keys
+	private String  paymentid = ""; //create a string for the foreign keys
 	
+	
+	Connection cobj;
 	Connection con;
 	Connection connection;
 	PreparedStatement pst;
+	PreparedStatement pst1;
 	ResultSet rs;
 	private JTextField textField;
 	
@@ -67,6 +72,7 @@ public class BookingFrame extends JFrame {
 		}	
 	}
 
+	
 	//to fetch data from the database to the JComboBox
 	public void fillComboBoxService()
 	{
@@ -75,7 +81,7 @@ public class BookingFrame extends JFrame {
 			String query = "SELECT * FROM Service ";
 			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
-				
+			//Demo.setEnabled(true);
 			while(rs.next())
 			{
 				cbx_services.addItem(rs.getString("Services_Name"));
@@ -149,10 +155,44 @@ public class BookingFrame extends JFrame {
 			e.printStackTrace();
 		}}
 	
+	//A method to select and connect the tables of the fk 
+	public void ServiceIDValue(){
+		 PreparedStatement pstt;
+		 String s = (String) cbx_services.getSelectedItem();
+         String sql1 = "Select * from Service where Services_Name='" + s + "'";
+		try {
+			pstt = con.prepareStatement(sql1);
+			ResultSet rs = pstt.executeQuery();
+			while (rs.next()) {
+            	txt_serviceid = rs.getString("Service_ID");
+            }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}     
+	}
+	//A method to select and connect the tables of the fk
+		public void PaymentIDValue(){
+			 String sql = "Select Payment_ID from Payment;";
+			 PreparedStatement pstt;
+			 String names = txt_name.getText();	
+
+			try {
+				pstt = con.prepareStatement("insert into Payment(Cust_Name)values(?)");
+				pstt.setString(1, names);
+				pstt.executeUpdate();
+				pstt = con.prepareStatement(sql);
+				ResultSet rs = pstt.executeQuery();
+				while (rs.next()) {
+					paymentid = rs.getString("Payment_ID");
+	            }
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	         
+		}
 	
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -166,10 +206,7 @@ public class BookingFrame extends JFrame {
 		});
 	}
 	
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public BookingFrame() {
 		//To automatically shows the data to the Jtable
 		addWindowListener(new WindowAdapter() {
@@ -180,6 +217,8 @@ public class BookingFrame extends JFrame {
 		});
 		
 		Connection(); //method for the database
+		
+		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 550); //Frame size
@@ -221,7 +260,7 @@ public class BookingFrame extends JFrame {
 		txt_bookid.setBounds(130, 171, 142, 23);
 		contentPane.add(txt_bookid);
 		
-		txt_name = new JTextField();
+		txt_name = new JTextField();//
 		txt_name.setForeground(new Color(114, 115, 115));
 		txt_name.setColumns(10);
 		txt_name.setBorder(null);
@@ -241,7 +280,6 @@ public class BookingFrame extends JFrame {
 		cbx_services.addItemListener(new ItemListener() {
 			//To populate the items in the cbx_hairstylist according to the selected item in other bx_services.
 			public void itemStateChanged(ItemEvent e) {
-
 				String s = (String) cbx_services.getSelectedItem();
 	            String sql = "Select * from Service where Services_Name='" + s + "'";
 	            try {
@@ -250,13 +288,14 @@ public class BookingFrame extends JFrame {
 	                cbx_hairstylist.removeAllItems();
 	                while (rs.next()) {
 	                	cbx_hairstylist.addItem(rs.getString("Employee_Name"));
-	                }
+	                }  
 	            } catch (NullPointerException | SQLException e3) 
 				{
 					e3.printStackTrace();
 					System.out.println("NullPointerException thrown!");
 				}
 			}
+
 		});
 		cbx_services.setBackground(new Color(250, 234, 240));
 		cbx_services.setBounds(130, 306, 142, 23);
@@ -321,22 +360,29 @@ public class BookingFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String names = txt_name.getText();	
 				String address = txt_address.getText();
-				String contact = txt_phone.getText();	
+				String contact = txt_phone.getText();
 				String service = (String) cbx_services.getSelectedItem();
 				String hairstylist = (String) cbx_hairstylist.getSelectedItem();
-				
+				//String none = null;
+            	
 				try {
-					pst = con.prepareStatement("insert into Booking(Cust_Name, Cust_Address, Cust_Phone, Services_Name, Employee_Name)values(?,?,?,?,?)");
-					pst.setString(1, names);
-					pst.setString(2, address);
-					pst.setString(3, contact);
-					pst.setString(4, service);
-					pst.setString(5, hairstylist);
-
+					PaymentIDValue();
+					ServiceIDValue();
+										
+					pst = con.prepareStatement("insert into Booking(Payment_ID,Cust_Name, Cust_Address, Cust_Phone,Service_ID,Services_Name, Employee_Name)values(?,?,?,?,?,?,?)");
+					pst.setString(1, paymentid);
+					pst.setString(2, names);
+					pst.setString(3, address);
+					pst.setString(4, contact);
+					pst.setString(5, txt_serviceid);
+					pst.setString(6, service);
+					pst.setString(7, hairstylist);
+					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					
 					if(input == JOptionPane.YES_OPTION) {
 						pst.executeUpdate();
+						
 						JOptionPane.showMessageDialog(null, "Successfully added!");
 						ShowData(); // to automatically update the table
 						txt_name.setText("");
@@ -545,7 +591,7 @@ public class BookingFrame extends JFrame {
 		lblclose.setBounds(715, 0, 85, 37);
 		contentPane.add(lblclose);
 		
-		JButton btnSave = new JButton("PAYMENT");
+		JButton btnSave = new JButton("PROCEED TO PAYMENT");
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -558,7 +604,7 @@ public class BookingFrame extends JFrame {
 		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnSave.setBorderPainted(false);
 		btnSave.setBackground(new Color(252, 193, 213));
-		btnSave.setBounds(593, 474, 123, 33);
+		btnSave.setBounds(561, 474, 215, 33);
 		contentPane.add(btnSave);
 		
 		scrollPane = new JScrollPane();
@@ -571,14 +617,19 @@ public class BookingFrame extends JFrame {
 		//Display selected row in textFields and JComboBox.
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-				int SelectRowIndex = table.getSelectedRow();
-				txt_bookid.setText(model.getValueAt(SelectRowIndex, 0).toString());
-				txt_name.setText(model.getValueAt(SelectRowIndex, 1).toString());
-				txt_address.setText(model.getValueAt(SelectRowIndex, 2).toString());
-				txt_phone.setText(model.getValueAt(SelectRowIndex, 3).toString());
-				cbx_services.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());	
-				cbx_hairstylist.setSelectedItem(model.getValueAt(SelectRowIndex, 5).toString());	
+				try {
+					DefaultTableModel model = (DefaultTableModel)table.getModel();
+					int SelectRowIndex = table.getSelectedRow();
+					txt_bookid.setText(model.getValueAt(SelectRowIndex, 0).toString());
+					txt_name.setText(model.getValueAt(SelectRowIndex, 1).toString());
+					txt_address.setText(model.getValueAt(SelectRowIndex, 2).toString());
+					txt_phone.setText(model.getValueAt(SelectRowIndex, 3).toString());
+					cbx_services.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());	
+					cbx_hairstylist.setSelectedItem(model.getValueAt(SelectRowIndex, 5).toString());
+				}catch(NullPointerException ex) {
+					
+				}
+					
 			}
 		});
 		table.setBorder(null);
@@ -589,7 +640,7 @@ public class BookingFrame extends JFrame {
 		JLabel lblSearch = new JLabel("Total No. of Bookings:");
 		lblSearch.setForeground(new Color(114, 115, 115));
 		lblSearch.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblSearch.setBounds(309, 474, 159, 23);
+		lblSearch.setBounds(282, 474, 159, 23);
 		contentPane.add(lblSearch);
 		
 		textField = new JTextField();
@@ -598,7 +649,7 @@ public class BookingFrame extends JFrame {
 		textField.setColumns(10);
 		textField.setBorder(null);
 		textField.setBackground(new Color(250, 234, 240));
-		textField.setBounds(466, 474, 85, 23);
+		textField.setBounds(439, 474, 85, 23);
 		contentPane.add(textField);
 		
 		//to customize the header/column
@@ -606,6 +657,9 @@ public class BookingFrame extends JFrame {
 		JTHeader.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		JTHeader.setBackground(new Color(252, 193, 213));
 	}
+	//public JTextField getTxt_serviceid() {
+	//	return getTxt_serviceid();
+	//}
 }
 
 

@@ -236,6 +236,21 @@ public class AdminDashboardFrame extends JFrame {
 		contentPane.add(lblAdminDashboard);
 		
 		JLabel lblTransact = new JLabel("TRANSACTIONS");
+		lblTransact.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				TransactionFrame cv = new TransactionFrame();
+		    	cv.setVisible(true);
+		    	AdminDashboardFrame.this.dispose();
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblTransact.setForeground(Color.BLACK);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblTransact.setForeground(Color.GRAY);
+			}});
 		lblTransact.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTransact.setForeground(new Color(114, 115, 115));
 		lblTransact.setFont(new Font("Century Gothic", Font.PLAIN, 18));
@@ -243,6 +258,14 @@ public class AdminDashboardFrame extends JFrame {
 		contentPane.add(lblTransact);
 		
 		JLabel lblTransc = new JLabel("");
+		lblTransc.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				TransactionFrame cv = new TransactionFrame();
+		    	cv.setVisible(true);
+		    	AdminDashboardFrame.this.dispose();
+			}
+		});
 		lblTransc.setIcon(new ImageIcon(img_transc));
 		lblTransc.setBounds(373, 174, 105, 124);
 		contentPane.add(lblTransc);
