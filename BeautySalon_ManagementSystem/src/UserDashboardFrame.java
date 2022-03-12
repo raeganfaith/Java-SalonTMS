@@ -73,7 +73,7 @@ public class UserDashboardFrame extends JFrame {
 		lblBooking.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				CustomerFrame cv = new CustomerFrame();
+				BookingFrame cv = new BookingFrame();
 		    	cv.setVisible(true);
 		    	UserDashboardFrame.this.dispose();
 			}

@@ -45,6 +45,7 @@ public class BookingPaymentFrame extends JFrame {
 	public JComboBox<String> cbx_stat; 
 	public JComboBox<String> cbx_disc;
 	private String  paymentid = "";
+	 //create a string for the foreign keys
 	
 	//Database connection
 	Connection con;
@@ -110,6 +111,7 @@ public class BookingPaymentFrame extends JFrame {
 		}
         
 	}
+	
 	/**
 	 * Launch the application.
 	 */
@@ -357,6 +359,7 @@ public class BookingPaymentFrame extends JFrame {
 				String totals = txt_total.getText();	
 				
 				try {
+					//Accounts();
 					pst = con.prepareStatement("insert into Payment(Payment_ID,Cust_Name, Cust_Status, Cust_Amount, Cust_Discount,Cust_Total)values(?,?,?,?,?)");
 					pst.setString(0, ID);
 					pst.setString(1, names);
@@ -364,6 +367,7 @@ public class BookingPaymentFrame extends JFrame {
 					pst.setString(3, amount);
 					pst.setString(4, disc);
 					pst.setString(5, totals);
+				
 
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					
@@ -418,6 +422,7 @@ public class BookingPaymentFrame extends JFrame {
 				String amount = txt_amount.getText();
 				String disc = (String) cbx_disc.getSelectedItem();
 				String total = txt_total.getText();	
+				//String s = LoginFrame.txtPass.getText();
 				
 				try {
 					
@@ -439,9 +444,9 @@ public class BookingPaymentFrame extends JFrame {
 						
 					}
 						
-				} catch (SQLException e1) {
+				} catch (NullPointerException | SQLException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					//e1.printStackTrace();
 				}
 			}
 		});

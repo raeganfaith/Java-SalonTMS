@@ -39,13 +39,13 @@ public class UserFrame extends JFrame {
 	private Image img_logo = new ImageIcon(LoginFrame.class.getResource("res/LOGO-2.png")).getImage().getScaledInstance(300, 90, Image.SCALE_SMOOTH);
 	private JPanel contentPane;
 	private JTextField txt_user;
-	private JTextField txt_name;
+	public JTextField txt_name;
 	private JTextField txt_phone;
 	private JTextField txt_username;
 	private JTextField txt_pass;
 	private JTable table;
 	private JTextField textField;
-	
+	//public JTextField txt_name;
 	Connection con;
 	Connection connection;
 	PreparedStatement pst;
@@ -94,7 +94,7 @@ public class UserFrame extends JFrame {
 				
 				while(rs.next()) {
 					model.addRow(new Object [] {
-						rs.getString("Acc_No"),	
+						rs.getString("Acc_ID"),	
 						rs.getString("Employee_Name"),	
 						rs.getString("Employee_Type"),	
 						rs.getString("Employee_Position"),
@@ -141,7 +141,7 @@ public class UserFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblUserManagement = new JLabel("USER MANAGEMENT");
+		JLabel lblUserManagement = new JLabel("ACCOUNT MANAGEMENT");
 		lblUserManagement.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserManagement.setForeground(new Color(114, 115, 115));
 		lblUserManagement.setFont(new Font("Century Gothic", Font.PLAIN, 20));
@@ -164,31 +164,31 @@ public class UserFrame extends JFrame {
 		JLabel lblContactNo = new JLabel("CONTACT NO.");
 		lblContactNo.setForeground(new Color(114, 115, 115));
 		lblContactNo.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblContactNo.setBounds(21, 304, 109, 24);
+		lblContactNo.setBounds(21, 310, 109, 24);
 		contentPane.add(lblContactNo);
 		
 		JLabel lblAddress = new JLabel("TYPE:");
 		lblAddress.setForeground(new Color(114, 115, 115));
 		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblAddress.setBounds(21, 236, 70, 24);
+		lblAddress.setBounds(21, 242, 70, 24);
 		contentPane.add(lblAddress);
 		
 		JLabel lblName = new JLabel("NAME:");
 		lblName.setForeground(new Color(114, 115, 115));
 		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblName.setBounds(21, 202, 81, 24);
+		lblName.setBounds(21, 208, 81, 24);
 		contentPane.add(lblName);
 		
-		JLabel lblCustomerId = new JLabel("USER ID:");
+		JLabel lblCustomerId = new JLabel("ACCOUNT ID:");
 		lblCustomerId.setForeground(new Color(114, 115, 115));
 		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblCustomerId.setBounds(21, 168, 91, 24);
+		lblCustomerId.setBounds(21, 174, 109, 24);
 		contentPane.add(lblCustomerId);
 		
 		JLabel lblUserName = new JLabel("USER NAME:");
 		lblUserName.setForeground(new Color(114, 115, 115));
 		lblUserName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblUserName.setBounds(21, 338, 99, 24);
+		lblUserName.setBounds(21, 344, 99, 24);
 		contentPane.add(lblUserName);
 		
 		JComboBox<String> cbx_type = new JComboBox<String>();
@@ -197,13 +197,13 @@ public class UserFrame extends JFrame {
 		cbx_type.setForeground(new Color(114, 115, 115));
 		cbx_type.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_type.setBackground(new Color(250, 234, 240));
-		cbx_type.setBounds(128, 237, 123, 23);
+		cbx_type.setBounds(128, 243, 123, 23);
 		contentPane.add(cbx_type);
 		
 		JLabel lblPassword = new JLabel("PASSWORD:");
 		lblPassword.setForeground(new Color(114, 115, 115));
 		lblPassword.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblPassword.setBounds(21, 372, 99, 24);
+		lblPassword.setBounds(21, 378, 99, 24);
 		contentPane.add(lblPassword);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -260,7 +260,7 @@ public class UserFrame extends JFrame {
 		txt_user.setColumns(10);
 		txt_user.setBorder(null);
 		txt_user.setBackground(new Color(250, 234, 240));
-		txt_user.setBounds(128, 169, 123, 23);
+		txt_user.setBounds(128, 175, 123, 23);
 		contentPane.add(txt_user);
 		
 		txt_name = new JTextField();
@@ -269,7 +269,7 @@ public class UserFrame extends JFrame {
 		txt_name.setColumns(10);
 		txt_name.setBorder(null);
 		txt_name.setBackground(new Color(250, 234, 240));
-		txt_name.setBounds(128, 203, 123, 23);
+		txt_name.setBounds(128, 209, 123, 23);
 		contentPane.add(txt_name);
 		
 		txt_phone = new JTextField();
@@ -278,7 +278,7 @@ public class UserFrame extends JFrame {
 		txt_phone.setColumns(10);
 		txt_phone.setBorder(null);
 		txt_phone.setBackground(new Color(250, 234, 240));
-		txt_phone.setBounds(128, 304, 123, 23);
+		txt_phone.setBounds(128, 310, 123, 23);
 		contentPane.add(txt_phone);
 			
 		txt_username = new JTextField();
@@ -287,7 +287,7 @@ public class UserFrame extends JFrame {
 		txt_username.setColumns(10);
 		txt_username.setBorder(null);
 		txt_username.setBackground(new Color(250, 234, 240));
-		txt_username.setBounds(130, 339, 123, 23);
+		txt_username.setBounds(130, 345, 123, 23);
 		contentPane.add(txt_username);
 		
 		txt_pass = new JTextField();
@@ -296,7 +296,7 @@ public class UserFrame extends JFrame {
 		txt_pass.setColumns(10);
 		txt_pass.setBorder(null);
 		txt_pass.setBackground(new Color(250, 234, 240));
-		txt_pass.setBounds(128, 372, 123, 23);
+		txt_pass.setBounds(128, 378, 123, 23);
 		contentPane.add(txt_pass);
 		
 		JComboBox<String> cbx_position = new JComboBox<String>();
@@ -305,7 +305,7 @@ public class UserFrame extends JFrame {
 		cbx_position.setForeground(new Color(114, 115, 115));
 		cbx_position.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_position.setBackground(new Color(250, 234, 240));
-		cbx_position.setBounds(128, 271, 123, 23);
+		cbx_position.setBounds(128, 277, 123, 23);
 		contentPane.add(cbx_position);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
@@ -368,7 +368,7 @@ public class UserFrame extends JFrame {
 		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(21, 406, 233, 33);
+		btnCreate.setBounds(21, 426, 233, 33);
 		contentPane.add(btnCreate);
 		
 		JButton btnUpdate = new JButton("UPDATE");
@@ -384,7 +384,7 @@ public class UserFrame extends JFrame {
 				
 				try {
 					
-					pst = con.prepareStatement("UPDATE Account SET Employee_Name='"+names+"', Employee_Type='"+type+"', Employee_Position='"+position+"', Employee_Phone='"+contact+"',Acc_User='"+user+"',Acc_Pass='"+pass+"' WHERE Acc_No='"+ID+"'");
+					pst = con.prepareStatement("UPDATE Account SET Employee_Name='"+names+"', Employee_Type='"+type+"', Employee_Position='"+position+"', Employee_Phone='"+contact+"',Acc_User='"+user+"',Acc_Pass='"+pass+"' WHERE Acc_ID='"+ID+"'");
 					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					if(input == JOptionPane.YES_OPTION) {
@@ -416,7 +416,7 @@ public class UserFrame extends JFrame {
 		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(21, 448, 233, 33);
+		btnUpdate.setBounds(21, 468, 233, 33);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
@@ -425,7 +425,7 @@ public class UserFrame extends JFrame {
 				 	DefaultTableModel model = (DefaultTableModel)table.getModel();
 			        int SelectRowIndex = table.getSelectedRow();
 			        String hold = model.getValueAt(SelectRowIndex, 0).toString();
-		        	String queryy = "DELETE FROM Account WHERE Acc_No='"+hold +"'";
+		        	String queryy = "DELETE FROM Account WHERE Acc_ID='"+hold +"'";
 		        	 
 			        try{
 			            PreparedStatement pst = con.prepareStatement(queryy);
@@ -463,7 +463,7 @@ public class UserFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(21, 487, 100, 33);
+		btnDelete.setBounds(21, 507, 100, 33);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -494,7 +494,7 @@ public class UserFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(154, 487, 100, 33);
+		btnClear.setBounds(154, 507, 100, 33);
 		contentPane.add(btnClear);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -538,7 +538,7 @@ public class UserFrame extends JFrame {
 		JLabel lblPosition = new JLabel("POSITION:");
 		lblPosition.setForeground(new Color(114, 115, 115));
 		lblPosition.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblPosition.setBounds(21, 270, 91, 24);
+		lblPosition.setBounds(21, 276, 91, 24);
 		contentPane.add(lblPosition);
 		
 		//to customize the header/column

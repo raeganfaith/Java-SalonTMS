@@ -31,26 +31,29 @@ import javax.swing.border.LineBorder;
 import java.sql.Connection;
 import javax.swing.JComboBox;
 
-public class LoginFrame extends ServiceFrame {
+public class LoginFrame extends JFrame {
 	
 	
 	private Image img_logo = new ImageIcon(LoginFrame.class.getResource("res/LOGO.png")).getImage().getScaledInstance(300, 177, Image.SCALE_SMOOTH);
 	private Image img_acc = new ImageIcon(LoginFrame.class.getResource("res/ACCNT.png")).getImage().getScaledInstance(28, 29, Image.SCALE_SMOOTH);
 	private Image img_pass = new ImageIcon(LoginFrame.class.getResource("res/PASS.png")).getImage().getScaledInstance(28, 29, Image.SCALE_SMOOTH);
 	private JPanel contentPane;
-	private JTextField txtUser;
+	//private JTextField txtUser;
 	private JLabel lbLogo;
 	private JLabel lblAcc;
 	private JLabel lblPass;
 	private JLabel lblclose;
-	private JPasswordField txtPass;
+	public static JPasswordField txtPass;
+	public static JTextField txtAccountId;
+	public static JTextField txtUser;
 	
 	Connection con;
 	PreparedStatement pst;
 	ResultSet rs;
+	//private JTextField txtAccountId;
 	
 	public void Connection() {
-		String connection = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
+		String connection = "jdbc:sqlserver://localhost:1433;databaseName=SalonTPS;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";	
 		try {
 			con = DriverManager.getConnection(connection);
 		}catch(SQLException ex) {
@@ -91,7 +94,7 @@ public class LoginFrame extends ServiceFrame {
 		JPanel UserPanel = new JPanel();
 		UserPanel.setBorder(new LineBorder(new Color(252, 193, 213))); // border color
 		UserPanel.setBackground(new Color(250, 234, 240)); 
-		UserPanel.setBounds(220, 249, 284, 38);
+		UserPanel.setBounds(220, 265, 284, 38);
 		contentPane.add(UserPanel);
 		UserPanel.setLayout(null);
 		
@@ -123,7 +126,7 @@ public class LoginFrame extends ServiceFrame {
 		JPanel PassPanel = new JPanel();
 		PassPanel.setBorder(new LineBorder(new Color(252, 193, 213)));
 		PassPanel.setBackground(new Color(250, 234, 240));
-		PassPanel.setBounds(220, 297, 284, 38);
+		PassPanel.setBounds(220, 313, 284, 38);
 		contentPane.add(PassPanel);
 		PassPanel.setLayout(null);
 		
@@ -156,19 +159,19 @@ public class LoginFrame extends ServiceFrame {
 		PassPanel.add(txtPass);
 		
 		lbLogo = new JLabel("");
-		lbLogo.setBounds(190, 42, 294, 197);
+		lbLogo.setBounds(190, 21, 294, 197);
 		contentPane.add(lbLogo);
 		setUndecorated(true);
 		lbLogo.setIcon(new ImageIcon(img_logo));
 		
 		lblAcc = new JLabel("");
-		lblAcc.setBounds(190, 250, 28, 37);
+		lblAcc.setBounds(190, 266, 28, 37);
 		contentPane.add(lblAcc);
 		setLocationRelativeTo(null);
 		lblAcc.setIcon(new ImageIcon(img_acc));
 		
 		lblPass = new JLabel("");
-		lblPass.setBounds(190, 298, 28, 37);
+		lblPass.setBounds(190, 314, 28, 37);
 		contentPane.add(lblPass);
 		lblPass.setIcon(new ImageIcon(img_pass));
 		
@@ -186,7 +189,7 @@ public class LoginFrame extends ServiceFrame {
 		ShowPass.setForeground(new Color(114, 115, 115));
 		ShowPass.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		ShowPass.setOpaque(false);
-		ShowPass.setBounds(373, 341, 131, 21);
+		ShowPass.setBounds(373, 357, 131, 21);
 		contentPane.add(ShowPass);
 		
 		
@@ -205,28 +208,35 @@ public class LoginFrame extends ServiceFrame {
 			}
 		});
 		//Sign in Button function with database 
-				btnSignin.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						String connectionsUrl = "jdbc:sqlserver://localhost:1433;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";
+		btnSignin.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 						
-						try (Connection connection = DriverManager.getConnection(connectionsUrl);) {
-							//For position variables
+				String connectionsUrl = "jdbc:sqlserver://localhost:1433;databaseName=SalonTPS;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";
+				//To Pass Value
+						
+				try (Connection connection = DriverManager.getConnection(connectionsUrl);) {
+				//For position variables
 							//declaring variables for fucntions
 							String users =  txtUser.getText();
 							String passw =  txtPass.getText();
+							String accid = txtAccountId.getText();
 							
-							String sqlQuery = "SELECT * FROM Account WHERE Acc_User=? and Acc_Pass=?";
+							
+							String sqlQuery = "SELECT * FROM Account WHERE Acc_ID=? and Acc_User=? and Acc_Pass=?";
 							PreparedStatement pst = connection.prepareStatement(sqlQuery);
-							pst.setString(1, txtUser.getText());
-							pst.setString(2, txtPass.getText());
+							pst.setString(1, txtAccountId.getText());
+							pst.setString(2, txtUser.getText());
+							pst.setString(3, txtPass.getText());
 							ResultSet rs = pst.executeQuery();
 							
+							String db_ID = "";
 							String db_User = "";
 							String db_Pass = "";
 							String db_Position = "";
 							
 							while(rs.next()) {
+								db_ID = rs.getString("Acc_ID");
 								db_User = rs.getString("Acc_User");
 								db_Pass = rs.getString("Acc_Pass");
 								db_Position = rs.getString("Employee_Position");
@@ -237,25 +247,47 @@ public class LoginFrame extends ServiceFrame {
 							pst1.setString(1, db_Position);
 							ResultSet rs1 = pst.executeQuery();
 							
-							if (db_User.equals(users) && db_Pass.equals(passw)) {
+							if (db_User.equals(users) && db_Pass.equals(passw) && db_ID.equals(accid)) {
+								
 								//To automatically determine if the account logged in is user or admin
 								if(db_Position.equals("Admin")) {
 									JOptionPane.showMessageDialog(null, "You Successfully logged in as Admin!");
+									
+									//String user = txtUser.getText();
+								   // String pass =  txtPass.getText();
+								    //BookingFrame frameOne = new BookingFrame();
+								    //frameOne.setUser(user);
+								    //frameOne.setPass(pass);
+								  //  frameOne.setVisible(false);
+								    
 									AdminDashboardFrame cv = new AdminDashboardFrame();
 							    	cv.setVisible(true);
 									LoginFrame.this.dispose();
+									
+									
 								}else if(db_Position.equals("User")) {
 									JOptionPane.showMessageDialog(null, "You Successfully logged in as User!");
+									
+									
 									UserDashboardFrame cv = new UserDashboardFrame();
 							    	cv.setVisible(true);
 									LoginFrame.this.dispose();
+									
+									
+								    //BookingFrame frameOne = new BookingFrame();
+								   // frameOne.setUser(user);
+								   // frameOne.setPass(pass);
+								   // frameOne.setVisible(false);
+								    
+									
+									
 								}
 							//this will show if the credentials doesn't match
 							} else {
-								JOptionPane.showMessageDialog(null, "Username and Password did not matched!");
+								JOptionPane.showMessageDialog(null, "Please enter correct credentials!");
 							}						
 						} catch (NullPointerException|SQLException ex) {
-							//ex.printStackTrace();
+							ex.printStackTrace();
 							System.out.println("");
 						}
 				}	
@@ -265,7 +297,7 @@ public class LoginFrame extends ServiceFrame {
 		btnSignin.setForeground(new Color(114, 115, 115));
 		btnSignin.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnSignin.setBorderPainted(false);
-		btnSignin.setBounds(220, 362, 284, 38);
+		btnSignin.setBounds(220, 378, 284, 38);
 		btnSignin.setBackground(new Color(252, 193, 213));
 		contentPane.add(btnSignin);
 		
@@ -291,6 +323,27 @@ public class LoginFrame extends ServiceFrame {
 		lblclose.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		lblclose.setBounds(615, 0, 85, 37);
 		contentPane.add(lblclose);
+		
+		JLabel lblAcc_1 = new JLabel("");
+		lblAcc_1.setBounds(190, 202, 28, 37);
+		contentPane.add(lblAcc_1);
+		
+		JPanel UserPanel_1 = new JPanel();
+		UserPanel_1.setLayout(null);
+		UserPanel_1.setBorder(new LineBorder(new Color(252, 193, 213)));
+		UserPanel_1.setBackground(new Color(250, 234, 240));
+		UserPanel_1.setBounds(220, 217, 284, 38);
+		contentPane.add(UserPanel_1);
+		
+		txtAccountId = new JTextField();
+		txtAccountId.setText("Account ID");
+		txtAccountId.setOpaque(false);
+		txtAccountId.setForeground(new Color(114, 115, 115));
+		txtAccountId.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		txtAccountId.setColumns(10);
+		txtAccountId.setBorder(null);
+		txtAccountId.setBounds(10, 0, 250, 38);
+		UserPanel_1.add(txtAccountId);
 		
 		
 		

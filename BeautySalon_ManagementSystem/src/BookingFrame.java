@@ -5,6 +5,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 
@@ -49,11 +50,17 @@ public class BookingFrame extends JFrame {
 	public JComboBox<String> cbx_services; 
 	public JComboBox<String> cbx_hairstylist;
 	private JTable table;
+	private JTextField UserName;
 	private JScrollPane scrollPane;
 	private String  txt_serviceid = ""; //create a string for the foreign keys
 	private String  paymentid = ""; //create a string for the foreign keys
+	private String  accid = ""; //create a string for the foreign keys
+	private String  accid1 = "";
+	private String namess = "";
+	private JTextField userField;
+    private JTextField passField;
 	
-	
+	private String  name = "";
 	Connection cobj;
 	Connection con;
 	Connection connection;
@@ -61,6 +68,8 @@ public class BookingFrame extends JFrame {
 	PreparedStatement pst1;
 	ResultSet rs;
 	private JTextField textField;
+	public JTextField lblUserName;
+	
 	
 	//Database Connection
 	public void Connection() {
@@ -71,7 +80,6 @@ public class BookingFrame extends JFrame {
 			ex.printStackTrace();
 		}	
 	}
-
 	
 	//to fetch data from the database to the JComboBox
 	public void fillComboBoxService()
@@ -120,7 +128,7 @@ public class BookingFrame extends JFrame {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	//a method to show and fetch data from the database to the Jtable
 	public void ShowData() {
 		DefaultTableModel model = new DefaultTableModel();
@@ -189,16 +197,58 @@ public class BookingFrame extends JFrame {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-	         
+			}     
 		}
-	
+		//fetch the recent user of the system
+		public void fetchuser() {
+			String sql = "Select * from Account";
+			 PreparedStatement pst7;
+			try {
+				pst7 = con.prepareStatement(sql);
+				ResultSet rs = pst7.executeQuery();
+				while (rs.next()) {
+					
+					accid1 = rs.getString("Acc_User");
+	           }
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}
+		public void trying() {
+			
+			UserName.setText(LoginFrame.txtUser.getText());
+		}
+		
+		//-------------------------------------------
+		public void pass() {
+			fetchuser();
+			//String x = trying();
+			// PreparedStatement pstt;
+			// userField.toString();
+	         //String sql1 = "Select * from Account where Acc_User='" + userField + "'";
+			String sql = "Select Acc_ID from Account where Acc_User= '"+ accid1 +"'";
+			PreparedStatement pstt;
+			try {
+				pstt = con.prepareStatement(sql);
+				ResultSet rs = pstt.executeQuery();
+				while (rs.next()) {
+					accid = rs.getString("Acc_ID");
+	           }
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}
+		
+		 		
+		
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BookingFrame frame = new BookingFrame();
-					frame.setVisible(true);
+					LoginFrame frame = new LoginFrame();
+					frame.setVisible(true); //Start to login
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -213,6 +263,9 @@ public class BookingFrame extends JFrame {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				ShowData();
+				//Accounts();
+				//trying();
+				pass();
 			}
 		});
 		
@@ -358,18 +411,24 @@ public class BookingFrame extends JFrame {
 		JButton btnCreate = new JButton("CREATE");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Accounts();
+				String User = LoginFrame.txtAccountId.getText(); //to get and print the recent account id logged in this system
 				String names = txt_name.getText();	
 				String address = txt_address.getText();
 				String contact = txt_phone.getText();
 				String service = (String) cbx_services.getSelectedItem();
 				String hairstylist = (String) cbx_hairstylist.getSelectedItem();
 				//String none = null;
-            	
+				
 				try {
+					
+					pass();
 					PaymentIDValue();
 					ServiceIDValue();
-										
-					pst = con.prepareStatement("insert into Booking(Payment_ID,Cust_Name, Cust_Address, Cust_Phone,Service_ID,Services_Name, Employee_Name)values(?,?,?,?,?,?,?)");
+					
+					
+					pst = con.prepareStatement("insert into Booking(Payment_ID,Cust_Name, Cust_Address, Cust_Phone,Service_ID,Services_Name, Employee_Name,Acc_ID)values(?,?,?,?,?,?,?,?)");
+					//pst.setString(0, ID);	
 					pst.setString(1, paymentid);
 					pst.setString(2, names);
 					pst.setString(3, address);
@@ -377,10 +436,13 @@ public class BookingFrame extends JFrame {
 					pst.setString(5, txt_serviceid);
 					pst.setString(6, service);
 					pst.setString(7, hairstylist);
+					pst.setString(8, User);
+					
 					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					
 					if(input == JOptionPane.YES_OPTION) {
+						
 						pst.executeUpdate();
 						
 						JOptionPane.showMessageDialog(null, "Successfully added!");
@@ -397,7 +459,7 @@ public class BookingFrame extends JFrame {
 				} catch (NullPointerException | SQLException e2) 
 				{
 					e2.printStackTrace();
-					System.out.println("NullPointerException thrown!");
+					//System.out.println("NullPointerException thrown!");
 				}
 			}
 		});
@@ -432,7 +494,7 @@ public class BookingFrame extends JFrame {
 				String stylist1 = (String) cbx_hairstylist.getSelectedItem();
 				
 				try {
-					
+					//Accounts();
 					pst = con.prepareStatement("UPDATE Booking SET Cust_Name='"+names1+"', Cust_Address='"+address1+"', Cust_Phone='"+contact1+"', Services_Name='"+service1+"',Employee_Name='"+stylist1+"' WHERE Booking_No='"+ID+"'");
 					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
@@ -652,14 +714,20 @@ public class BookingFrame extends JFrame {
 		textField.setBounds(439, 474, 85, 23);
 		contentPane.add(textField);
 		
+		UserName = new JTextField();
+		UserName.setForeground(new Color(114, 115, 115));
+		UserName.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		UserName.setColumns(10);
+		UserName.setBorder(null);
+		UserName.setBackground(new Color(250, 234, 240));
+		UserName.setBounds(330, 505, 85, 23);
+		contentPane.add(UserName);
+		
 		//to customize the header/column
 		JTableHeader JTHeader = table.getTableHeader();
 		JTHeader.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		JTHeader.setBackground(new Color(252, 193, 213));
 	}
-	//public JTextField getTxt_serviceid() {
-	//	return getTxt_serviceid();
-	//}
 }
 
 
