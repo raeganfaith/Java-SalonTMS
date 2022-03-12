@@ -61,7 +61,6 @@ public class TransactionFrame extends JFrame {
 		public void ShowDataReservationPayment() {
 			DefaultTableModel model = new DefaultTableModel();
 			model.addColumn("R No.");
-			
 			model.addColumn("Name");
 			model.addColumn("Address");
 			model.addColumn("Phone");
@@ -75,8 +74,9 @@ public class TransactionFrame extends JFrame {
 			model.addColumn("Amount");
 			model.addColumn("Discount");
 			model.addColumn("Total");
+			model.addColumn("Acc No.");
 			try {
-				String query = "SELECT * FROM Payment JOIN Reservation ON Payment.Cust_Name = Reservation.Cust_Name;";
+				String query = "SELECT * FROM Payment JOIN Reservation ON Payment.Payment_ID = Reservation.Payment_ID;";
 				PreparedStatement ps = con.prepareStatement(query);
 				ResultSet rs = ps.executeQuery();
 				
@@ -96,6 +96,7 @@ public class TransactionFrame extends JFrame {
 						rs.getString("Cust_Amount"),
 						rs.getString("Cust_Discount"),
 						rs.getString("Cust_Total"),
+						rs.getString("Acc_ID"),
 					});
 						
 					}
@@ -111,27 +112,41 @@ public class TransactionFrame extends JFrame {
 		//DO IT LATER
 		public void ShowDataBookingPayment() {
 			DefaultTableModel model = new DefaultTableModel();
-			model.addColumn("Payment ID");
+			model.addColumn("B No.");
 			model.addColumn("Name");
+			model.addColumn("Address");
+			model.addColumn("Phone");
+			model.addColumn("Service ID");
+			model.addColumn("Service");
+			model.addColumn("Stylist");
+			model.addColumn("Payment ID");
 			model.addColumn("Status");
 			model.addColumn("Amount");
 			model.addColumn("Discount");
 			model.addColumn("Total");
+			model.addColumn("Acc No.");
 			
 			try {
-				String query = "SELECT * FROM Payment JOIN Booking ON Payment.Cust_Name = Booking.Cust_Name";
+				String query = "SELECT * FROM Payment JOIN Booking ON Payment.Payment_ID = Booking.Payment_ID;";
 				// JOIN Booking ON Payment.Cust_Name = Booking.Cust_Name; 
 				PreparedStatement ps = con.prepareStatement(query);
 				ResultSet rs = ps.executeQuery();
 				
 				while(rs.next()) {
 					model.addRow(new Object [] {
-						rs.getString("Payment_ID"),	
-						rs.getString("Cust_Name"),	
-						rs.getString("Cust_Status"),
-						rs.getString("Cust_Amount"),
-						rs.getString("Cust_Discount"),
-						rs.getString("Cust_Total"),
+							rs.getString("Booking_No"),							
+							rs.getString("Cust_Name"),		
+							rs.getString("Cust_Address"),
+							rs.getString("Cust_Phone"),
+							rs.getString("Service_ID"),
+							rs.getString("Services_Name"), 
+							rs.getString("Employee_Name"),
+							rs.getString("Payment_ID"),
+							rs.getString("Cust_Status"),
+							rs.getString("Cust_Amount"),
+							rs.getString("Cust_Discount"),
+							rs.getString("Cust_Total"),
+							rs.getString("Acc_ID"),
 					});
 						
 					}
@@ -170,10 +185,9 @@ public class TransactionFrame extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				//ShowDataBooking();
+				//To automatically loads the tables from the dt to the gui
 				ShowDataReservationPayment();
-				//ShowDataBookingPayment();
-				//ShowDataReservation();
+				ShowDataBookingPayment();
 			}
 		});
 		Connection();

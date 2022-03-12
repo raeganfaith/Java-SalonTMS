@@ -208,7 +208,7 @@ public class ReservationFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ReservationFrame frame = new ReservationFrame();
+					LoginFrame frame = new LoginFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -441,7 +441,8 @@ public class ReservationFrame extends JFrame {
 		JButton btnCreate = new JButton("CREATE");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//String id = txt_bookid.getText();
+				//to get and print the recent account id logged in this system
+				String User = LoginFrame.txtAccountId.getText(); 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String names = txt_name.getText();	
 				String address = txt_address.getText();
@@ -454,7 +455,7 @@ public class ReservationFrame extends JFrame {
 				try {
 					PaymentIDValue();
 					ServiceIDValue();
-					pst = con.prepareStatement("INSERT INTO Reservation(Payment_ID,Cust_Name, Cust_Address, Cust_Phone, Service_ID, Services_Name, Employee_Name, Reserve_Time, Reserve_Date)values(?,?,?,?,?,?,?,?,?)");
+					pst = con.prepareStatement("INSERT INTO Reservation(Payment_ID,Cust_Name, Cust_Address, Cust_Phone, Service_ID, Services_Name, Employee_Name, Reserve_Time, Reserve_Date, Acc_ID)values(?,?,?,?,?,?,?,?,?,?)");
 					pst.setString(1, paymentid);
 					pst.setString(2, names);
 					pst.setString(3, address);
@@ -464,6 +465,7 @@ public class ReservationFrame extends JFrame {
 					pst.setString(7, hairstylist);
 					pst.setString(8, time);
 					pst.setString(9, date);
+					pst.setString(10, User);
 
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					

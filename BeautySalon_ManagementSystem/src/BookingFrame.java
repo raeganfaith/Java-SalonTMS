@@ -199,49 +199,7 @@ public class BookingFrame extends JFrame {
 				e.printStackTrace();
 			}     
 		}
-		//fetch the recent user of the system
-		public void fetchuser() {
-			String sql = "Select * from Account";
-			 PreparedStatement pst7;
-			try {
-				pst7 = con.prepareStatement(sql);
-				ResultSet rs = pst7.executeQuery();
-				while (rs.next()) {
-					
-					accid1 = rs.getString("Acc_User");
-	           }
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-		}
-		public void trying() {
-			
-			UserName.setText(LoginFrame.txtUser.getText());
-		}
 		
-		//-------------------------------------------
-		public void pass() {
-			fetchuser();
-			//String x = trying();
-			// PreparedStatement pstt;
-			// userField.toString();
-	         //String sql1 = "Select * from Account where Acc_User='" + userField + "'";
-			String sql = "Select Acc_ID from Account where Acc_User= '"+ accid1 +"'";
-			PreparedStatement pstt;
-			try {
-				pstt = con.prepareStatement(sql);
-				ResultSet rs = pstt.executeQuery();
-				while (rs.next()) {
-					accid = rs.getString("Acc_ID");
-	           }
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-		}
-		
-		 		
 		
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -265,7 +223,7 @@ public class BookingFrame extends JFrame {
 				ShowData();
 				//Accounts();
 				//trying();
-				pass();
+			
 			}
 		});
 		
@@ -411,8 +369,8 @@ public class BookingFrame extends JFrame {
 		JButton btnCreate = new JButton("CREATE");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Accounts();
-				String User = LoginFrame.txtAccountId.getText(); //to get and print the recent account id logged in this system
+				//to get and print the recent account id logged in this system
+				String User = LoginFrame.txtAccountId.getText(); 
 				String names = txt_name.getText();	
 				String address = txt_address.getText();
 				String contact = txt_phone.getText();
@@ -421,8 +379,6 @@ public class BookingFrame extends JFrame {
 				//String none = null;
 				
 				try {
-					
-					pass();
 					PaymentIDValue();
 					ServiceIDValue();
 					

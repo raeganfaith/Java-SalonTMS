@@ -35,6 +35,7 @@ public class LoginFrame extends JFrame {
 	
 	
 	private Image img_logo = new ImageIcon(LoginFrame.class.getResource("res/LOGO.png")).getImage().getScaledInstance(300, 177, Image.SCALE_SMOOTH);
+	private Image img_accid = new ImageIcon(LoginFrame.class.getResource("res/ACCID.png")).getImage().getScaledInstance(33, 29, Image.SCALE_SMOOTH);
 	private Image img_acc = new ImageIcon(LoginFrame.class.getResource("res/ACCNT.png")).getImage().getScaledInstance(28, 29, Image.SCALE_SMOOTH);
 	private Image img_pass = new ImageIcon(LoginFrame.class.getResource("res/PASS.png")).getImage().getScaledInstance(28, 29, Image.SCALE_SMOOTH);
 	private JPanel contentPane;
@@ -94,7 +95,7 @@ public class LoginFrame extends JFrame {
 		JPanel UserPanel = new JPanel();
 		UserPanel.setBorder(new LineBorder(new Color(252, 193, 213))); // border color
 		UserPanel.setBackground(new Color(250, 234, 240)); 
-		UserPanel.setBounds(220, 265, 284, 38);
+		UserPanel.setBounds(220, 276, 284, 38);
 		contentPane.add(UserPanel);
 		UserPanel.setLayout(null);
 		
@@ -126,7 +127,7 @@ public class LoginFrame extends JFrame {
 		JPanel PassPanel = new JPanel();
 		PassPanel.setBorder(new LineBorder(new Color(252, 193, 213)));
 		PassPanel.setBackground(new Color(250, 234, 240));
-		PassPanel.setBounds(220, 313, 284, 38);
+		PassPanel.setBounds(220, 324, 284, 38);
 		contentPane.add(PassPanel);
 		PassPanel.setLayout(null);
 		
@@ -159,19 +160,19 @@ public class LoginFrame extends JFrame {
 		PassPanel.add(txtPass);
 		
 		lbLogo = new JLabel("");
-		lbLogo.setBounds(190, 21, 294, 197);
+		lbLogo.setBounds(210, 20, 294, 197);
 		contentPane.add(lbLogo);
 		setUndecorated(true);
 		lbLogo.setIcon(new ImageIcon(img_logo));
 		
 		lblAcc = new JLabel("");
-		lblAcc.setBounds(190, 266, 28, 37);
+		lblAcc.setBounds(185, 277, 28, 37);
 		contentPane.add(lblAcc);
 		setLocationRelativeTo(null);
 		lblAcc.setIcon(new ImageIcon(img_acc));
 		
 		lblPass = new JLabel("");
-		lblPass.setBounds(190, 314, 28, 37);
+		lblPass.setBounds(185, 325, 28, 37);
 		contentPane.add(lblPass);
 		lblPass.setIcon(new ImageIcon(img_pass));
 		
@@ -189,7 +190,7 @@ public class LoginFrame extends JFrame {
 		ShowPass.setForeground(new Color(114, 115, 115));
 		ShowPass.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		ShowPass.setOpaque(false);
-		ShowPass.setBounds(373, 357, 131, 21);
+		ShowPass.setBounds(373, 368, 131, 21);
 		contentPane.add(ShowPass);
 		
 		
@@ -297,7 +298,7 @@ public class LoginFrame extends JFrame {
 		btnSignin.setForeground(new Color(114, 115, 115));
 		btnSignin.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		btnSignin.setBorderPainted(false);
-		btnSignin.setBounds(220, 378, 284, 38);
+		btnSignin.setBounds(220, 389, 284, 38);
 		btnSignin.setBackground(new Color(252, 193, 213));
 		contentPane.add(btnSignin);
 		
@@ -324,15 +325,16 @@ public class LoginFrame extends JFrame {
 		lblclose.setBounds(615, 0, 85, 37);
 		contentPane.add(lblclose);
 		
-		JLabel lblAcc_1 = new JLabel("");
-		lblAcc_1.setBounds(190, 202, 28, 37);
-		contentPane.add(lblAcc_1);
+		JLabel lblAccID = new JLabel("");
+		lblAccID.setBounds(185, 230, 33, 37);
+		lblAccID.setIcon(new ImageIcon(img_accid));
+		contentPane.add(lblAccID); 
 		
 		JPanel UserPanel_1 = new JPanel();
 		UserPanel_1.setLayout(null);
 		UserPanel_1.setBorder(new LineBorder(new Color(252, 193, 213)));
 		UserPanel_1.setBackground(new Color(250, 234, 240));
-		UserPanel_1.setBounds(220, 217, 284, 38);
+		UserPanel_1.setBounds(220, 228, 284, 38);
 		contentPane.add(UserPanel_1);
 		
 		txtAccountId = new JTextField();
