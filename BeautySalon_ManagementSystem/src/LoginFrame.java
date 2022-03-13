@@ -338,6 +338,21 @@ public class LoginFrame extends JFrame {
 		contentPane.add(UserPanel_1);
 		
 		txtAccountId = new JTextField();
+		txtAccountId.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(txtAccountId.getText().equals("Account ID")) {
+					txtAccountId.setText("");
+				} else {
+					txtAccountId.selectAll();
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(txtAccountId.getText().equals(""))
+					txtAccountId.setText("Account ID");
+			}
+		});
 		txtAccountId.setText("Account ID");
 		txtAccountId.setOpaque(false);
 		txtAccountId.setForeground(new Color(114, 115, 115));

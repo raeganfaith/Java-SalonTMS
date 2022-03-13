@@ -41,8 +41,7 @@ public class ServiceFrame extends JFrame {
 	private JTextField txt_stylist;
 	private JTextField txt_service;
 	private JTable table;
-	private JTextField textField;
-	private static JComboBox<String> cbx_type;	
+	private static JComboBox<String> cbx_type;
 	Connection con;
 	PreparedStatement pst;
 
@@ -84,7 +83,6 @@ public class ServiceFrame extends JFrame {
 			//ex.printStackTrace();
 			System.out.println("");
 		}}
-	
 	
 	/**
 	 * Launch the application.
@@ -168,7 +166,7 @@ public class ServiceFrame extends JFrame {
 		lblBookingTransaction.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBookingTransaction.setForeground(new Color(114, 115, 115));
 		lblBookingTransaction.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblBookingTransaction.setBounds(224, 136, 394, 21);
+		lblBookingTransaction.setBounds(224, 136, 394, 32);
 		contentPane.add(lblBookingTransaction);
 		
 		txt_serviceid = new JTextField();
@@ -240,34 +238,49 @@ public class ServiceFrame extends JFrame {
 				String stylist = txt_stylist.getText();	
 				String type = (String) cbx_type.getSelectedItem();
 				String service = txt_service.getText();	
-				
+
 				try {
 					pst = con.prepareStatement("INSERT INTO Service(Employee_Name, Employee_Type, Services_Name)values(?,?,?)");
 					pst.setString(1, stylist);
 					pst.setString(2, type);
 					pst.setString(3, service);
-					//pst.executeUpdate();
 					
-					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
-					//int l = pst.executeUpdate();
-					
-					if(input == JOptionPane.YES_OPTION) {
+					//To prevent duplicate inputs in name, account users, and account passwords from users 
+					String s = "";
+				    boolean exists = false;
+				    for(int i = 0; i < table.getRowCount(); i++) {
+				    	 s = table.getValueAt(i, 1).toString().trim();				    
+				    	 if (stylist.equals(s) | type.equals(s) | service.equals(s) ) {
+				                exists = true;
+				                JOptionPane.showMessageDialog(null, "The credentials is already in the system!"); break;
+				        } 
+				    }
+				    for(int i = 0; i < table.getRowCount(); i++) {
+				    	 s = table.getValueAt(i, 1).toString().trim();				    
+				    	 if (cbx_type.equals(null) | stylist.isEmpty() | service.isEmpty()) {
+				                exists = true;
+				                JOptionPane.showMessageDialog(null, "Please enter complete value!"); break;
+				        } 
+				    }
+				  //to add the inputs of the users that doesn't duplicates the row of the name, user and password column.
+					if(!exists) {
+						JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "CONFIRMATION!", JOptionPane.YES_NO_OPTION);
 						pst.executeUpdate();
+						
 						JOptionPane.showMessageDialog(null, "Successfully added!");
 						ShowData();
 						txt_serviceid.setText("");
 						txt_stylist.setText("");
 						cbx_type.setSelectedItem(null);
 						txt_service.setText("");	
+					} else {
 						
-					}else {
-						JOptionPane.showMessageDialog(null, "Error!");
-					}
-				} catch (NullPointerException|SQLException ex) {
-					//ex.printStackTrace();
-					System.out.println("");
-				}
-				
+					}				
+
+				} catch (NullPointerException | SQLException e2) 
+				{
+					JOptionPane.showMessageDialog(null, "Enter complete values!");
+				}			
 			}
 		});
 		btnCreate.addMouseListener(new MouseAdapter() {
@@ -476,29 +489,6 @@ public class ServiceFrame extends JFrame {
 				"Service ID", "Stylist", "Type", "Service"
 			}
 		));
-		
-		JButton btnSave = new JButton("SAVE");
-		btnSave.setForeground(new Color(114, 115, 115));
-		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 14));
-		btnSave.setBorderPainted(false);
-		btnSave.setBackground(new Color(252, 193, 213));
-		btnSave.setBounds(654, 489, 123, 33);
-		contentPane.add(btnSave);
-		
-		textField = new JTextField();
-		textField.setForeground(new Color(114, 115, 115));
-		textField.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		textField.setColumns(10);
-		textField.setBorder(null);
-		textField.setBackground(new Color(250, 234, 240));
-		textField.setBounds(427, 493, 85, 23);
-		contentPane.add(textField);
-		
-		JLabel lblTotalAccounts = new JLabel("Total Accounts:");
-		lblTotalAccounts.setForeground(new Color(114, 115, 115));
-		lblTotalAccounts.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalAccounts.setBounds(305, 493, 124, 23);
-		contentPane.add(lblTotalAccounts);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		

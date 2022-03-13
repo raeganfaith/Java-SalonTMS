@@ -58,7 +58,8 @@ public class ReservationFrame extends JFrame {
 	public JComboBox<String> cbx_time;
 	private String  txt_serviceid = ""; //create a string for the foreign keys
 	private String  paymentid = ""; //create a string for the foreign keys
-	
+	private String dateValue = "";
+	private String timeValue = "";
 	private JTable table;
 	
 	Connection con;
@@ -197,7 +198,22 @@ public class ReservationFrame extends JFrame {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}}
-		
+	public void DateValue(){
+		 PreparedStatement pstt;
+		 //String s = (String) cbx_services.getSelectedItem();
+        String sql1 = "Select * from Reservation;";
+		try {
+			pstt = con.prepareStatement(sql1);
+			ResultSet rs = pstt.executeQuery();
+			while (rs.next()) {
+				dateValue = rs.getString("Reserve_Date");
+				timeValue = rs.getString("Reserve_Time");
+           }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}     
+	}
 	//still need fixing
 	
 
@@ -443,16 +459,19 @@ public class ReservationFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//to get and print the recent account id logged in this system
 				String User = LoginFrame.txtAccountId.getText(); 
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				
 				String names = txt_name.getText();	
 				String address = txt_address.getText();
 				String contact = txt_phone.getText();	
 				String service = (String) cbx_services.getSelectedItem();
 				String hairstylist = (String) cbx_hairstylist.getSelectedItem();
 				String time = (String) cbx_time.getSelectedItem();
-				String date = sdf.format(dateChooser.getDate());
+				
 				
 				try {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					String date = sdf.format(dateChooser.getDate());
+					DateValue();
 					PaymentIDValue();
 					ServiceIDValue();
 					pst = con.prepareStatement("INSERT INTO Reservation(Payment_ID,Cust_Name, Cust_Address, Cust_Phone, Service_ID, Services_Name, Employee_Name, Reserve_Time, Reserve_Date, Acc_ID)values(?,?,?,?,?,?,?,?,?,?)");
@@ -466,13 +485,35 @@ public class ReservationFrame extends JFrame {
 					pst.setString(8, time);
 					pst.setString(9, date);
 					pst.setString(10, User);
-
-					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
-					
-					if(input == JOptionPane.YES_OPTION) {
+									
+					//To prevent duplicate inputs in name, account users, and account passwords from users 
+					String s = "";
+					String j = "";
+				    boolean exists = false;
+				    
+				    for(int i = 0; i < table.getRowCount(); i++) {
+				    	 s = table.getValueAt(i, 1).toString().trim();	
+				    	 //To determine if the schedule for reservation is vacant or taken
+				    	 if (date.equals(dateValue) & time.equals(timeValue)) {
+				                exists = true;
+				                JOptionPane.showMessageDialog(null, "This reservation is already taken!"); break;
+				        } 
+				    }
+				    for(int i = 0; i < table.getRowCount(); i++) {
+				    	 s = table.getValueAt(i, 1).toString().trim();				    
+				    	 if (names.isEmpty() | address.isEmpty() | contact.isEmpty() |cbx_services.equals(null)
+				    			 | hairstylist.isEmpty() | cbx_time.equals(null) | date.isEmpty()) {
+				                exists = true;
+				                JOptionPane.showMessageDialog(null, "Please enter complete value!"); break;
+				        } 
+				    }
+				  //to add the inputs of the users that doesn't duplicates the row of the name, user and password column.
+					if(!exists) {
+						JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "CONFIRMATION!", JOptionPane.YES_NO_OPTION);
 						pst.executeUpdate();
+						
 						JOptionPane.showMessageDialog(null, "Successfully added!");
-						ShowData(); // to automatically update the table
+						ShowData();
 						txt_name.setText("");
 						txt_address.setText("");
 						txt_phone.setText("");
@@ -481,13 +522,12 @@ public class ReservationFrame extends JFrame {
 						cbx_time.setSelectedItem(-1);
 						dateChooser.setDate(null);
 					} else {
-						JOptionPane.showMessageDialog(null, "Error!");
-					}
+						
+					}		
 
 				} catch (NullPointerException | SQLException e2) 
 				{
-					e2.printStackTrace();
-					System.out.println("NullPointerException thrown!");
+					JOptionPane.showMessageDialog(null, "Enter complete values!");
 				}	
 			}
 		});

@@ -26,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -38,6 +39,7 @@ import javax.swing.table.TableModel;
 import javax.swing.border.LineBorder;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import com.toedter.calendar.JDateChooser;
 
 public class BookingFrame extends JFrame {
 	
@@ -48,19 +50,14 @@ public class BookingFrame extends JFrame {
 	private JTextField txt_phone;
 	private JTextField txt_address;
 	public JComboBox<String> cbx_services; 
-	public JComboBox<String> cbx_hairstylist;
+	public JComboBox<String> cbx_stylist;
 	private JTable table;
-	private JTextField UserName;
 	private JScrollPane scrollPane;
-	private String  txt_serviceid = ""; //create a string for the foreign keys
-	private String  paymentid = ""; //create a string for the foreign keys
-	private String  accid = ""; //create a string for the foreign keys
-	private String  accid1 = "";
-	private String namess = "";
-	private JTextField userField;
-    private JTextField passField;
 	
-	private String  name = "";
+	//strings for the foreign keys value
+	private String  txt_serviceid = ""; 
+	private String  paymentid = ""; 
+
 	Connection cobj;
 	Connection con;
 	Connection connection;
@@ -95,9 +92,6 @@ public class BookingFrame extends JFrame {
 				cbx_services.addItem(rs.getString("Services_Name"));
 			}
 			
-			//rs.close();
-			//ps.close();
-			
 		}
 		catch (NullPointerException | SQLException e1) 
 		{
@@ -116,12 +110,8 @@ public class BookingFrame extends JFrame {
 			
 			while(rs.next())
 			{
-				cbx_hairstylist.addItem(rs.getString("Employee_Name"));		
-			}
-
-			//rs.close();
-			//ps.close();
-			
+				cbx_stylist.addItem(rs.getString("Employee_Name"));		
+			}	
 		}
 		catch (Exception e1) 
 		{
@@ -129,7 +119,7 @@ public class BookingFrame extends JFrame {
 		}
 	}
 
-	//a method to show and fetch data from the database to the Jtable
+	//A method to show and fetch data from the database to the Jtable.
 	public void ShowData() {
 		DefaultTableModel model = new DefaultTableModel();
 		model.addColumn("Booking ID");
@@ -138,6 +128,7 @@ public class BookingFrame extends JFrame {
 		model.addColumn("Contact No.");
 		model.addColumn("Service");
 		model.addColumn("Stylist");
+		model.addColumn("Date");
 		try {
 			String query = "select * from Booking";
 			PreparedStatement ps = con.prepareStatement(query);
@@ -150,7 +141,8 @@ public class BookingFrame extends JFrame {
 					rs.getString("Cust_Address"),	
 					rs.getString("Cust_Phone"),
 					rs.getString("Services_Name"),	
-					rs.getString("Employee_Name"),
+					rs.getString("Employee_Name"), //Booking_Date
+					rs.getString("Booking_Date"),
 				});
 					
 				}
@@ -163,7 +155,7 @@ public class BookingFrame extends JFrame {
 			e.printStackTrace();
 		}}
 	
-	//A method to select and connect the tables of the fk 
+	//A method to select and connect the tables of the fk. 
 	public void ServiceIDValue(){
 		 PreparedStatement pstt;
 		 String s = (String) cbx_services.getSelectedItem();
@@ -179,7 +171,7 @@ public class BookingFrame extends JFrame {
 			e.printStackTrace();
 		}     
 	}
-	//A method to select and connect the tables of the fk
+	//A method to select and connect the tables of the fk.
 		public void PaymentIDValue(){
 			 String sql = "Select Payment_ID from Payment;";
 			 PreparedStatement pstt;
@@ -195,7 +187,6 @@ public class BookingFrame extends JFrame {
 					paymentid = rs.getString("Payment_ID");
 	            }
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}     
 		}
@@ -216,21 +207,15 @@ public class BookingFrame extends JFrame {
 	
 	
 	public BookingFrame() {
-		//To automatically shows the data to the Jtable
+		//To automatically shows the data to the Jtable when thee frame is opened.
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				ShowData();
-				//Accounts();
-				//trying();
-			
+				ShowData();			
 			}
 		});
 		
-		Connection(); //method for the database
-		
-		
-		
+		Connection(); //method for the database connection	
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 550); //Frame size
 		contentPane = new JPanel();
@@ -279,26 +264,26 @@ public class BookingFrame extends JFrame {
 		txt_name.setBounds(130, 204, 142, 23);
 		contentPane.add(txt_name);
 
-		cbx_hairstylist = new JComboBox<String>();
-		cbx_hairstylist.setForeground(new Color(114, 115, 115));
-		cbx_hairstylist.setBackground(new Color(250, 234, 240));
-		cbx_hairstylist.setBounds(130, 339, 142, 23);
-		contentPane.add(cbx_hairstylist);
+		cbx_stylist = new JComboBox<String>();
+		cbx_stylist.setForeground(new Color(114, 115, 115));
+		cbx_stylist.setBackground(new Color(250, 234, 240));
+		cbx_stylist.setBounds(130, 339, 142, 23);
+		contentPane.add(cbx_stylist);
 		fillComboBoxStylist();
 		
 		cbx_services = new JComboBox<String>();
 		cbx_services.setForeground(new Color(114, 115, 115));
 		cbx_services.addItemListener(new ItemListener() {
-			//To populate the items in the cbx_hairstylist according to the selected item in other bx_services.
+			//To populate the items in the cbx_hairstylist according to the selected item in other cbx_services.
 			public void itemStateChanged(ItemEvent e) {
 				String s = (String) cbx_services.getSelectedItem();
 	            String sql = "Select * from Service where Services_Name='" + s + "'";
 	            try {
 	                PreparedStatement pst = con.prepareStatement(sql);
 	                ResultSet rs = pst.executeQuery();
-	                cbx_hairstylist.removeAllItems();
+	                cbx_stylist.removeAllItems();
 	                while (rs.next()) {
-	                	cbx_hairstylist.addItem(rs.getString("Employee_Name"));
+	                	cbx_stylist.addItem(rs.getString("Employee_Name"));
 	                }  
 	            } catch (NullPointerException | SQLException e3) 
 				{
@@ -306,7 +291,6 @@ public class BookingFrame extends JFrame {
 					System.out.println("NullPointerException thrown!");
 				}
 			}
-
 		});
 		cbx_services.setBackground(new Color(250, 234, 240));
 		cbx_services.setBounds(130, 306, 142, 23);
@@ -365,7 +349,12 @@ public class BookingFrame extends JFrame {
 		lblAddress.setBounds(20, 235, 100, 25);
 		contentPane.add(lblAddress);
 		
-		//Add button function linked with database
+		JDateChooser dateChooser = new JDateChooser();
+		dateChooser.getCalendarButton().setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		dateChooser.setBounds(130, 372, 142, 23);
+		contentPane.add(dateChooser);
+		
+		//Add button function linked in database
 		JButton btnCreate = new JButton("CREATE");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -375,16 +364,17 @@ public class BookingFrame extends JFrame {
 				String address = txt_address.getText();
 				String contact = txt_phone.getText();
 				String service = (String) cbx_services.getSelectedItem();
-				String hairstylist = (String) cbx_hairstylist.getSelectedItem();
-				//String none = null;
+				String hairstylist = (String) cbx_stylist.getSelectedItem();
+				
+				
 				
 				try {
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					String date = sdf.format(dateChooser.getDate());
 					PaymentIDValue();
 					ServiceIDValue();
-					
-					
-					pst = con.prepareStatement("insert into Booking(Payment_ID,Cust_Name, Cust_Address, Cust_Phone,Service_ID,Services_Name, Employee_Name,Acc_ID)values(?,?,?,?,?,?,?,?)");
-					//pst.setString(0, ID);	
+										
+					pst = con.prepareStatement("insert into Booking(Payment_ID,Cust_Name, Cust_Address, Cust_Phone,Service_ID,Services_Name, Employee_Name,Acc_ID, Booking_Date)values(?,?,?,?,?,?,?,?,?)");
 					pst.setString(1, paymentid);
 					pst.setString(2, names);
 					pst.setString(3, address);
@@ -393,12 +383,16 @@ public class BookingFrame extends JFrame {
 					pst.setString(6, service);
 					pst.setString(7, hairstylist);
 					pst.setString(8, User);
+					pst.setString(9, date);
 					
-					
-					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
-					
-					if(input == JOptionPane.YES_OPTION) {
-						
+					//To notify the users to input values in empty textfields/combobox
+					if(names.isEmpty() | address.isEmpty() | contact.isEmpty() | txt_serviceid.isEmpty() | service.isEmpty() | hairstylist.isEmpty() | User.isEmpty() |date.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Enter complete values!");
+					}else if(cbx_services.equals(null) | cbx_stylist.equals(null)) {
+						JOptionPane.showMessageDialog(null, "Enter complete values!");
+					}
+					else if(names.equals(names) |  address.equals(address) |contact.equals(contact) | service.equals(service) |hairstylist.equals(hairstylist)) {
+						JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "CONFIRMATION!", JOptionPane.YES_NO_OPTION);
 						pst.executeUpdate();
 						
 						JOptionPane.showMessageDialog(null, "Successfully added!");
@@ -407,15 +401,14 @@ public class BookingFrame extends JFrame {
 						txt_address.setText("");
 						txt_phone.setText("");
 						cbx_services.setSelectedIndex(-1);
-						cbx_hairstylist.setSelectedItem(-1);
+						cbx_stylist.setSelectedIndex(-1);
 					} else {
 						JOptionPane.showMessageDialog(null, "Error!");
 					}
 
 				} catch (NullPointerException | SQLException e2) 
 				{
-					e2.printStackTrace();
-					//System.out.println("NullPointerException thrown!");
+					JOptionPane.showMessageDialog(null, "Enter complete values!");
 				}
 			}
 		});
@@ -435,7 +428,7 @@ public class BookingFrame extends JFrame {
 		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(20, 372, 252, 33);
+		btnCreate.setBounds(20, 405, 252, 33);
 		contentPane.add(btnCreate);
 		
 		//Update Jtable and database function
@@ -447,7 +440,7 @@ public class BookingFrame extends JFrame {
 				String address1 = txt_address.getText();
 				String contact1 = txt_phone.getText();	
 				String service1 = (String) cbx_services.getSelectedItem();
-				String stylist1 = (String) cbx_hairstylist.getSelectedItem();
+				String stylist1 = (String) cbx_stylist.getSelectedItem();
 				
 				try {
 					//Accounts();
@@ -483,7 +476,7 @@ public class BookingFrame extends JFrame {
 		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(20, 414, 252, 33);
+		btnUpdate.setBounds(20, 447, 252, 33);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
@@ -507,8 +500,8 @@ public class BookingFrame extends JFrame {
 			            txt_name.setText("");
 			            txt_address.setText("");
 			            txt_phone.setText("");
-			            cbx_services.setSelectedIndex(0);
-			            cbx_hairstylist.setSelectedIndex(0);
+			            cbx_services.setSelectedIndex(-1);
+			            cbx_stylist.setSelectedIndex(-1);
 			        }catch(HeadlessException | SQLException e11){
 			            JOptionPane.showMessageDialog(null,e11);
 			        }
@@ -529,7 +522,7 @@ public class BookingFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(20, 453, 252, 33);
+		btnDelete.setBounds(20, 486, 119, 33);
 		contentPane.add(btnDelete);
 		
 		//A funtion to clear the value in JTextField and JComboBox.
@@ -553,14 +546,13 @@ public class BookingFrame extends JFrame {
 				txt_name.setText("");
 				txt_address.setText("");
 				txt_phone.setText("");
-				cbx_services.setSelectedIndex(-1);
-				cbx_hairstylist.setSelectedIndex(-1);
+				//the values of the combobox will not be cleared
 			}});
 		btnClear.setForeground(new Color(114, 115, 115));
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(20, 496, 252, 33);
+		btnClear.setBounds(149, 486, 123, 33);
 		contentPane.add(btnClear);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -643,7 +635,7 @@ public class BookingFrame extends JFrame {
 					txt_address.setText(model.getValueAt(SelectRowIndex, 2).toString());
 					txt_phone.setText(model.getValueAt(SelectRowIndex, 3).toString());
 					cbx_services.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());	
-					cbx_hairstylist.setSelectedItem(model.getValueAt(SelectRowIndex, 5).toString());
+					cbx_stylist.setSelectedItem(model.getValueAt(SelectRowIndex, 5).toString());
 				}catch(NullPointerException ex) {
 					
 				}
@@ -670,14 +662,14 @@ public class BookingFrame extends JFrame {
 		textField.setBounds(439, 474, 85, 23);
 		contentPane.add(textField);
 		
-		UserName = new JTextField();
-		UserName.setForeground(new Color(114, 115, 115));
-		UserName.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		UserName.setColumns(10);
-		UserName.setBorder(null);
-		UserName.setBackground(new Color(250, 234, 240));
-		UserName.setBounds(330, 505, 85, 23);
-		contentPane.add(UserName);
+		JLabel lblStatus = new JLabel("DATE");
+		lblStatus.setHorizontalAlignment(SwingConstants.LEFT);
+		lblStatus.setForeground(new Color(114, 115, 115));
+		lblStatus.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblStatus.setBounds(20, 372, 93, 23);
+		contentPane.add(lblStatus);
+		
+		
 		
 		//to customize the header/column
 		JTableHeader JTHeader = table.getTableHeader();
