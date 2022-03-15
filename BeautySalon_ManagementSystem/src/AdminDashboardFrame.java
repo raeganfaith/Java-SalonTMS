@@ -99,7 +99,7 @@ public class AdminDashboardFrame extends JFrame {
 		contentPane.add(lblExit);
 		lblExit.setIcon(new ImageIcon(img_exit));
 		
-		JLabel lblUsers = new JLabel("USERS");
+		JLabel lblUsers = new JLabel("ACCOUNTS");
 		lblUsers.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -118,7 +118,7 @@ public class AdminDashboardFrame extends JFrame {
 		lblUsers.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsers.setForeground(new Color(114, 115, 115));
 		lblUsers.setFont(new Font("Century Gothic", Font.PLAIN, 18));
-		lblUsers.setBounds(70, 293, 98, 33);
+		lblUsers.setBounds(41, 293, 150, 33);
 		contentPane.add(lblUsers);
 		
 		JLabel lblService = new JLabel("SERVICES");

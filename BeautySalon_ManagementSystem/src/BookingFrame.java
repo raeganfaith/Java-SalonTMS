@@ -26,7 +26,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
@@ -64,7 +66,6 @@ public class BookingFrame extends JFrame {
 	PreparedStatement pst;
 	PreparedStatement pst1;
 	ResultSet rs;
-	private JTextField textField;
 	public JTextField lblUserName;
 	
 	
@@ -83,7 +84,8 @@ public class BookingFrame extends JFrame {
 	{
 		try
 		{
-			String query = "SELECT * FROM Service ";
+			//SELECT DISTINCT Services_Name FROM Service
+			String query = "SELECT DISTINCT Services_Name FROM Service; ";
 			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			//Demo.setEnabled(true);
@@ -355,7 +357,7 @@ public class BookingFrame extends JFrame {
 		contentPane.add(dateChooser);
 		
 		//Add button function linked in database
-		JButton btnCreate = new JButton("CREATE");
+		JButton btnCreate = new JButton("ADD");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//to get and print the recent account id logged in this system
@@ -365,16 +367,14 @@ public class BookingFrame extends JFrame {
 				String contact = txt_phone.getText();
 				String service = (String) cbx_services.getSelectedItem();
 				String hairstylist = (String) cbx_stylist.getSelectedItem();
-				
-				
-				
+								
 				try {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					String date = sdf.format(dateChooser.getDate());
 					PaymentIDValue();
 					ServiceIDValue();
 										
-					pst = con.prepareStatement("insert into Booking(Payment_ID,Cust_Name, Cust_Address, Cust_Phone,Service_ID,Services_Name, Employee_Name,Acc_ID, Booking_Date)values(?,?,?,?,?,?,?,?,?)");
+					pst = con.prepareStatement("INSERT INTO Booking(Payment_ID,Cust_Name, Cust_Address, Cust_Phone,Service_ID,Services_Name, Employee_Name,Acc_ID, Booking_Date)values(?,?,?,?,?,?,?,?,?)");
 					pst.setString(1, paymentid);
 					pst.setString(2, names);
 					pst.setString(3, address);
@@ -402,6 +402,7 @@ public class BookingFrame extends JFrame {
 						txt_phone.setText("");
 						cbx_services.setSelectedIndex(-1);
 						cbx_stylist.setSelectedIndex(-1);
+						dateChooser.setDate(null);
 					} else {
 						JOptionPane.showMessageDialog(null, "Error!");
 					}
@@ -432,7 +433,7 @@ public class BookingFrame extends JFrame {
 		contentPane.add(btnCreate);
 		
 		//Update Jtable and database function
-		JButton btnUpdate = new JButton("UPDATE");
+		JButton btnUpdate = new JButton("EDIT");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String ID = txt_bookid.getText();
@@ -501,7 +502,8 @@ public class BookingFrame extends JFrame {
 			            txt_address.setText("");
 			            txt_phone.setText("");
 			            cbx_services.setSelectedIndex(-1);
-			            cbx_stylist.setSelectedIndex(-1);
+						cbx_stylist.setSelectedIndex(-1);
+						dateChooser.setDate(null);
 			        }catch(HeadlessException | SQLException e11){
 			            JOptionPane.showMessageDialog(null,e11);
 			        }
@@ -546,7 +548,9 @@ public class BookingFrame extends JFrame {
 				txt_name.setText("");
 				txt_address.setText("");
 				txt_phone.setText("");
-				//the values of the combobox will not be cleared
+				cbx_services.setSelectedIndex(-1);
+				cbx_stylist.setSelectedIndex(-1);
+				dateChooser.setDate(null);
 			}});
 		btnClear.setForeground(new Color(114, 115, 115));
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
@@ -601,21 +605,31 @@ public class BookingFrame extends JFrame {
 		lblclose.setBounds(715, 0, 85, 37);
 		contentPane.add(lblclose);
 		
-		JButton btnSave = new JButton("PROCEED TO PAYMENT");
-		btnSave.addMouseListener(new MouseAdapter() {
+		JButton btnProceed = new JButton("PROCEED TO PAYMENT");
+		btnProceed.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				BookingPaymentFrame cv = new BookingPaymentFrame();
 		    	cv.setVisible(true);
 		    	BookingFrame.this.dispose();
 			}
-		});
-		btnSave.setForeground(new Color(114, 115, 115));
-		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 14));
-		btnSave.setBorderPainted(false);
-		btnSave.setBackground(new Color(252, 193, 213));
-		btnSave.setBounds(561, 474, 215, 33);
-		contentPane.add(btnSave);
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			btnProceed.setForeground(Color.BLACK);
+			btnProceed.setBackground(new Color(253, 139, 180));
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			btnProceed.setForeground(Color.GRAY);
+			btnProceed.setBackground(new Color(252, 193, 213));
+		}});
+		btnProceed.setForeground(new Color(114, 115, 115));
+		btnProceed.setFont(new Font("Century Gothic", Font.PLAIN, 14));
+		btnProceed.setBorderPainted(false);
+		btnProceed.setBackground(new Color(252, 193, 213));
+		btnProceed.setBounds(561, 474, 215, 33);
+		contentPane.add(btnProceed);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBackground(Color.LIGHT_GRAY);
@@ -626,8 +640,7 @@ public class BookingFrame extends JFrame {
 		table = new JTable();
 		//Display selected row in textFields and JComboBox.
 		table.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				try {
+			public void mouseClicked(MouseEvent e) {	
 					DefaultTableModel model = (DefaultTableModel)table.getModel();
 					int SelectRowIndex = table.getSelectedRow();
 					txt_bookid.setText(model.getValueAt(SelectRowIndex, 0).toString());
@@ -635,10 +648,15 @@ public class BookingFrame extends JFrame {
 					txt_address.setText(model.getValueAt(SelectRowIndex, 2).toString());
 					txt_phone.setText(model.getValueAt(SelectRowIndex, 3).toString());
 					cbx_services.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());	
-					cbx_stylist.setSelectedItem(model.getValueAt(SelectRowIndex, 5).toString());
-				}catch(NullPointerException ex) {
-					
-				}
+					cbx_stylist.setSelectedItem(model.getValueAt(SelectRowIndex, 5).toString());					
+					//get value from jTable to jDateChooser
+		            try {
+						Date date = new SimpleDateFormat("yyyy-MM-dd").parse((String)model.getValueAt(SelectRowIndex, 6).toString());
+						dateChooser.setDate(date);
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 				
 					
 			}
 		});
@@ -646,21 +664,6 @@ public class BookingFrame extends JFrame {
 		table.setBackground(new Color(250, 234, 240));
 		table.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		scrollPane.setViewportView(table);
-		
-		JLabel lblSearch = new JLabel("Total No. of Bookings:");
-		lblSearch.setForeground(new Color(114, 115, 115));
-		lblSearch.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblSearch.setBounds(282, 474, 159, 23);
-		contentPane.add(lblSearch);
-		
-		textField = new JTextField();
-		textField.setForeground(new Color(114, 115, 115));
-		textField.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		textField.setColumns(10);
-		textField.setBorder(null);
-		textField.setBackground(new Color(250, 234, 240));
-		textField.setBounds(439, 474, 85, 23);
-		contentPane.add(textField);
 		
 		JLabel lblStatus = new JLabel("DATE");
 		lblStatus.setHorizontalAlignment(SwingConstants.LEFT);

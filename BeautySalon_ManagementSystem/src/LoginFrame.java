@@ -213,17 +213,14 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 						
-				String connectionsUrl = "jdbc:sqlserver://localhost:1433;databaseName=SalonTPS;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";
-				//To Pass Value
-						
+				String connectionsUrl = "jdbc:sqlserver://localhost:1433;databaseName=SalonTPS;user=sa;password={arithmetic28pitpayt};encrypt = true;trustServerCertificate = true;";					
 				try (Connection connection = DriverManager.getConnection(connectionsUrl);) {
 				//For position variables
 							//declaring variables for fucntions
 							String users =  txtUser.getText();
 							String passw =  txtPass.getText();
 							String accid = txtAccountId.getText();
-							
-							
+													
 							String sqlQuery = "SELECT * FROM Account WHERE Acc_ID=? and Acc_User=? and Acc_Pass=?";
 							PreparedStatement pst = connection.prepareStatement(sqlQuery);
 							pst.setString(1, txtAccountId.getText());
@@ -248,48 +245,28 @@ public class LoginFrame extends JFrame {
 							pst1.setString(1, db_Position);
 							ResultSet rs1 = pst.executeQuery();
 							
-							if (db_User.equals(users) && db_Pass.equals(passw) && db_ID.equals(accid)) {
-								
+							if (db_User.equals(users) && db_Pass.equals(passw) && db_ID.equals(accid)) {								
 								//To automatically determine if the account logged in is user or admin
 								if(db_Position.equals("Admin")) {
 									JOptionPane.showMessageDialog(null, "You Successfully logged in as Admin!");
-									
-									//String user = txtUser.getText();
-								   // String pass =  txtPass.getText();
-								    //BookingFrame frameOne = new BookingFrame();
-								    //frameOne.setUser(user);
-								    //frameOne.setPass(pass);
-								  //  frameOne.setVisible(false);
 								    
 									AdminDashboardFrame cv = new AdminDashboardFrame();
 							    	cv.setVisible(true);
 									LoginFrame.this.dispose();
-									
-									
+																	
 								}else if(db_Position.equals("User")) {
-									JOptionPane.showMessageDialog(null, "You Successfully logged in as User!");
-									
-									
+									JOptionPane.showMessageDialog(null, "You Successfully logged in as User!");									
 									UserDashboardFrame cv = new UserDashboardFrame();
 							    	cv.setVisible(true);
-									LoginFrame.this.dispose();
-									
-									
-								    //BookingFrame frameOne = new BookingFrame();
-								   // frameOne.setUser(user);
-								   // frameOne.setPass(pass);
-								   // frameOne.setVisible(false);
-								    
-									
-									
+									LoginFrame.this.dispose();	
 								}
 							//this will show if the credentials doesn't match
 							} else {
 								JOptionPane.showMessageDialog(null, "Please enter correct credentials!");
-							}						
+							}
 						} catch (NullPointerException|SQLException ex) {
-							ex.printStackTrace();
-							System.out.println("");
+							
+							JOptionPane.showMessageDialog(null, "Please enter a value!");
 						}
 				}	
 					

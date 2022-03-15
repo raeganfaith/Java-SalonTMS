@@ -166,7 +166,7 @@ public class ServiceFrame extends JFrame {
 		lblBookingTransaction.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBookingTransaction.setForeground(new Color(114, 115, 115));
 		lblBookingTransaction.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblBookingTransaction.setBounds(224, 136, 394, 32);
+		lblBookingTransaction.setBounds(162, 136, 456, 32);
 		contentPane.add(lblBookingTransaction);
 		
 		txt_serviceid = new JTextField();
@@ -176,19 +176,19 @@ public class ServiceFrame extends JFrame {
 		txt_serviceid.setColumns(10);
 		txt_serviceid.setBorder(null);
 		txt_serviceid.setBackground(new Color(250, 234, 240));
-		txt_serviceid.setBounds(137, 178, 153, 23);
+		txt_serviceid.setBounds(135, 192, 153, 23);
 		contentPane.add(txt_serviceid);
 		
 		JLabel lblCustomerId = new JLabel("SERVICE ID:");
 		lblCustomerId.setForeground(new Color(114, 115, 115));
 		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblCustomerId.setBounds(24, 177, 122, 23);
+		lblCustomerId.setBounds(22, 191, 122, 23);
 		contentPane.add(lblCustomerId);
 		
 		JLabel lblName = new JLabel("STYLIST NAME:");
 		lblName.setForeground(new Color(114, 115, 115));
 		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblName.setBounds(24, 212, 114, 23);
+		lblName.setBounds(22, 226, 114, 23);
 		contentPane.add(lblName);
 		
 		txt_stylist = new JTextField();
@@ -197,19 +197,19 @@ public class ServiceFrame extends JFrame {
 		txt_stylist.setColumns(10);
 		txt_stylist.setBorder(null);
 		txt_stylist.setBackground(new Color(250, 234, 240));
-		txt_stylist.setBounds(137, 211, 153, 23);
+		txt_stylist.setBounds(135, 225, 153, 23);
 		contentPane.add(txt_stylist);
 		
 		JLabel lblAddress = new JLabel("TYPE:");
 		lblAddress.setForeground(new Color(114, 115, 115));
 		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblAddress.setBounds(24, 245, 70, 23);
+		lblAddress.setBounds(22, 259, 70, 23);
 		contentPane.add(lblAddress);
 		
 		JLabel lblContactNo = new JLabel("SERVICE:");
 		lblContactNo.setForeground(new Color(114, 115, 115));
 		lblContactNo.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblContactNo.setBounds(24, 278, 99, 23);
+		lblContactNo.setBounds(22, 292, 99, 23);
 		contentPane.add(lblContactNo);
 		
 		txt_service = new JTextField();
@@ -218,7 +218,7 @@ public class ServiceFrame extends JFrame {
 		txt_service.setColumns(10);
 		txt_service.setBorder(null);
 		txt_service.setBackground(new Color(250, 234, 240));
-		txt_service.setBounds(137, 278, 153, 23);
+		txt_service.setBounds(135, 292, 153, 23);
 		contentPane.add(txt_service);
 		
 		JComboBox<String> cbx_type = new JComboBox();
@@ -227,11 +227,11 @@ public class ServiceFrame extends JFrame {
 		cbx_type.addItem("Part-time");
 		cbx_type.addItem("Full-time");
 		cbx_type.setBackground(new Color(250, 234, 240));
-		cbx_type.setBounds(137, 245, 153, 23);
+		cbx_type.setBounds(135, 259, 153, 23);
 		contentPane.add(cbx_type);
 		
 		//Add button function with database
-		JButton btnCreate = new JButton("CREATE");
+		JButton btnCreate = new JButton("ADD");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//variable declaration
@@ -252,16 +252,13 @@ public class ServiceFrame extends JFrame {
 				    	 s = table.getValueAt(i, 1).toString().trim();				    
 				    	 if (stylist.equals(s) | type.equals(s) | service.equals(s) ) {
 				                exists = true;
-				                JOptionPane.showMessageDialog(null, "The credentials is already in the system!"); break;
-				        } 
-				    }
-				    for(int i = 0; i < table.getRowCount(); i++) {
-				    	 s = table.getValueAt(i, 1).toString().trim();				    
-				    	 if (cbx_type.equals(null) | stylist.isEmpty() | service.isEmpty()) {
-				                exists = true;
-				                JOptionPane.showMessageDialog(null, "Please enter complete value!"); break;
-				        } 
-				    }
+				                JOptionPane.showMessageDialog(null, "The credentials is already in the system!"); 
+				        } else if (service.isEmpty() | cbx_type.equals(null) | stylist.isEmpty()  ) {
+			                exists = true;
+			                JOptionPane.showMessageDialog(null, "Please enter complete value!"); break;
+			        } 
+				    } 
+				    
 				  //to add the inputs of the users that doesn't duplicates the row of the name, user and password column.
 					if(!exists) {
 						JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "CONFIRMATION!", JOptionPane.YES_NO_OPTION);
@@ -298,10 +295,10 @@ public class ServiceFrame extends JFrame {
 		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(24, 324, 266, 33);
+		btnCreate.setBounds(22, 338, 266, 33);
 		contentPane.add(btnCreate);
 		
-		JButton btnUpdate = new JButton("UPDATE");
+		JButton btnUpdate = new JButton("EDIT");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String ID = txt_serviceid.getText();
@@ -340,7 +337,7 @@ public class ServiceFrame extends JFrame {
 		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(24, 367, 266, 33);
+		btnUpdate.setBounds(22, 381, 266, 33);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
@@ -386,7 +383,7 @@ public class ServiceFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(24, 410, 266, 33);
+		btnDelete.setBounds(22, 424, 114, 33);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -413,7 +410,7 @@ public class ServiceFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(24, 453, 266, 33);
+		btnClear.setBounds(174, 424, 114, 33);
 		contentPane.add(btnClear);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -464,7 +461,7 @@ public class ServiceFrame extends JFrame {
 		contentPane.add(lblclose);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(305, 178, 472, 305);
+		scrollPane.setBounds(304, 191, 472, 266);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -486,7 +483,6 @@ public class ServiceFrame extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Service ID", "Stylist", "Type", "Service"
 			}
 		));
 		setLocationRelativeTo(null);

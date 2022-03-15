@@ -71,7 +71,7 @@ public class BookingPaymentFrame extends JFrame {
 		model.addColumn("Total");
 		
 		try {
-			String query = "SELECT * FROM Payment JOIN Booking ON Payment.Cust_Name = Booking.Cust_Name";
+			String query = "SELECT * FROM Payment JOIN Booking ON Payment.Payment_ID = Booking.Payment_ID;";
 			// JOIN Booking ON Payment.Cust_Name = Booking.Cust_Name; 
 			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
@@ -119,7 +119,7 @@ public class BookingPaymentFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BookingPaymentFrame frame = new BookingPaymentFrame();
+					LoginFrame frame = new LoginFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -166,37 +166,37 @@ public class BookingPaymentFrame extends JFrame {
 		lblPaymentTransaction.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPaymentTransaction.setForeground(new Color(114, 115, 115));
 		lblPaymentTransaction.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblPaymentTransaction.setBounds(168, 128, 473, 31);
+		lblPaymentTransaction.setBounds(168, 128, 504, 42);
 		contentPane.add(lblPaymentTransaction);
 		
 		JLabel lblCustomerId = new JLabel("PAYMENT ID:");
 		lblCustomerId.setForeground(new Color(114, 115, 115));
 		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblCustomerId.setBounds(20, 160, 121, 26);
+		lblCustomerId.setBounds(22, 169, 121, 26);
 		contentPane.add(lblCustomerId);
 		
 		JLabel lblName = new JLabel("NAME:");
 		lblName.setForeground(new Color(114, 115, 115));
 		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblName.setBounds(20, 196, 121, 21);
+		lblName.setBounds(22, 205, 121, 21);
 		contentPane.add(lblName);
 		
 		JLabel lblStatus = new JLabel("STATUS:");
 		lblStatus.setForeground(new Color(114, 115, 115));
 		lblStatus.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblStatus.setBounds(20, 227, 121, 22);
+		lblStatus.setBounds(22, 236, 121, 22);
 		contentPane.add(lblStatus);
 		
 		JLabel lblPrices = new JLabel("DISCOUNT:");
 		lblPrices.setForeground(new Color(114, 115, 115));
 		lblPrices.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblPrices.setBounds(20, 292, 121, 23);
+		lblPrices.setBounds(22, 301, 121, 23);
 		contentPane.add(lblPrices);
 		
 		JLabel lblTotalPrice = new JLabel("TOTAL:");
 		lblTotalPrice.setForeground(new Color(114, 115, 115));
 		lblTotalPrice.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalPrice.setBounds(20, 325, 121, 23);
+		lblTotalPrice.setBounds(22, 334, 121, 23);
 		contentPane.add(lblTotalPrice);
 		
 		JLabel lblclose = new JLabel("CLOSE");
@@ -250,7 +250,7 @@ public class BookingPaymentFrame extends JFrame {
 		JLabel lblAmount = new JLabel("AMOUNT:");
 		lblAmount.setForeground(new Color(114, 115, 115));
 		lblAmount.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblAmount.setBounds(20, 259, 121, 23);
+		lblAmount.setBounds(22, 268, 121, 23);
 		contentPane.add(lblAmount);
 		
 		txt_custid = new JTextField();
@@ -260,7 +260,7 @@ public class BookingPaymentFrame extends JFrame {
 		txt_custid.setColumns(10);
 		txt_custid.setBorder(null);
 		txt_custid.setBackground(new Color(250, 234, 240));
-		txt_custid.setBounds(139, 160, 160, 23);
+		txt_custid.setBounds(141, 169, 160, 23);
 		contentPane.add(txt_custid);
 		
 		txt_name = new JTextField();
@@ -269,7 +269,7 @@ public class BookingPaymentFrame extends JFrame {
 		txt_name.setColumns(10);
 		txt_name.setBorder(null);
 		txt_name.setBackground(new Color(250, 234, 240));
-		txt_name.setBounds(139, 193, 160, 23);
+		txt_name.setBounds(141, 202, 160, 23);
 		contentPane.add(txt_name);
 		
 		cbx_stat = new JComboBox<String>();
@@ -283,7 +283,7 @@ public class BookingPaymentFrame extends JFrame {
 		cbx_stat.setForeground(new Color(114, 115, 115));
 		cbx_stat.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_stat.setBackground(new Color(250, 234, 240));
-		cbx_stat.setBounds(139, 226, 160, 23);
+		cbx_stat.setBounds(141, 235, 160, 23);
 		contentPane.add(cbx_stat);
 		
 		txt_amount = new JTextField();
@@ -292,7 +292,7 @@ public class BookingPaymentFrame extends JFrame {
 		txt_amount.setColumns(10);
 		txt_amount.setBorder(null);
 		txt_amount.setBackground(new Color(250, 234, 240));
-		txt_amount.setBounds(138, 259, 161, 23);
+		txt_amount.setBounds(140, 268, 161, 23);
 		contentPane.add(txt_amount);
 		
 		txt_total = new JTextField();
@@ -301,7 +301,7 @@ public class BookingPaymentFrame extends JFrame {
 		txt_total.setColumns(10);
 		txt_total.setBorder(null);
 		txt_total.setBackground(new Color(250, 234, 240));
-		txt_total.setBounds(139, 325, 160, 23);
+		txt_total.setBounds(141, 334, 160, 23);
 		contentPane.add(txt_total);
 		
 		cbx_disc = new JComboBox<String>();
@@ -344,54 +344,14 @@ public class BookingPaymentFrame extends JFrame {
 		cbx_disc.setForeground(new Color(114, 115, 115));
 		cbx_disc.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_disc.setBackground(new Color(250, 234, 240));
-		cbx_disc.setBounds(138, 292, 161, 23);
+		cbx_disc.setBounds(140, 301, 161, 23);
 		contentPane.add(cbx_disc);
 		
-		JButton btnCreate = new JButton("CREATE");
+		JButton btnCreate = new JButton("ADD");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "You can't add new customers that are not recoded in booking yet!");
 				
-				String ID = paymentid;
-				String names = txt_name.getText();	
-				String status = (String) cbx_stat.getSelectedItem();
-				String amount = txt_amount.getText();
-				String disc = (String) cbx_disc.getSelectedItem();
-				String totals = txt_total.getText();	
-				
-				try {
-					//Accounts();
-					pst = con.prepareStatement("insert into Payment(Payment_ID,Cust_Name, Cust_Status, Cust_Amount, Cust_Discount,Cust_Total)values(?,?,?,?,?)");
-					pst.setString(0, ID);
-					pst.setString(1, names);
-					pst.setString(2, status);
-					pst.setString(3, amount);
-					pst.setString(4, disc);
-					pst.setString(5, totals);
-				
-
-					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "ALERT!", JOptionPane.YES_NO_OPTION);
-					
-					if(input == JOptionPane.YES_OPTION) {
-						pst.executeUpdate();
-						JOptionPane.showMessageDialog(null, "Successfully added!");
-						ShowData(); // to automatically update the table
-						txt_name.setText("");
-						cbx_stat.setSelectedIndex(-1);
-						txt_amount.setText("");
-						cbx_disc.setSelectedIndex(-1);
-						txt_total.setText(" ");
-						txt_total.setText("");
-						
-						
-					} else {
-						JOptionPane.showMessageDialog(null, "Error!");
-					}
-
-				} catch (NullPointerException| NumberFormatException | SQLException e2 ) 
-				{
-					return;
-					
-				}
 			}
 		});
 
@@ -410,23 +370,22 @@ public class BookingPaymentFrame extends JFrame {
 		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(20, 365, 279, 33);
+		btnCreate.setBounds(22, 374, 279, 33);
 		contentPane.add(btnCreate);
 		
-		JButton btnUpdate = new JButton("UPDATE");
+		JButton btnUpdate = new JButton("EDIT");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String ID = txt_custid.getText();
-				String names1 = txt_name.getText();	
+				String names = txt_name.getText();	
 				String status = (String) cbx_stat.getSelectedItem();
 				String amount = txt_amount.getText();
 				String disc = (String) cbx_disc.getSelectedItem();
 				String total = txt_total.getText();	
-				//String s = LoginFrame.txtPass.getText();
-				
+				//String s = LoginFrame.txtPass.getText();				
 				try {
 					
-					pst = con.prepareStatement("UPDATE Payment SET Cust_Name='"+names1+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Payment_ID='"+ID+"'");
+					pst = con.prepareStatement("UPDATE Payment SET Cust_Name='"+names+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Payment_ID='"+ID+"'");
 					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					if(input == JOptionPane.YES_OPTION) {
@@ -450,47 +409,46 @@ public class BookingPaymentFrame extends JFrame {
 				}
 			}
 		});
+		btnUpdate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnUpdate.setForeground(Color.BLACK);
+				btnUpdate.setBackground(new Color(253, 139, 180));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnUpdate.setForeground(Color.GRAY);
+				btnUpdate.setBackground(new Color(252, 193, 213));
+			}});
 		btnUpdate.setForeground(new Color(114, 115, 115));
 		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(20, 408, 279, 33);
+		btnUpdate.setBounds(22, 417, 279, 33);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model = (DefaultTableModel)table.getModel();
-		        int SelectRowIndex = table.getSelectedRow();
-		        String hold = model.getValueAt(SelectRowIndex, 0).toString();
-	        	String queryy = "DELETE FROM Payment WHERE Customer_ID='"+hold +"'";
-	        	 
-		        try{
-		            PreparedStatement pst = con.prepareStatement(queryy);
-		            int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?", "ALERT!", JOptionPane.YES_NO_OPTION); {
-						if (input == JOptionPane.YES_OPTION) {
-							pst.executeUpdate();
-				               JOptionPane.showMessageDialog(null, "Deleted successfully.");
-				               ShowData();
-						}
-					}
-		            txt_custid.setText("");
-		            txt_name.setText("");
-		            cbx_stat.setSelectedIndex(-1);
-		            txt_amount.setText("");
-		            cbx_disc.setSelectedIndex(-1);
-		            txt_total.setText("");
-		            
-		        }catch(HeadlessException | SQLException e11){
-		            JOptionPane.showMessageDialog(null,e11);
-		        }
+				
 			}
 		});
+		btnDelete.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnDelete.setForeground(Color.BLACK);
+				btnDelete.setBackground(new Color(253, 139, 180));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnDelete.setForeground(Color.GRAY);
+				btnDelete.setBackground(new Color(252, 193, 213));
+			}});
 		btnDelete.setForeground(new Color(114, 115, 115));
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(20, 451, 279, 33);
+		btnDelete.setBounds(22, 460, 121, 33);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -520,11 +478,11 @@ public class BookingPaymentFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(20, 494, 279, 33);
+		btnClear.setBounds(180, 460, 121, 33);
 		contentPane.add(btnClear);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(318, 158, 459, 302);
+		scrollPane.setBounds(318, 169, 460, 324);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -543,7 +501,6 @@ public class BookingPaymentFrame extends JFrame {
 				}catch(NullPointerException ex) {
 					
 				}
-				
 			}
 		});
 		table.setBackground(new Color(250, 234, 240));
@@ -555,13 +512,29 @@ public class BookingPaymentFrame extends JFrame {
 		JTHeader.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		JTHeader.setBackground(new Color(252, 193, 213));
 		
-		JButton btnSave = new JButton("SAVE");
-		
+		JButton btnSave = new JButton("GO BACK TO DASHBOARD");
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				UserDashboardFrame cv = new UserDashboardFrame();
+		    	cv.setVisible(true);
+		    	BookingPaymentFrame.this.dispose();
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnSave.setForeground(Color.BLACK);
+				btnSave.setBackground(new Color(253, 139, 180));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnSave.setForeground(Color.GRAY);
+				btnSave.setBackground(new Color(252, 193, 213));
+			}});
 		btnSave.setForeground(new Color(114, 115, 115));
 		btnSave.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnSave.setBorderPainted(false);
 		btnSave.setBackground(new Color(252, 193, 213));
-		btnSave.setBounds(654, 470, 123, 33);
+		btnSave.setBounds(545, 503, 233, 33);
 		contentPane.add(btnSave);
 		
 	}

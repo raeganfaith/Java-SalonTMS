@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -17,6 +18,7 @@ import java.awt.HeadlessException;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -33,6 +35,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TransactionFrame extends JFrame {
 	
@@ -46,6 +50,7 @@ public class TransactionFrame extends JFrame {
 	PreparedStatement pst;
 	ResultSet rs;
 	private JTable tableBookingPayments;
+	private JTextField textField_1;
 	
 	//Database Connection
 	public void Connection() {
@@ -56,7 +61,7 @@ public class TransactionFrame extends JFrame {
 			ex.printStackTrace();
 		}	
 	}
-		
+	
 		//a method to show and fetch data from the database to the Jtable
 		public void ShowDataReservationPayment() {
 			DefaultTableModel model = new DefaultTableModel();
@@ -158,8 +163,20 @@ public class TransactionFrame extends JFrame {
 				e.printStackTrace();
 			}}
 
-		
-		
+	public void search(String  str) {
+		DefaultTableModel model = new DefaultTableModel();
+		model = (DefaultTableModel) tableBookingPayments.getModel();
+		TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
+		tableBookingPayments.setRowSorter(trs);
+		trs.setRowFilter(RowFilter.regexFilter(str));
+	}
+	public void search1(String  str) {
+		DefaultTableModel model = new DefaultTableModel();
+		model = (DefaultTableModel) tableReservationPayment.getModel();
+		TableRowSorter<DefaultTableModel> trs = new TableRowSorter<>(model);
+		tableReservationPayment.setRowSorter(trs);
+		trs.setRowFilter(RowFilter.regexFilter(str));
+	}	
 	/**
 	 * Launch the application.
 	 */
@@ -203,7 +220,7 @@ public class TransactionFrame extends JFrame {
 		lblUserManagement.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserManagement.setForeground(new Color(114, 115, 115));
 		lblUserManagement.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblUserManagement.setBounds(224, 114, 361, 44);
+		lblUserManagement.setBounds(171, 114, 414, 53);
 		contentPane.add(lblUserManagement);
 		
 		JPanel panel = new JPanel();
@@ -233,8 +250,7 @@ public class TransactionFrame extends JFrame {
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBack.setForeground(Color.GRAY);
-			
+				lblBack.setForeground(Color.GRAY);			
 			}
 		});
 		lblBack.setHorizontalAlignment(SwingConstants.CENTER);
@@ -268,16 +284,8 @@ public class TransactionFrame extends JFrame {
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		
-		JButton btnCreate = new JButton("CREATE");
-		btnCreate.setForeground(new Color(114, 115, 115));
-		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
-		btnCreate.setBorderPainted(false);
-		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(631, 498, 147, 33);
-		contentPane.add(btnCreate);
-		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(21, 168, 758, 150);
+		scrollPane.setBounds(21, 200, 758, 142);
 		contentPane.add(scrollPane);
 		
 		tableReservationPayment = new JTable();
@@ -285,23 +293,24 @@ public class TransactionFrame extends JFrame {
 		tableReservationPayment.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		scrollPane.setViewportView(tableReservationPayment);
 		
-		JLabel lblTotalNoOf = new JLabel("Total No. of Users:");
-		lblTotalNoOf.setForeground(new Color(114, 115, 115));
-		lblTotalNoOf.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalNoOf.setBounds(21, 503, 132, 23);
-		contentPane.add(lblTotalNoOf);
-		
 		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String searchString = textField.getText();
+				search(searchString);
+			}
+		});
 		textField.setForeground(new Color(114, 115, 115));
-		textField.setFont(new Font("Century Gothic", Font.PLAIN, 17));
+		textField.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		textField.setColumns(10);
 		textField.setBorder(null);
 		textField.setBackground(new Color(250, 234, 240));
-		textField.setBounds(154, 502, 85, 23);
+		textField.setBounds(92, 352, 156, 23);
 		contentPane.add(textField);
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(21, 342, 758, 150);
+		scrollPane_3.setBounds(21, 385, 758, 142);
 		contentPane.add(scrollPane_3);
 		
 		tableBookingPayments = new JTable();
@@ -309,17 +318,33 @@ public class TransactionFrame extends JFrame {
 		tableBookingPayments.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		scrollPane_3.setViewportView(tableBookingPayments);
 		
-		JLabel lblTotalNoOf_1 = new JLabel("Reservation:");
-		lblTotalNoOf_1.setForeground(new Color(114, 115, 115));
-		lblTotalNoOf_1.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalNoOf_1.setBounds(21, 145, 132, 23);
-		contentPane.add(lblTotalNoOf_1);
+		JLabel lblReserve = new JLabel("Reservation:");
+		lblReserve.setForeground(new Color(114, 115, 115));
+		lblReserve.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblReserve.setBounds(21, 165, 91, 24);
+		contentPane.add(lblReserve);
 		
-		JLabel lblTotalNoOf_1_1 = new JLabel("Booking:");
-		lblTotalNoOf_1_1.setForeground(new Color(114, 115, 115));
-		lblTotalNoOf_1_1.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalNoOf_1_1.setBounds(21, 320, 132, 23);
-		contentPane.add(lblTotalNoOf_1_1);
+		JLabel lblBook = new JLabel("Booking:");
+		lblBook.setForeground(new Color(114, 115, 115));
+		lblBook.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		lblBook.setBounds(21, 344, 91, 37);
+		contentPane.add(lblBook);
+		
+		textField_1 = new JTextField();
+		textField_1.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String search1String = textField_1.getText();
+				search1(search1String);
+			}
+		});
+		textField_1.setForeground(new Color(114, 115, 115));
+		textField_1.setFont(new Font("Century Gothic", Font.PLAIN, 14));
+		textField_1.setColumns(10);
+		textField_1.setBorder(null);
+		textField_1.setBackground(new Color(250, 234, 240));
+		textField_1.setBounds(122, 165, 156, 25);
+		contentPane.add(textField_1);
 		
 		//to customize the header/column
 		JTableHeader JTHeader = tableReservationPayment.getTableHeader();

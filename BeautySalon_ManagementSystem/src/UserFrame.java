@@ -43,7 +43,6 @@ public class UserFrame extends JFrame {
 	private JTextField txt_username;
 	private JTextField txt_pass;
 	private JTable table;
-	private JTextField textField;
 	
 	Connection con;
 	Connection connection;
@@ -76,7 +75,7 @@ public class UserFrame extends JFrame {
 	//A method to show and fetch data from the database to the Jtable
 	public void ShowData() {
 		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("User ID");
+		model.addColumn("Acc ID");
 		model.addColumn("Name");
 		model.addColumn("Type");
 		model.addColumn("Position");
@@ -135,7 +134,7 @@ public class UserFrame extends JFrame {
 		lblUserManagement.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserManagement.setForeground(new Color(114, 115, 115));
 		lblUserManagement.setFont(new Font("Century Gothic", Font.PLAIN, 19));
-		lblUserManagement.setBounds(224, 114, 280, 32);
+		lblUserManagement.setBounds(224, 114, 346, 32);
 		contentPane.add(lblUserManagement);
 		
 		JPanel panel = new JPanel();
@@ -154,31 +153,31 @@ public class UserFrame extends JFrame {
 		JLabel lblContactNo = new JLabel("CONTACT NO.");
 		lblContactNo.setForeground(new Color(114, 115, 115));
 		lblContactNo.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblContactNo.setBounds(23, 277, 107, 24);
+		lblContactNo.setBounds(23, 289, 107, 24);
 		contentPane.add(lblContactNo);
 		
 		JLabel lblType = new JLabel("TYPE:");
 		lblType.setForeground(new Color(114, 115, 115));
 		lblType.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblType.setBounds(23, 212, 85, 24);
+		lblType.setBounds(23, 224, 85, 24);
 		contentPane.add(lblType);
 		
 		JLabel lblName = new JLabel("NAME:");
 		lblName.setForeground(new Color(114, 115, 115));
 		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblName.setBounds(23, 178, 85, 24);
+		lblName.setBounds(23, 190, 85, 24);
 		contentPane.add(lblName);
 		
 		JLabel lblCustomerId = new JLabel("ACCOUNT ID:");
 		lblCustomerId.setForeground(new Color(114, 115, 115));
 		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblCustomerId.setBounds(23, 144, 107, 24);
+		lblCustomerId.setBounds(23, 156, 107, 24);
 		contentPane.add(lblCustomerId);
 		
 		JLabel lblUserName = new JLabel("USER NAME:");
 		lblUserName.setForeground(new Color(114, 115, 115));
 		lblUserName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblUserName.setBounds(23, 310, 99, 24);
+		lblUserName.setBounds(23, 322, 99, 24);
 		contentPane.add(lblUserName);
 		
 		JComboBox<String> cbx_type = new JComboBox<String>();
@@ -187,13 +186,13 @@ public class UserFrame extends JFrame {
 		cbx_type.setForeground(new Color(114, 115, 115));
 		cbx_type.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_type.setBackground(new Color(250, 234, 240));
-		cbx_type.setBounds(130, 213, 140, 23);
+		cbx_type.setBounds(130, 225, 140, 23);
 		contentPane.add(cbx_type);
 		
 		JLabel lblPassword = new JLabel("PASSWORD:");
 		lblPassword.setForeground(new Color(114, 115, 115));
 		lblPassword.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblPassword.setBounds(23, 345, 107, 24);
+		lblPassword.setBounds(23, 357, 107, 24);
 		contentPane.add(lblPassword);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -250,7 +249,7 @@ public class UserFrame extends JFrame {
 		txt_accid.setColumns(10);
 		txt_accid.setBorder(null);
 		txt_accid.setBackground(new Color(250, 234, 240));
-		txt_accid.setBounds(130, 145, 140, 23);
+		txt_accid.setBounds(130, 157, 140, 23);
 		contentPane.add(txt_accid);
 		
 		txt_name = new JTextField();
@@ -259,7 +258,7 @@ public class UserFrame extends JFrame {
 		txt_name.setColumns(10);
 		txt_name.setBorder(null);
 		txt_name.setBackground(new Color(250, 234, 240));
-		txt_name.setBounds(130, 179, 140, 23);
+		txt_name.setBounds(130, 191, 140, 23);
 		contentPane.add(txt_name);
 		
 		txt_phone = new JTextField();
@@ -268,7 +267,7 @@ public class UserFrame extends JFrame {
 		txt_phone.setColumns(10);
 		txt_phone.setBorder(null);
 		txt_phone.setBackground(new Color(250, 234, 240));
-		txt_phone.setBounds(130, 277, 140, 23);
+		txt_phone.setBounds(130, 289, 140, 23);
 		contentPane.add(txt_phone);
 			
 		txt_username = new JTextField();
@@ -277,7 +276,7 @@ public class UserFrame extends JFrame {
 		txt_username.setColumns(10);
 		txt_username.setBorder(null);
 		txt_username.setBackground(new Color(250, 234, 240));
-		txt_username.setBounds(132, 311, 138, 23);
+		txt_username.setBounds(132, 323, 138, 23);
 		contentPane.add(txt_username);
 		
 		txt_pass = new JTextField();
@@ -286,7 +285,7 @@ public class UserFrame extends JFrame {
 		txt_pass.setColumns(10);
 		txt_pass.setBorder(null);
 		txt_pass.setBackground(new Color(250, 234, 240));
-		txt_pass.setBounds(130, 345, 140, 23);
+		txt_pass.setBounds(130, 357, 140, 23);
 		contentPane.add(txt_pass);
 		
 		JComboBox<String> cbx_position = new JComboBox<String>();
@@ -295,12 +294,12 @@ public class UserFrame extends JFrame {
 		cbx_position.setForeground(new Color(114, 115, 115));
 		cbx_position.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_position.setBackground(new Color(250, 234, 240));
-		cbx_position.setBounds(130, 244, 140, 23);
+		cbx_position.setBounds(130, 256, 140, 23);
 		contentPane.add(cbx_position);
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		//CREATE/ADD BUTTON FUNCTIONS
-		JButton btnCreate = new JButton("CREATE");
+		JButton btnCreate = new JButton("ADD");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String names = txt_name.getText();	
@@ -324,12 +323,14 @@ public class UserFrame extends JFrame {
 				    boolean exists = false;
 				    for(int i = 0; i < table.getRowCount(); i++) {
 				    	 s = table.getValueAt(i, 1).toString().trim();
-				    	 if (names.equals(s) | user.equals(s) | pass.equals(s)|names.isEmpty() | 
-				    		names.isEmpty() | type.isEmpty() |position.isEmpty() | contact.isEmpty()| 
-				    		user.isEmpty() | pass.isEmpty()) {
+				    	 if (names.equals(s) | user.equals(s) | pass.equals(s)) {
 				                exists = true;
-				                JOptionPane.showMessageDialog(null, "Please input valid credentials!"); break;
-				        } 
+				                JOptionPane.showMessageDialog(null, "The input duplicates some values in the table!"); 
+				        } else if(names.isEmpty() |  type.isEmpty() |position.isEmpty() | contact.isEmpty()| 
+					    		    user.isEmpty() | pass.isEmpty()) {
+				        	 exists = true;
+				             JOptionPane.showMessageDialog(null, "Please input complete values!"); break;
+				        }
 				    }    
 				        //to add the inputs of the users that doesn't duplicates the row of the name, user and password column.    
 				        if(!exists) {
@@ -367,10 +368,10 @@ public class UserFrame extends JFrame {
 		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(20, 379, 250, 32);
+		btnCreate.setBounds(20, 391, 250, 32);
 		contentPane.add(btnCreate);
 		
-		JButton btnUpdate = new JButton("UPDATE");
+		JButton btnUpdate = new JButton("EDIT");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String ID = txt_accid.getText();
@@ -415,7 +416,7 @@ public class UserFrame extends JFrame {
 		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(20, 421, 250, 33);
+		btnUpdate.setBounds(20, 433, 250, 33);
 		contentPane.add(btnUpdate);
 		//Delete Button Function
 		JButton btnDelete = new JButton("DELETE");
@@ -462,7 +463,7 @@ public class UserFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(23, 464, 247, 33);
+		btnDelete.setBounds(23, 476, 107, 33);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -493,11 +494,11 @@ public class UserFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(23, 507, 247, 33);
+		btnClear.setBounds(163, 476, 107, 33);
 		contentPane.add(btnClear);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(280, 144, 498, 337);
+		scrollPane.setBounds(280, 156, 498, 353);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -519,25 +520,10 @@ public class UserFrame extends JFrame {
 		table.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		scrollPane.setViewportView(table);
 		
-		JLabel lblTotalNoOf = new JLabel("Total No. of Users:");
-		lblTotalNoOf.setForeground(new Color(114, 115, 115));
-		lblTotalNoOf.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalNoOf.setBounds(280, 491, 139, 23);
-		contentPane.add(lblTotalNoOf);
-		
-		textField = new JTextField();
-		textField.setForeground(new Color(114, 115, 115));
-		textField.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		textField.setColumns(10);
-		textField.setBorder(null);
-		textField.setBackground(new Color(250, 234, 240));
-		textField.setBounds(419, 490, 85, 23);
-		contentPane.add(textField);
-		
 		JLabel lblPosition = new JLabel("POSITION:");
 		lblPosition.setForeground(new Color(114, 115, 115));
 		lblPosition.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblPosition.setBounds(23, 243, 107, 24);
+		lblPosition.setBounds(23, 255, 107, 24);
 		contentPane.add(lblPosition);
 		
 		//to customize the header/column

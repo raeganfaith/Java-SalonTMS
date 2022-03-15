@@ -43,6 +43,7 @@ import java.awt.event.ActionEvent;
 import com.toedter.calendar.JCalendar;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JCheckBox;
 
 public class ReservationFrame extends JFrame {
 	
@@ -52,7 +53,6 @@ public class ReservationFrame extends JFrame {
 	private JTextField txt_name;
 	private JTextField txt_address;
 	private JTextField txt_phone;
-	private JTextField textField;
 	public JComboBox<String> cbx_services; 
 	public JComboBox<String> cbx_hairstylist;
 	public JComboBox<String> cbx_time;
@@ -61,6 +61,7 @@ public class ReservationFrame extends JFrame {
 	private String dateValue = "";
 	private String timeValue = "";
 	private JTable table;
+	private JCheckBox chckbxShowAvailability;
 	
 	Connection con;
 	Connection connection;
@@ -81,7 +82,7 @@ public class ReservationFrame extends JFrame {
 	{
 		try
 		{
-			String query = "SELECT * FROM Service ";
+			String query = "SELECT DISTINCT Services_Name FROM Service;";
 			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 				
@@ -89,9 +90,6 @@ public class ReservationFrame extends JFrame {
 			{
 				cbx_services.addItem(rs.getString("Services_Name"));
 			}
-			
-			//rs.close();
-			//ps.close();
 			
 		}
 		catch (NullPointerException | SQLException e1) 
@@ -113,9 +111,6 @@ public class ReservationFrame extends JFrame {
 			{
 				cbx_hairstylist.addItem(rs.getString("Employee_Name"));		
 			}
-
-			//rs.close();
-			//ps.close();
 			
 		}
 		catch (NullPointerException | SQLException e1) 
@@ -160,6 +155,10 @@ public class ReservationFrame extends JFrame {
 		}
         
 	}
+	public void clearOptions ()   
+	{ 
+		
+	}
 	//a method to show and fetch data from the database to the Jtable
 	public void ShowData() {
 		DefaultTableModel model = new DefaultTableModel();
@@ -199,19 +198,18 @@ public class ReservationFrame extends JFrame {
 				e.printStackTrace();
 			}}
 	public void DateValue(){
-		 PreparedStatement pstt;
+		 PreparedStatement pstt1;
 		 //String s = (String) cbx_services.getSelectedItem();
-        String sql1 = "Select * from Reservation;";
+        String sql1 = "SELECT Reserve_Date, Reserve_Time FROM Reservation;"; //SELECT DISTINCT eserve_Date, Reserve_Time FROM Reservation;
 		try {
-			pstt = con.prepareStatement(sql1);
-			ResultSet rs = pstt.executeQuery();
+			pstt1 = con.prepareStatement(sql1);
+			ResultSet rs = pstt1.executeQuery();
 			while (rs.next()) {
 				dateValue = rs.getString("Reserve_Date");
 				timeValue = rs.getString("Reserve_Time");
            }
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}     
 	}
 	//still need fixing
@@ -263,28 +261,28 @@ public class ReservationFrame extends JFrame {
 		panel.setLayout(null);
 		panel.setBorder(null);
 		panel.setBackground(new Color(250, 234, 240));
-		panel.setBounds(0, 112, 800, 16);
+		panel.setBounds(0, 107, 800, 12);
 		contentPane.add(panel);
 		
 		JLabel lblPaymentTransaction = new JLabel("RESERVATION TRANSACT");
 		lblPaymentTransaction.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPaymentTransaction.setForeground(new Color(114, 115, 115));
 		lblPaymentTransaction.setFont(new Font("Century Gothic", Font.PLAIN, 20));
-		lblPaymentTransaction.setBounds(211, 128, 372, 27);
+		lblPaymentTransaction.setBounds(211, 118, 372, 37);
 		contentPane.add(lblPaymentTransaction);
 		
 		JLabel lblTotalPrice = new JLabel("CONTACT NO.");
 		lblTotalPrice.setHorizontalAlignment(SwingConstants.LEFT);
 		lblTotalPrice.setForeground(new Color(114, 115, 115));
 		lblTotalPrice.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalPrice.setBounds(24, 264, 140, 23);
+		lblTotalPrice.setBounds(24, 253, 140, 23);
 		contentPane.add(lblTotalPrice);
 		
 		cbx_hairstylist = new JComboBox();
 		cbx_hairstylist.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_hairstylist.setForeground(new Color(114, 115, 115));
 		cbx_hairstylist.setBackground(new Color(250, 234, 240));
-		cbx_hairstylist.setBounds(133, 329, 160, 23);
+		cbx_hairstylist.setBounds(133, 318, 160, 23);
 		contentPane.add(cbx_hairstylist);
 		fillComboBoxStylist();
 		
@@ -312,7 +310,7 @@ public class ReservationFrame extends JFrame {
 			}
 		});
 		cbx_services.setBackground(new Color(250, 234, 240));
-		cbx_services.setBounds(133, 297, 160, 23);
+		cbx_services.setBounds(133, 286, 160, 23);
 		contentPane.add(cbx_services);
 		fillComboBoxService();
 		
@@ -320,35 +318,35 @@ public class ReservationFrame extends JFrame {
 		lblPrices.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPrices.setForeground(new Color(114, 115, 115));
 		lblPrices.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblPrices.setBounds(24, 360, 67, 23);
+		lblPrices.setBounds(24, 349, 67, 23);
 		contentPane.add(lblPrices);
 		
 		JLabel lblStatus = new JLabel("DATE");
 		lblStatus.setHorizontalAlignment(SwingConstants.LEFT);
 		lblStatus.setForeground(new Color(114, 115, 115));
 		lblStatus.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblStatus.setBounds(24, 393, 67, 23);
+		lblStatus.setBounds(24, 382, 67, 23);
 		contentPane.add(lblStatus);
 		
 		JLabel lblName = new JLabel("NAME:");
 		lblName.setHorizontalAlignment(SwingConstants.LEFT);
 		lblName.setForeground(new Color(114, 115, 115));
 		lblName.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblName.setBounds(24, 198, 76, 23);
+		lblName.setBounds(24, 187, 76, 23);
 		contentPane.add(lblName);
 		
 		JLabel lblCustomerId = new JLabel("RESERVE ID:");
 		lblCustomerId.setHorizontalAlignment(SwingConstants.LEFT);
 		lblCustomerId.setForeground(new Color(114, 115, 115));
 		lblCustomerId.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblCustomerId.setBounds(24, 165, 140, 23);
+		lblCustomerId.setBounds(24, 154, 140, 23);
 		contentPane.add(lblCustomerId);
 		
 		JLabel lblAddress = new JLabel("ADDRESS");
 		lblAddress.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAddress.setForeground(new Color(114, 115, 115));
 		lblAddress.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblAddress.setBounds(24, 231, 99, 23);
+		lblAddress.setBounds(24, 220, 99, 23);
 		contentPane.add(lblAddress);
 		
 		JLabel lblBack = new JLabel("BACK");
@@ -407,7 +405,7 @@ public class ReservationFrame extends JFrame {
 		cbx_time.setForeground(new Color(114, 115, 115));
 		cbx_time.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		cbx_time.setBackground(new Color(250, 234, 240));
-		cbx_time.setBounds(133, 360, 160, 23);
+		cbx_time.setBounds(133, 349, 160, 23);
 		contentPane.add(cbx_time);
 		
 		
@@ -418,7 +416,7 @@ public class ReservationFrame extends JFrame {
 		txt_cust.setColumns(10);
 		txt_cust.setBorder(null);
 		txt_cust.setBackground(new Color(250, 234, 240));
-		txt_cust.setBounds(133, 165, 160, 23);
+		txt_cust.setBounds(133, 154, 160, 23);
 		contentPane.add(txt_cust);
 		
 		txt_name = new JTextField();
@@ -427,7 +425,7 @@ public class ReservationFrame extends JFrame {
 		txt_name.setColumns(10);
 		txt_name.setBorder(null);
 		txt_name.setBackground(new Color(250, 234, 240));
-		txt_name.setBounds(133, 198, 160, 23);
+		txt_name.setBounds(133, 187, 160, 23);
 		contentPane.add(txt_name);
 		
 		txt_address = new JTextField();
@@ -436,7 +434,7 @@ public class ReservationFrame extends JFrame {
 		txt_address.setColumns(10);
 		txt_address.setBorder(null);
 		txt_address.setBackground(new Color(250, 234, 240));
-		txt_address.setBounds(133, 231, 160, 23);
+		txt_address.setBounds(133, 220, 160, 23);
 		contentPane.add(txt_address);
 		
 		txt_phone = new JTextField();
@@ -445,18 +443,21 @@ public class ReservationFrame extends JFrame {
 		txt_phone.setColumns(10);
 		txt_phone.setBorder(null);
 		txt_phone.setBackground(new Color(250, 234, 240));
-		txt_phone.setBounds(133, 264, 160, 23);
+		txt_phone.setBounds(133, 253, 160, 23);
 		contentPane.add(txt_phone);
 		
 		JDateChooser dateChooser = new JDateChooser();
 		dateChooser.getCalendarButton().setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		dateChooser.setForeground(new Color(114, 115, 115));
-		dateChooser.setBounds(133, 393, 160, 23);
+		dateChooser.setBounds(133, 382, 160, 23);
 		contentPane.add(dateChooser);
 		
-		JButton btnCreate = new JButton("CREATE");
+		
+		
+		JButton btnCreate = new JButton("ADD");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				//to get and print the recent account id logged in this system
 				String User = LoginFrame.txtAccountId.getText(); 
 				
@@ -465,15 +466,14 @@ public class ReservationFrame extends JFrame {
 				String contact = txt_phone.getText();	
 				String service = (String) cbx_services.getSelectedItem();
 				String hairstylist = (String) cbx_hairstylist.getSelectedItem();
-				String time = (String) cbx_time.getSelectedItem();
+				String time = (String) cbx_time.getSelectedItem();				
 				
-				
-				try {
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					String date = sdf.format(dateChooser.getDate());
-					DateValue();
+				try {	
 					PaymentIDValue();
 					ServiceIDValue();
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					String date = sdf.format(dateChooser.getDate());
+										
 					pst = con.prepareStatement("INSERT INTO Reservation(Payment_ID,Cust_Name, Cust_Address, Cust_Phone, Service_ID, Services_Name, Employee_Name, Reserve_Time, Reserve_Date, Acc_ID)values(?,?,?,?,?,?,?,?,?,?)");
 					pst.setString(1, paymentid);
 					pst.setString(2, names);
@@ -492,27 +492,22 @@ public class ReservationFrame extends JFrame {
 				    boolean exists = false;
 				    
 				    for(int i = 0; i < table.getRowCount(); i++) {
-				    	 s = table.getValueAt(i, 1).toString().trim();	
-				    	 //To determine if the schedule for reservation is vacant or taken
-				    	 if (date.equals(dateValue) & time.equals(timeValue)) {
-				                exists = true;
-				                JOptionPane.showMessageDialog(null, "This reservation is already taken!"); break;
-				        } 
-				    }
-				    for(int i = 0; i < table.getRowCount(); i++) {
 				    	 s = table.getValueAt(i, 1).toString().trim();				    
 				    	 if (names.isEmpty() | address.isEmpty() | contact.isEmpty() |cbx_services.equals(null)
 				    			 | hairstylist.isEmpty() | cbx_time.equals(null) | date.isEmpty()) {
 				                exists = true;
 				                JOptionPane.showMessageDialog(null, "Please enter complete value!"); break;
-				        } 
+				        }  else {
+							
+						}
 				    }
 				  //to add the inputs of the users that doesn't duplicates the row of the name, user and password column.
-					if(!exists) {
+					if(!exists ) {
 						JOptionPane.showConfirmDialog(null, "Are you sure you want to save?", "CONFIRMATION!", JOptionPane.YES_NO_OPTION);
-						pst.executeUpdate();
-						
+												
 						JOptionPane.showMessageDialog(null, "Successfully added!");
+												
+						pst.execute();
 						ShowData();
 						txt_name.setText("");
 						txt_address.setText("");
@@ -523,7 +518,7 @@ public class ReservationFrame extends JFrame {
 						dateChooser.setDate(null);
 					} else {
 						
-					}		
+					}
 
 				} catch (NullPointerException | SQLException e2) 
 				{
@@ -534,6 +529,8 @@ public class ReservationFrame extends JFrame {
 		btnCreate.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
+				
 				btnCreate.setForeground(Color.BLACK);
 				btnCreate.setBackground(new Color(253, 139, 180));
 			}
@@ -546,10 +543,37 @@ public class ReservationFrame extends JFrame {
 		btnCreate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnCreate.setBorderPainted(false);
 		btnCreate.setBackground(new Color(252, 193, 213));
-		btnCreate.setBounds(24, 426, 269, 28);
+		btnCreate.setBounds(24, 436, 269, 28);
 		contentPane.add(btnCreate);
-		
-		JButton btnUpdate = new JButton("UPDATE");
+		//To check the availability of the reservation schedule
+		chckbxShowAvailability = new JCheckBox("Check Availability");
+		chckbxShowAvailability.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String time = (String) cbx_time.getSelectedItem();	
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdf.format(dateChooser.getDate());
+				boolean state = false;
+				try {
+					if (chckbxShowAvailability.isSelected()) {					
+						DateValue();
+					if(date.equals(dateValue) & time.equals(timeValue)) {
+						chckbxShowAvailability.setSelected(state);
+						JOptionPane.showMessageDialog(null, "Sorry, this schedule is already reserved.");
+						}else {
+							JOptionPane.showMessageDialog(null, "This schedule is vacant for reservation!");
+							
+						}
+					} else{
+						chckbxShowAvailability.setSelected(state);
+						JOptionPane.showMessageDialog(null, "Please Check the availability of the schedule!");
+					}
+				} catch (NullPointerException e2) {
+					JOptionPane.showMessageDialog(null, "Please enter date becore checking schedule!");
+				}
+				
+			}
+		});
+		JButton btnUpdate = new JButton("EDIT");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -596,7 +620,7 @@ public class ReservationFrame extends JFrame {
 		btnUpdate.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnUpdate.setBorderPainted(false);
 		btnUpdate.setBackground(new Color(252, 193, 213));
-		btnUpdate.setBounds(24, 464, 269, 28);
+		btnUpdate.setBounds(24, 474, 269, 28);
 		contentPane.add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
@@ -606,6 +630,7 @@ public class ReservationFrame extends JFrame {
 		        int SelectRowIndex = table.getSelectedRow();
 		        String hold = model.getValueAt(SelectRowIndex, 0).toString();
 	        	String queryy = "DELETE FROM Reservation WHERE Reservation_No='"+hold +"'";
+	        	
 	        	 
 		        try{
 		            PreparedStatement pst = con.prepareStatement(queryy);
@@ -644,7 +669,7 @@ public class ReservationFrame extends JFrame {
 		btnDelete.setFont(new Font("Century Gothic", Font.PLAIN, 14));
 		btnDelete.setBorderPainted(false);
 		btnDelete.setBackground(new Color(252, 193, 213));
-		btnDelete.setBounds(24, 502, 108, 28);
+		btnDelete.setBounds(24, 512, 108, 28);
 		contentPane.add(btnDelete);
 		
 		JButton btnClear = new JButton("CLEAR");
@@ -676,23 +701,8 @@ public class ReservationFrame extends JFrame {
 		btnClear.setFont(new Font("Century Gothic", Font.PLAIN, 15));
 		btnClear.setBorderPainted(false);
 		btnClear.setBackground(new Color(252, 193, 213));
-		btnClear.setBounds(184, 502, 108, 28);
+		btnClear.setBounds(184, 512, 108, 28);
 		contentPane.add(btnClear);
-		
-		JLabel lblTotalNoOf = new JLabel("Total No. of Reservations:");
-		lblTotalNoOf.setForeground(new Color(114, 115, 115));
-		lblTotalNoOf.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblTotalNoOf.setBounds(302, 502, 189, 23);
-		contentPane.add(lblTotalNoOf);
-		
-		textField = new JTextField();
-		textField.setForeground(new Color(114, 115, 115));
-		textField.setFont(new Font("Century Gothic", Font.PLAIN, 17));
-		textField.setColumns(10);
-		textField.setBorder(null);
-		textField.setBackground(new Color(250, 234, 240));
-		textField.setBounds(490, 502, 54, 23);
-		contentPane.add(textField);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(303, 165, 474, 322);
@@ -731,31 +741,47 @@ public class ReservationFrame extends JFrame {
 		JLabel lblService = new JLabel("SERVICE:");
 		lblService.setForeground(new Color(114, 115, 115));
 		lblService.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblService.setBounds(24, 297, 87, 22);
+		lblService.setBounds(24, 286, 87, 22);
 		contentPane.add(lblService);
 		
 		JLabel lblHairSt = new JLabel("STYLIST:");
 		lblHairSt.setForeground(new Color(114, 115, 115));
 		lblHairSt.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		lblHairSt.setBounds(24, 329, 119, 21);
+		lblHairSt.setBounds(24, 318, 119, 21);
 		contentPane.add(lblHairSt);
 		
-		JButton btnSave_1 = new JButton("PROCEED TO PAYMENT");
-		btnSave_1.addMouseListener(new MouseAdapter() {
+		JButton btnProceed = new JButton("PROCEED TO PAYMENT");
+		btnProceed.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ReservationPaymentFrame cv = new ReservationPaymentFrame();
 		    	cv.setVisible(true);
 		    	ReservationFrame.this.dispose();
 			}
-		});
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnProceed.setForeground(Color.BLACK);
+				btnProceed.setBackground(new Color(253, 139, 180));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnProceed.setForeground(Color.GRAY);
+				btnProceed.setBackground(new Color(252, 193, 213));
+			}});
 		
-		btnSave_1.setForeground(new Color(114, 115, 115));
-		btnSave_1.setFont(new Font("Century Gothic", Font.PLAIN, 14));
-		btnSave_1.setBorderPainted(false);
-		btnSave_1.setBackground(new Color(252, 193, 213));
-		btnSave_1.setBounds(562, 500, 215, 33);
-		contentPane.add(btnSave_1);
+		btnProceed.setForeground(new Color(114, 115, 115));
+		btnProceed.setFont(new Font("Century Gothic", Font.PLAIN, 14));
+		btnProceed.setBorderPainted(false);
+		btnProceed.setBackground(new Color(252, 193, 213));
+		btnProceed.setBounds(562, 502, 215, 31);
+		contentPane.add(btnProceed);
+		
+		
+		chckbxShowAvailability.setOpaque(false);
+		chckbxShowAvailability.setForeground(new Color(114, 115, 115));
+		chckbxShowAvailability.setFont(new Font("Century Gothic", Font.PLAIN, 14));
+		chckbxShowAvailability.setBounds(24, 408, 160, 22);
+		contentPane.add(chckbxShowAvailability);
 		
 		//to customize the header/column
 		JTableHeader JTHeader = table.getTableHeader();
