@@ -21,3 +21,7 @@
 ![](img/BOOKINGPAYMENT.png)
 
 ![](img/RESERVATIONPAYMENT.png)
+
+# ER Diagram
+
+![](img/SalonTPSDiagram.png)
