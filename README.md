@@ -1,23 +1,23 @@
 # GUI Preview
 
-![](img/LOGIN FRAME.png)
+![](img/LOGINFRAME.png)
 
-![](img/ADMIN DB.png)
+![](img/ADMINDB.png)
 
-![](img/ACCOUNT FINAL.png)
+![](img/ACCOUNTFINAL.png)
 
-![](img/SERVICE FINAL.png)
+![](img/SERVICEFINAL.png)
 
-![](img/TRANSACTION HISTORY.png)
+![](img/TRANSACTIONHISTORY.png)
 
-![](img/USER DASHBOARD.png)
+![](img/USERDASHBOARD.png)
 
-![](img/BOOKING FINAL.png)
+![](img/BOOKINGFINAL.png)
 
-![](img/RESERVATION FINAL.png)
+![](img/RESERVATIONFINAL.png)
 
-![](img/PAYMENT OPTIONS.png)
+![](img/PAYMENTOPTIONS.png)
 
-![](img/BOOKING PAYMENT.png)
+![](img/BOOKINGPAYMENT.png)
 
-![](img/RESERVATION PAYMENT.png)
+![](img/RESERVATIONPAYMENT.png)
