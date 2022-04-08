@@ -1,4 +1,4 @@
-# GUI Preview and System Description
+# GUI Preview
   
 ![](img/LOGINFRAME.png)
 
