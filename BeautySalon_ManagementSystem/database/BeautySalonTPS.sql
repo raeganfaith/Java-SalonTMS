@@ -95,6 +95,7 @@ SELECT * FROM Reservation JOIN Payment ON Reservation.Payment_ID = Payment.Payme
 
 --For fillComboBox 
 SELECT DISTINCT Services_Name FROM Service;
+SELECT DISTINCT Cust_Name FROM Payment 
 
 --View All Tables
 SELECT * FROM Booking;
@@ -102,7 +103,7 @@ SELECT * FROM Payment;
 SELECT * FROM Reservation;
 SELECT * FROM Account;
 SELECT * FROM Service;
-SELECT DISTINCT Cust_Name FROM Payment 
+
 --To Delete Tables
 DROP TABLE Reservation;
 DROP TABLE Payment;
