@@ -57,7 +57,7 @@ public class ReservationFrame extends JFrame {
 	public JComboBox<String> cbx_hairstylist;
 	public JComboBox<String> cbx_time;
 	private String  txt_serviceid = ""; //create a string for the foreign keys
-	private String  paymentid = ""; //create a string for the foreign keys
+	private String  reservationpaymentid = ""; //create a string for the foreign keys
 	private String dateValue = "";
 	private String timeValue = "";
 	private JTable table;
@@ -121,17 +121,17 @@ public class ReservationFrame extends JFrame {
 	}
 	//A method to select and connect the tables of the fk
 	public void PaymentIDValue(){
-		 String sql = "Select Payment_ID from Payment;";
+		 String sql = "Select Reservation_Payment_ID from ReservationPayment;";
 		 PreparedStatement pstt;
 		 String names = txt_name.getText();	
 		 try {
-			pstt = con.prepareStatement("insert into Payment(Cust_Name)values(?)");
+			pstt = con.prepareStatement("insert into ReservationPayment(Cust_Name)values(?)");
 			pstt.setString(1, names);
 			pstt.executeUpdate();
 			pstt = con.prepareStatement(sql);
 			ResultSet rs = pstt.executeQuery();
 			while (rs.next()) {
-				paymentid = rs.getString("Payment_ID");
+				reservationpaymentid = rs.getString("Reservation_Payment_ID");
 		          }
 		 } catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -474,8 +474,8 @@ public class ReservationFrame extends JFrame {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					String date = sdf.format(dateChooser.getDate());
 										
-					pst = con.prepareStatement("INSERT INTO Reservation(Payment_ID,Cust_Name, Cust_Address, Cust_Phone, Service_ID, Services_Name, Employee_Name, Reserve_Time, Reserve_Date, Acc_ID)values(?,?,?,?,?,?,?,?,?,?)");
-					pst.setString(1, paymentid);
+					pst = con.prepareStatement("INSERT INTO Reservation(Reservation_Payment_ID,Cust_Name, Cust_Address, Cust_Phone, Service_ID, Services_Name, Employee_Name, Reserve_Time, Reserve_Date, Acc_ID)values(?,?,?,?,?,?,?,?,?,?)");
+					pst.setString(1, reservationpaymentid);
 					pst.setString(2, names);
 					pst.setString(3, address);
 					pst.setString(4, contact);

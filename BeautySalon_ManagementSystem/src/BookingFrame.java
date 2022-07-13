@@ -58,7 +58,7 @@ public class BookingFrame extends JFrame {
 	
 	//strings for the foreign keys value
 	private String  txt_serviceid = ""; 
-	private String  paymentid = ""; 
+	private String  bookingpaymentid = ""; 
 
 	Connection cobj;
 	Connection con;
@@ -120,7 +120,6 @@ public class BookingFrame extends JFrame {
 			e1.printStackTrace();
 		}
 	}
-
 	//A method to show and fetch data from the database to the Jtable.
 	public void ShowData() {
 		DefaultTableModel model = new DefaultTableModel();
@@ -175,18 +174,18 @@ public class BookingFrame extends JFrame {
 	}
 	//A method to select and connect the tables of the fk.
 		public void PaymentIDValue(){
-			 String sql = "Select Payment_ID from Payment;";
+			 String sql = "Select Booking_Payment_ID from BookingPayment;";
 			 PreparedStatement pstt;
 			 String names = txt_name.getText();	
 
 			try {
-				pstt = con.prepareStatement("insert into Payment(Cust_Name)values(?)");
+				pstt = con.prepareStatement("insert into BookingPayment(Cust_Name)values(?)");
 				pstt.setString(1, names);
 				pstt.executeUpdate();
 				pstt = con.prepareStatement(sql);
 				ResultSet rs = pstt.executeQuery();
 				while (rs.next()) {
-					paymentid = rs.getString("Payment_ID");
+					bookingpaymentid = rs.getString("Booking_Payment_ID");
 	            }
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -374,8 +373,8 @@ public class BookingFrame extends JFrame {
 					PaymentIDValue();
 					ServiceIDValue();
 										
-					pst = con.prepareStatement("INSERT INTO Booking(Payment_ID,Cust_Name, Cust_Address, Cust_Phone,Service_ID,Services_Name, Employee_Name,Acc_ID, Booking_Date)values(?,?,?,?,?,?,?,?,?)");
-					pst.setString(1, paymentid);
+					pst = con.prepareStatement("INSERT INTO Booking(Booking_Payment_ID,Cust_Name, Cust_Address, Cust_Phone,Service_ID,Services_Name, Employee_Name,Acc_ID, Booking_Date)values(?,?,?,?,?,?,?,?,?)");
+					pst.setString(1, bookingpaymentid);
 					pst.setString(2, names);
 					pst.setString(3, address);
 					pst.setString(4, contact);

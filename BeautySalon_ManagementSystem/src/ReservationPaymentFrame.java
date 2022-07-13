@@ -37,14 +37,14 @@ public class ReservationPaymentFrame extends JFrame {
 	
 	private Image img_logo = new ImageIcon(LoginFrame.class.getResource("res/LOGO-2.png")).getImage().getScaledInstance(300, 90, Image.SCALE_SMOOTH);
 	private JPanel contentPane;
-	private JTextField txt_custid;
-	private JTextField txt_name;
+	private JTextField txt_payid;
+	private JTextField txt_names;
 	private JTextField txt_amount;
 	private JTextField txt_total;
 	private JTable table;
-	public JComboBox<String> cbx_stat; 
-	public JComboBox<String> cbx_disc;
-	private String  paymentid = "";
+	private JComboBox<String> cbx_status; 
+	private JComboBox<String> cbx_disc;
+	private String  reservationpaymentid = "";
 	
 	//Database connection
 	Connection con;
@@ -60,7 +60,7 @@ public class ReservationPaymentFrame extends JFrame {
 
 	public void ShowData() {
 		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("Reservation No.");
+		model.addColumn("Payment ID");
 		model.addColumn("Name");
 		model.addColumn("Status");
 		model.addColumn("Amount");
@@ -68,14 +68,15 @@ public class ReservationPaymentFrame extends JFrame {
 		model.addColumn("Total");
 		
 		try {
-			String query = "SELECT * FROM Payment JOIN Reservation ON Payment.Payment_ID = Reservation.Payment_ID;";
+			
+			String query = "SELECT * FROM ReservationPayment JOIN Reservation ON ReservationPayment.Reservation_Payment_ID = Reservation.Reservation_Payment_ID;";
 			
 			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
 				model.addRow(new Object [] {
-					rs.getString("Reservation_No"),	
+					rs.getString("Reservation_Payment_ID"),	
 					rs.getString("Cust_Name"),	
 					rs.getString("Cust_Status"),
 					rs.getString("Cust_Amount"),
@@ -93,7 +94,21 @@ public class ReservationPaymentFrame extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}}
-	
+	public void PaymentIDValue(){
+		 String sql = "Select Reservation_Payment_ID from ReservationPayment;";
+		 PreparedStatement pstt;
+		try {
+			pstt = con.prepareStatement(sql);
+			ResultSet rs = pstt.executeQuery();
+			while (rs.next()) {
+				reservationpaymentid = (rs.getString("Reservation_Payment_ID"));
+          }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+       
+	}
 	/**
 	 * Launch the application.
 	 */
@@ -235,33 +250,33 @@ public class ReservationPaymentFrame extends JFrame {
 		lblAmount.setBounds(22, 280, 121, 23);
 		contentPane.add(lblAmount);
 		
-		txt_custid = new JTextField();
-		txt_custid.setEditable(false);
-		txt_custid.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		txt_custid.setForeground(new Color(114, 115, 115));
-		txt_custid.setColumns(10);
-		txt_custid.setBorder(null);
-		txt_custid.setBackground(new Color(250, 234, 240));
-		txt_custid.setBounds(141, 181, 153, 23);
-		contentPane.add(txt_custid);
+		txt_payid = new JTextField();
+		txt_payid.setEditable(false);
+		txt_payid.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		txt_payid.setForeground(new Color(114, 115, 115));
+		txt_payid.setColumns(10);
+		txt_payid.setBorder(null);
+		txt_payid.setBackground(new Color(250, 234, 240));
+		txt_payid.setBounds(141, 181, 153, 23);
+		contentPane.add(txt_payid);
 		
-		txt_name = new JTextField();
-		txt_name.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		txt_name.setForeground(new Color(114, 115, 115));
-		txt_name.setColumns(10);
-		txt_name.setBorder(null);
-		txt_name.setBackground(new Color(250, 234, 240));
-		txt_name.setBounds(141, 214, 153, 23);
-		contentPane.add(txt_name);
+		txt_names = new JTextField();
+		txt_names.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		txt_names.setForeground(new Color(114, 115, 115));
+		txt_names.setColumns(10);
+		txt_names.setBorder(null);
+		txt_names.setBackground(new Color(250, 234, 240));
+		txt_names.setBounds(141, 214, 153, 23);
+		contentPane.add(txt_names);
 		
-		cbx_stat = new JComboBox<String>();
-		cbx_stat.addItem("Paid");
-		cbx_stat.addItem("Unpaid");
-		cbx_stat.setForeground(new Color(114, 115, 115));
-		cbx_stat.setFont(new Font("Century Gothic", Font.PLAIN, 15));
-		cbx_stat.setBackground(new Color(250, 234, 240));
-		cbx_stat.setBounds(141, 247, 153, 23);
-		contentPane.add(cbx_stat);
+		cbx_status = new JComboBox<String>();
+		cbx_status.addItem("Paid");
+		cbx_status.addItem("Unpaid");
+		cbx_status.setForeground(new Color(114, 115, 115));
+		cbx_status.setFont(new Font("Century Gothic", Font.PLAIN, 15));
+		cbx_status.setBackground(new Color(250, 234, 240));
+		cbx_status.setBounds(141, 247, 153, 23);
+		contentPane.add(cbx_status);
 		
 		txt_amount = new JTextField();
 		txt_amount.setFont(new Font("Century Gothic", Font.PLAIN, 15));
@@ -354,24 +369,24 @@ public class ReservationPaymentFrame extends JFrame {
 		JButton btnUpdate = new JButton("EDIT");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String ID = txt_custid.getText();
-				String names1 = txt_name.getText();	
-				String status = (String) cbx_stat.getSelectedItem();
+				String ID = txt_payid.getText();
+				String names1 = txt_names.getText();	
+				String status = (String) cbx_status.getSelectedItem();
 				String amount = txt_amount.getText();
 				String disc = (String) cbx_disc.getSelectedItem();
 				String total = txt_total.getText();	
 				
 				try {					
-					pst = con.prepareStatement("UPDATE Payment SET Cust_Name='"+names1+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Payment_ID='"+ID+"'");
+					pst = con.prepareStatement("UPDATE ReservationPayment SET Cust_Name='"+names1+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Reservation_Payment_ID='"+ID+"'");
 					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "CONFITMATION!", JOptionPane.YES_NO_OPTION);
 					if(input == JOptionPane.YES_OPTION) {
 						pst.execute();
 						JOptionPane.showMessageDialog(null, "Successfully updated!");
 						ShowData();
-						txt_custid.setText("");
-						txt_name.setText("");
-						cbx_stat.setSelectedIndex(-1);
+						txt_payid.setText("");
+						txt_names.setText("");
+						cbx_status.setSelectedIndex(-1);
 						txt_amount.setText("");
 						cbx_disc.setSelectedIndex(-1);
 						txt_total.setText(" ");
@@ -421,9 +436,9 @@ public class ReservationPaymentFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				JOptionPane.showConfirmDialog(null, "Are you sure you want to clear your data?", "Warning", JOptionPane.WARNING_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
-				txt_custid.setText("");
-	            txt_name.setText("");
-	            cbx_stat.setSelectedIndex(-1);
+				txt_payid.setText("");
+	            txt_names.setText("");
+	            cbx_status.setSelectedIndex(-1);
 	            txt_amount.setText("");
 	            cbx_disc.setSelectedIndex(-1);
 	            txt_total.setText("");
@@ -446,9 +461,9 @@ public class ReservationPaymentFrame extends JFrame {
 				try {
 					DefaultTableModel model = (DefaultTableModel)table.getModel();
 					int SelectRowIndex = table.getSelectedRow();
-					txt_custid.setText(model.getValueAt(SelectRowIndex, 0).toString());
-					txt_name.setText(model.getValueAt(SelectRowIndex, 1).toString());
-					cbx_stat.setSelectedItem(model.getValueAt(SelectRowIndex, 2).toString());
+					txt_payid.setText(model.getValueAt(SelectRowIndex, 0).toString());
+					txt_names.setText(model.getValueAt(SelectRowIndex, 1).toString());
+					cbx_status.setSelectedItem(model.getValueAt(SelectRowIndex, 2).toString());
 					txt_amount.setText(model.getValueAt(SelectRowIndex, 3).toString());
 					cbx_disc.setSelectedItem(model.getValueAt(SelectRowIndex, 4).toString());
 					txt_total.setText(model.getValueAt(SelectRowIndex, 5).toString());			
@@ -493,5 +508,13 @@ public class ReservationPaymentFrame extends JFrame {
 		JTHeader.setFont(new Font("Century Gothic", Font.PLAIN, 9));
 		JTHeader.setBackground(new Color(252, 193, 213));
 		
+	}
+
+	public String getReservationPaymentid() {
+		return reservationpaymentid;
+	}
+
+	public void setReservationPaymentid(String reservationpaymentid) {
+		this.reservationpaymentid = reservationpaymentid;
 	}
 }
