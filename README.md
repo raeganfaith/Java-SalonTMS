@@ -24,4 +24,4 @@
 
 # ER Diagram
 
-![](img/SalonTPSDiagram.png)
+![](img/UpdatedDiagram.png)
