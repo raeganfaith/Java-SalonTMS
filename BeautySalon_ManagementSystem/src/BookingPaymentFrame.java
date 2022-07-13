@@ -42,9 +42,9 @@ public class BookingPaymentFrame extends JFrame {
 	private JTextField txt_amount;
 	private JTextField txt_total;
 	private JTable table;
-	public JComboBox<String> cbx_stat; 
-	public JComboBox<String> cbx_disc;
-	private String  paymentid = "";
+	private JComboBox<String> cbx_stat; 
+	private JComboBox<String> cbx_disc;
+	private String  bookingpaymentid = "";
 	 //create a string for the foreign keys
 	
 	//Database connection
@@ -71,14 +71,14 @@ public class BookingPaymentFrame extends JFrame {
 		model.addColumn("Total");
 		
 		try {
-			String query = "SELECT * FROM Payment JOIN Booking ON Payment.Payment_ID = Booking.Payment_ID;";
-			// JOIN Booking ON Payment.Cust_Name = Booking.Cust_Name; 
+			String query = "SELECT * FROM BookingPayment JOIN Booking ON BookingPayment.Cust_Name = Booking.Cust_Name;";
+			// JOIN Booking ON BookingPayment.Cust_Name = Booking.Cust_Name; 
 			PreparedStatement ps = con.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
 				model.addRow(new Object [] {
-					rs.getString("Payment_ID"),	
+					rs.getString("Booking_Payment_ID"),	
 					rs.getString("Cust_Name"),	
 					rs.getString("Cust_Status"),
 					rs.getString("Cust_Amount"),
@@ -97,13 +97,13 @@ public class BookingPaymentFrame extends JFrame {
 			e.printStackTrace();
 		}}
 	public void PaymentIDValue(){
-		 String sql = "Select Payment_ID from Payment;";
+		 String sql = "Select Booking_Payment_ID from BookingPayment;";
 		 PreparedStatement pstt;
 		try {
 			pstt = con.prepareStatement(sql);
 			ResultSet rs = pstt.executeQuery();
 			while (rs.next()) {
-				paymentid = rs.getString("Payment_ID");
+				setBookingpaymentid(rs.getString("Booking_Payment_ID"));
            }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -350,8 +350,7 @@ public class BookingPaymentFrame extends JFrame {
 		JButton btnCreate = new JButton("ADD");
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "You can't add new customers that are not recoded in booking yet!");
-				
+				JOptionPane.showMessageDialog(null, "Please use the edit button for updating data!");	
 			}
 		});
 
@@ -385,7 +384,7 @@ public class BookingPaymentFrame extends JFrame {
 				//String s = LoginFrame.txtPass.getText();				
 				try {
 					
-					pst = con.prepareStatement("UPDATE Payment SET Cust_Name='"+names+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Payment_ID='"+ID+"'");
+					pst = con.prepareStatement("UPDATE BookingPayment SET Cust_Name='"+names+"', Cust_Status='"+status+"', Cust_Amount='"+amount+"', Cust_Discount='"+disc+"',Cust_Total='"+total+"' WHERE Booking_Payment_ID='"+ID+"'");
 					
 					int input = JOptionPane.showConfirmDialog(null, "Are you sure you want to make changes?", "ALERT!", JOptionPane.YES_NO_OPTION);
 					if(input == JOptionPane.YES_OPTION) {
@@ -430,7 +429,7 @@ public class BookingPaymentFrame extends JFrame {
 		JButton btnDelete = new JButton("DELETE");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				JOptionPane.showMessageDialog(null,"Please delete the data from the booking first!");
 			}
 		});
 		btnDelete.addMouseListener(new MouseAdapter() {
@@ -537,5 +536,13 @@ public class BookingPaymentFrame extends JFrame {
 		btnSave.setBounds(545, 503, 233, 33);
 		contentPane.add(btnSave);
 		
+	}
+
+	public String getBookingpaymentid() {
+		return bookingpaymentid;
+	}
+
+	public void setBookingpaymentid(String bookingpaymentid) {
+		this.bookingpaymentid = bookingpaymentid;
 	}
 }

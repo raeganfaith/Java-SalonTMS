@@ -81,7 +81,7 @@ public class TransactionFrame extends JFrame {
 			model.addColumn("Total");
 			model.addColumn("Acc No.");
 			try {
-				String query = "SELECT * FROM Payment JOIN Reservation ON Payment.Payment_ID = Reservation.Payment_ID;";
+				String query = "SELECT * FROM ReservationPayment JOIN Reservation ON ReservationPayment.Reservation_Payment_ID = Reservation.Reservation_Payment_ID;";
 				PreparedStatement ps = con.prepareStatement(query);
 				ResultSet rs = ps.executeQuery();
 				
@@ -96,7 +96,7 @@ public class TransactionFrame extends JFrame {
 						rs.getString("Service_ID"),
 						rs.getString("Services_Name"), 
 						rs.getString("Employee_Name"),
-						rs.getString("Payment_ID"),
+						rs.getString("Reservation_Payment_ID"),
 						rs.getString("Cust_Status"),
 						rs.getString("Cust_Amount"),
 						rs.getString("Cust_Discount"),
@@ -132,8 +132,7 @@ public class TransactionFrame extends JFrame {
 			model.addColumn("Acc No.");
 			
 			try {
-				String query = "SELECT * FROM Payment JOIN Booking ON Payment.Payment_ID = Booking.Payment_ID;";
-				// JOIN Booking ON Payment.Cust_Name = Booking.Cust_Name; 
+				String query = "SELECT * FROM BookingPayment JOIN Booking ON BookingPayment.Booking_Payment_ID = Booking.Booking_Payment_ID;";
 				PreparedStatement ps = con.prepareStatement(query);
 				ResultSet rs = ps.executeQuery();
 				
@@ -146,7 +145,7 @@ public class TransactionFrame extends JFrame {
 							rs.getString("Service_ID"),
 							rs.getString("Services_Name"), 
 							rs.getString("Employee_Name"),
-							rs.getString("Payment_ID"),
+							rs.getString("Booking_Payment_ID"),
 							rs.getString("Cust_Status"),
 							rs.getString("Cust_Amount"),
 							rs.getString("Cust_Discount"),
