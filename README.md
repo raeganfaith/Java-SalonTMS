@@ -1,37 +1,47 @@
-# About the developer
+# About the Developer
 
-Front End and Back End Developer: Raegan Faith Paguirigan
+**Name:** Raegan Faith Paguirigan  
+**Role:** Front End and Back End Developer
 
-I utilized Eclipse for the development of my GUI(Graphic User Interface) and for the development and customization of Icons, I used Adobe Illustrator. Microsoft SQL Server Management Studio 18 is the software I used for the database. This is a project in one of my majors when I was 2nd year college, and it is supposed to be a project of 4 members but I decided to do it solo to challenge myself.  
+I developed the GUI (Graphic User Interface) using Eclipse and customized the icons with Adobe Illustrator. For the database, I utilized Microsoft SQL Server Management Studio 18. This project was originally intended for a group of four members during my second year in college, but I decided to take it on solo as a personal challenge.
 
-Estimated time spent on this project: 2 weeks
+**Estimated Time Spent on Project:** 2 weeks
 
 # GUI Preview
-    
-![](img/LOGINFRAME.png)
 
-![](img/ADMINDB.png)
+### Login Frame
+![Login Frame](img/LOGINFRAME.png)
 
-![](img/ACCOUNTFINAL.png)
+### Admin Dashboard
+![Admin Dashboard](img/ADMINDB.png)
 
-![](img/SERVICEFINAL.png)
+### Account Management
+![Account Management](img/ACCOUNTFINAL.png)
 
-![](img/TRANSACTIONHISTORY.png)
+### Services
+![Services](img/SERVICEFINAL.png)
 
-![](img/USERDASHBOARD.png)
+### Transaction History
+![Transaction History](img/TRANSACTIONHISTORY.png)
 
-![](img/BOOKINGFINAL.png)
+### User Dashboard
+![User Dashboard](img/USERDASHBOARD.png)
 
-![](img/RESERVATIONFINAL.png)
+### Booking
+![Booking](img/BOOKINGFINAL.png)
 
-![](img/PAYMENTOPTIONS.png)
+### Reservation
+![Reservation](img/RESERVATIONFINAL.png)
 
-![](img/BOOKINGPAYMENT.png)
+### Payment Options
+![Payment Options](img/PAYMENTOPTIONS.png)
 
-![](img/RESERVATIONPAYMENT.png)
+### Booking Payment
+![Booking Payment](img/BOOKINGPAYMENT.png)
+
+### Reservation Payment
+![Reservation Payment](img/RESERVATIONPAYMENT.png)
 
 # ER Diagram
 
-![](img/UpdatedDiagram.png)
-
-
+![ER Diagram](img/UpdatedDiagram.png)
